@@ -98,3 +98,5 @@ if __name__ == '__main__':
     from matplotlib import pyplot as plt
     plt.plot(y-yy)
     plt.show()
+    plt.plot(x-xx)
+    plt.show()
