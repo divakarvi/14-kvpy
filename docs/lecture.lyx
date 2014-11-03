@@ -1,0 +1,902 @@
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
+\begin_document
+\begin_header
+\textclass paper
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman lmodern
+\font_sans lmss
+\font_typewriter lmtt
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize 12
+\spacing single
+\use_hyperref true
+\pdf_bookmarks true
+\pdf_bookmarksnumbered false
+\pdf_bookmarksopen false
+\pdf_bookmarksopenlevel 1
+\pdf_breaklinks false
+\pdf_pdfborder false
+\pdf_colorlinks false
+\pdf_backref false
+\pdf_pdfusetitle true
+\papersize default
+\use_geometry true
+\use_amsmath 1
+\use_esint 1
+\use_mhchem 1
+\use_mathdots 1
+\cite_engine basic
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 2.8cm
+\topmargin 2.8cm
+\rightmargin 2.8cm
+\bottommargin 2.8cm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\author -1311319520 "Divakar Viswanath,,," 
+\end_header
+
+\begin_body
+
+\begin_layout Title
+The Normal Distribution from Gauss to Kalman
+\end_layout
+
+\begin_layout Author
+Divakar Viswanath
+\end_layout
+
+\begin_layout Address
+Department of Mathematics, University of Michigan
+\change_inserted -1311319520 1415045853
+
+\end_layout
+
+\begin_layout Date
+
+\change_inserted -1311319520 1415045867
+November 2014
+\change_unchanged
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset toc
+LatexCommand tableofcontents
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Introduction: random variables, mean, and variance
+\end_layout
+
+\begin_layout Standard
+In this lecture, we will introduce the normal distribution, which is one
+ of the of great ideas in mathematics.
+ Its applicability is very wide, touching every area of the sciences.
+ In addition, there are mathematical questions related to it that are still
+ a subject of active research.
+\end_layout
+
+\begin_layout Standard
+To gain an understanding of the normal distribution, we will begin with
+ a simple example and rigorously deduce the central limit theorem for that
+ example.
+ The central limit theorem gives a partial explanation for why the normal
+ distribution occurs in so many situations.
+ 
+\end_layout
+
+\begin_layout Standard
+Our next step is to deduce a very special case of the Kalman filter.
+ The Kalman filter is undoubtedly one of the most consequential ideas in
+ applied mathematics.
+ Its applications are profound.
+ The cell phone in your pocket may have a Kalman filter.
+ Although I have no direct knowledge, I am certain that India's Mars mission
+ Mangalyaan makes extensive use of Kalman filters.
+ 
+\end_layout
+
+\begin_layout Standard
+The Kalman filter is a method for the systematic estimation of means and
+ variances.
+ So we will begin by understanding random variables, means or expectations,
+ and variances.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../python/heights.pdf
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Normal law fit to the height distribution of 1078 subjects (fathers) in
+ Pearson's data set.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:intro-heights-normal-law"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:intro-heights-normal-law"
+
+\end_inset
+
+ provides some motivation for our study of the normal law as well as means
+ and variances.
+ The figure has two items in it.
+ The first item is a histogram.
+ The heights of 1078 fathers (as well as their sons, but we ignore the sons)
+ was recorded by the eminent statistician Karl Pearson.
+ The minimum recorded height was 
+\begin_inset Formula $59$
+\end_inset
+
+ inches (which is an inch short fo 
+\begin_inset Formula $5$
+\end_inset
+
+ feet) and the maximum was 
+\begin_inset Formula $75.4$
+\end_inset
+
+ inches (which is 
+\begin_inset Formula $3.4$
+\end_inset
+
+ inches above 
+\begin_inset Formula $6$
+\end_inset
+
+ feet).
+ To obtain this histogram, this range of heights is divided into 
+\begin_inset Formula $15$
+\end_inset
+
+ bins so that every bin is approximately an inch.
+ The vertical axis of the figure shows the number of persons in each bin.
+\end_layout
+
+\begin_layout Standard
+The second item in Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:intro-heights-normal-law"
+
+\end_inset
+
+ is the normal fit to the heights data.
+ 
+\change_inserted -1311319520 1415046017
+As
+\change_deleted -1311319520 1415046016
+So
+\change_unchanged
+ you can see the fit is good but not very accurate.
+ The convergence to the normal law is quite slow, typically at the rate
+ 
+\begin_inset Formula $n^{-1/2}$
+\end_inset
+
+ if the number of data points is 
+\begin_inset Formula $n$
+\end_inset
+
+.
+ We will understand Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:intro-heights-normal-law"
+
+\end_inset
+
+ better as we progress in this lecture, but as far as I am aware there are
+ still many things in it that are yet not understood.
+\end_layout
+
+\begin_layout Subsection
+Random variables
+\end_layout
+
+\begin_layout Standard
+The random variable is a mathematical abstraction of phenomena that we cannot
+ calculate perfectly.
+ The complete definition of a random variable is a little complicated.
+ The difficulties in defining a random variable are related to the difficulties
+ in defining a set axiomatically.
+ We will not go into those difficulties.
+ Instead, we assume that the notion of a random variable 
+\begin_inset Formula $X$
+\end_inset
+
+ is a given.
+ That means that for any set 
+\begin_inset Formula $A$
+\end_inset
+
+, we know the probability 
+\begin_inset Formula 
+\[
+\mathbb{P}\left(X\in A\right).
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Certain random variables are discrete.
+ That means they take values in a finite set 
+\begin_inset Formula $\left\{ a_{1},\ldots,a_{M}\right\} $
+\end_inset
+
+ or a countable set.
+ For example, 
+\begin_inset Formula $X$
+\end_inset
+
+ may take only the two values 
+\begin_inset Formula $\pm1$
+\end_inset
+
+.
+ In that case if we give the probabilities 
+\begin_inset Formula $\mathbb{P}(1)$
+\end_inset
+
+ and 
+\begin_inset Formula $\mathbb{P}(-1)$
+\end_inset
+
+ then we have specified the random variable completely.
+ The probabilities must of course sum to 
+\begin_inset Formula $1$
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+Certain other random variables may be specified in terms of a probability
+ density function 
+\begin_inset Formula $p(x)$
+\end_inset
+
+, where 
+\begin_inset Formula $x\in\mathbb{R}$
+\end_inset
+
+.
+ In this case,
+\family typewriter
+
+\begin_inset Formula 
+\[
+\mathbb{P}\left(a\leq X\leq b\right)=\int_{a}^{b}p(x)\, dx.
+\]
+
+\end_inset
+
+
+\family default
+We require the normalization condition 
+\begin_inset Formula $\int_{-\infty}^{\infty}p(x)\, dx=0$
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+Notice that discrete random variables cannot be represented using densities.
+ That problem can be dealt with fairly easily by passing to the Stieltjes
+ integral, which is the next step from the Riemann integral.
+ One can make up examples of random variables that cannot be represented
+ using the Stieltjes integral.
+ Modern definitions of random variables rely upon the Lebesgue theory and
+ its extensions.
+\end_layout
+
+\begin_layout Standard
+The probability density function 
+\begin_inset Formula $p(x,y)$
+\end_inset
+
+ represents two random variables 
+\begin_inset Formula $X,Y$
+\end_inset
+
+ simultaneously.
+ It is assumed to be continuous.
+ We have 
+\begin_inset Formula 
+\begin{eqnarray*}
+\mathbb{P}\left(a\leq X\leq b,\, c\leq Y\leq d\right) & = & \int_{c}^{d}\int_{a}^{b}p(x,y)\, dx\, dy\\
+\mathbb{P}\left(a\leq X\leq b\right) & = & \int_{-\infty}^{\infty}\int_{a}^{b}p(x,y)\, dx\, dy\\
+\mathbb{P}\left(c\leq Y\leq c\right) & = & \int_{c}^{d}\int_{-\infty}^{\infty}p(x,y)\, dx\, dy.
+\end{eqnarray*}
+
+\end_inset
+
+The normalization condition here is that 
+\begin_inset Formula $\int_{-\infty}^{\infty}\int_{-\infty}^{\infty}p(x,y)\, dx\, dy=1$
+\end_inset
+
+.
+ We can obtain the density functions of 
+\begin_inset Formula $X$
+\end_inset
+
+ and 
+\begin_inset Formula $Y$
+\end_inset
+
+ as
+\begin_inset Formula 
+\begin{eqnarray*}
+p_{X}(x) & = & \int_{-\infty}^{\infty}p(x,y)\, dy\\
+p_{Y}(y) & = & \int_{-\infty}^{\infty}p(x,y)\, dx.
+\end{eqnarray*}
+
+\end_inset
+
+In the same manner, we can consider joint density functions for any finite
+ number of random variables.
+ 
+\end_layout
+
+\begin_layout Standard
+The joint density function holds information about how the random variables
+ are related to each other.
+ If much of the mass of the density function 
+\begin_inset Formula $p(x,y)$
+\end_inset
+
+ is concentrated near the diagonal 
+\begin_inset Formula $x=y$
+\end_inset
+
+, then the random variables 
+\begin_inset Formula $X$
+\end_inset
+
+ and 
+\begin_inset Formula $Y$
+\end_inset
+
+ are highly correlated and take nearly the same value much of the time.
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+Independence 
+\emph default
+is one of the key concepts.
+ The random variables 
+\begin_inset Formula $X$
+\end_inset
+
+ and 
+\begin_inset Formula $Y$
+\end_inset
+
+ are independent if 
+\begin_inset Formula 
+\[
+\mathbb{P}\left(X\in A\:\text{and}\: Y\in B\right)=\mathbb{P}\left(x\in A\right)\mathbb{P}\left(y\in B\right),
+\]
+
+\end_inset
+
+where 
+\begin_inset Formula $A$
+\end_inset
+
+ and 
+\begin_inset Formula $B$
+\end_inset
+
+ are any two sets.
+ Similarly, 
+\begin_inset Formula $X_{1},\ldots,X_{n}$
+\end_inset
+
+ are an independent sequence of random variables if 
+\begin_inset Formula 
+\[
+\mathbb{P}\left(X_{1}\in A_{1},\ldots,X_{n}\in A_{n}\right)=\prod_{i=1}^{n}\mathbb{P}\left(X_{i}\in A_{i}\right).
+\]
+
+\end_inset
+
+The random variables represented by the density function 
+\begin_inset Formula $p\left(x_{1},\ldots,x_{n}\right)$
+\end_inset
+
+ are independent if 
+\begin_inset Formula $p\left(x_{1},\ldots,x_{n}\right)=p_{1}\left(x_{1}\right)p_{2}\left(x_{2}\right)\ldots p_{n}\left(x_{n}\right)$
+\end_inset
+
+.
+ They are independent and identically distributed if 
+\begin_inset Formula 
+\[
+p\left(x_{1},\ldots,x_{n}\right)=p(x_{1})p(x_{2})\ldots p(x_{n}).
+\]
+
+\end_inset
+
+The definition of independence extends to discrete random variables as well.
+\end_layout
+
+\begin_layout Subsection
+Mean or expectation
+\end_layout
+
+\begin_layout Standard
+If 
+\begin_inset Formula $X$
+\end_inset
+
+ is a discrete random variable that takes the values 
+\begin_inset Formula $a_{1},\ldots,a_{M}$
+\end_inset
+
+ with probabilities 
+\begin_inset Formula $p_{1},\ldots,p_{M}$
+\end_inset
+
+, respectively, then its mean is given by 
+\begin_inset Formula 
+\[
+\frac{p_{1}a_{1}+\cdots+p_{M}a_{M}}{M}.
+\]
+
+\end_inset
+
+In the mathematical literature, the mean is called expectation or expected
+ value and denoted 
+\begin_inset Formula $\mathbb{E}X$
+\end_inset
+
+.
+ If the random variable is represented using the density function 
+\begin_inset Formula $p(x)$
+\end_inset
+
+, then we have 
+\begin_inset Formula 
+\[
+\mathbb{E}X=\int_{-\infty}^{\infty}xp(x)\, dx.
+\]
+
+\end_inset
+
+If 
+\begin_inset Formula $f(\cdot)$
+\end_inset
+
+ is a suitable function, then we have 
+\begin_inset Formula $\mathbb{E}f(X)=\int_{-\infty}^{\infty}f(x)\, p(x)\, dx.$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+If 
+\begin_inset Formula $X_{1},\ldots,X_{n}$
+\end_inset
+
+ are a sequence of random variables then we may prove that 
+\begin_inset Formula 
+\[
+\mathbb{E}\left(X_{1}+\cdots+X_{n}\right)=\mathbb{E}X_{1}+\cdots+\mathbb{E}X_{n}.
+\]
+
+\end_inset
+
+The proof does not assume that the 
+\begin_inset Formula $X_{i}$
+\end_inset
+
+ are independent.
+\end_layout
+
+\begin_layout Description
+Exercise: Prove the above identity assuming the random variables 
+\begin_inset Formula $X_{1},\ldots,X_{n}$
+\end_inset
+
+ to be represented by the density function 
+\begin_inset Formula $p\left(x_{1},\ldots,x_{n}\right)$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Description
+Exercise: Let 
+\begin_inset Formula $\pi_{1},\ldots,\pi_{n}$
+\end_inset
+
+ be a random permutation of the numbers 
+\begin_inset Formula $1,\ldots,n$
+\end_inset
+
+ which is equally likely to be any one of the 
+\begin_inset Formula $n!$
+\end_inset
+
+ possible permutations.
+ We say that the permutation has a descent at the position 
+\begin_inset Formula $i$
+\end_inset
+
+ if and only if 
+\begin_inset Formula $\pi_{i}>\pi_{i+1}$
+\end_inset
+
+.
+ A permutation may have 
+\begin_inset Formula $d$
+\end_inset
+
+ descents with 
+\begin_inset Formula $0\leq d\leq n-1.$
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Find the permutation with 
+\begin_inset Formula $0$
+\end_inset
+
+ descents.
+ 
+\end_layout
+
+\begin_layout Itemize
+Find the permutation with 
+\begin_inset Formula $n-1$
+\end_inset
+
+ descents.
+\end_layout
+
+\begin_layout Itemize
+Prove that the expected number of descents is 
+\begin_inset Formula $(n-1)/2$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\end_deeper
+\begin_layout Description
+Exercise: Give an example of a random variable whose expectation is 
+\begin_inset Formula $\infty$
+\end_inset
+
+.
+ Give an example of a random variable whose expectation does not exist.
+\end_layout
+
+\begin_layout Subsection
+Variance and standard deviation
+\end_layout
+
+\begin_layout Standard
+If we know only the mean of a random variable, we know practically nothing
+ about it.
+ If we know its mean and its standard deviation, we have a great deal of
+ information, as we will soon understand.
+ What then is standard deviation?
+\end_layout
+
+\begin_layout Standard
+The standard deviation, or the variance which is the square of the standard
+ deviation, quantifies the typical size of fluctuations.
+ If 
+\begin_inset Formula $\mathbb{E}X=\mu$
+\end_inset
+
+, then the variance 
+\begin_inset Formula $\sigma^{2}$
+\end_inset
+
+ of 
+\begin_inset Formula $X$
+\end_inset
+
+ is defined as 
+\begin_inset Formula 
+\[
+\sigma^{2}=\mathbb{E}\left(X-\mu\right)^{2}.
+\]
+
+\end_inset
+
+The standard deviation is 
+\begin_inset Formula $\sigma$
+\end_inset
+
+.
+ It is often called the root-mean-square value since it is given by 
+\begin_inset Formula $\sqrt{\mathbb{E}\left(X-\mu\right)^{2}}$
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Description
+Exercise: Prove that 
+\begin_inset Formula $\sigma^{2}=\mathbb{E}X^{2}-\left(\mathbb{E}X\right)^{2}$
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Description
+Exercise: Give an example of a variable whose mean is finite and standard
+ deviation infinite.
+\end_layout
+
+\begin_layout Subsection
+The normal distribution
+\end_layout
+
+\begin_layout Standard
+The density function of the standard normal distribution is given by 
+\begin_inset Formula 
+\begin{equation}
+\frac{1}{\sqrt{2\pi}}\exp\left(-x^{2}/2\right).\label{eq:intro-std-normal}
+\end{equation}
+
+\end_inset
+
+It is properly normalized because 
+\begin_inset Formula 
+\[
+\frac{1}{\sqrt{2\pi}}\int_{-\infty}^{\infty}\exp(-x^{2}/2)\, dx=\frac{1}{\sqrt{\pi}}\int_{-\infty}^{\infty}\exp(-x^{2})\, dx=1.
+\]
+
+\end_inset
+
+This latter integral (called Gaussian integral) was first evaluated by Laplace.
+ The popular method for evaluating it using double integrals and polar coordinat
+es (see the wikipedia article 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://en.wikipedia.org/wiki/Gaussian_integral
+\end_layout
+
+\end_inset
+
+) is due to Poisson and based on an earlier method of Laplace.
+ 
+\end_layout
+
+\begin_layout Standard
+Given the Gaussian integral, it follows that 
+\begin_inset Formula 
+\begin{equation}
+\frac{1}{\sqrt{2\pi}}\int_{-\infty}^{\infty}x^{2}\exp(-x^{2}/2)\: dx=1.\label{eq:intro-normal-law}
+\end{equation}
+
+\end_inset
+
+Since the mean of the standard normal distribution 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:intro-std-normal"
+
+\end_inset
+
+ is zero by symmetry, it follows that its variance and standard deviation
+ are both 
+\begin_inset Formula $1$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Description
+Exercise: Prove that
+\begin_inset Formula 
+\[
+\frac{1}{\sqrt{2\pi}}\int_{-\infty}^{\infty}x^{2}\exp(-x^{2}/2)\: dx=1.
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Next consider the density function
+\begin_inset Formula 
+\begin{equation}
+\frac{1}{\sqrt{2\pi}\sigma}\exp\left(-\left(x-\mu\right)^{2}/2\sigma^{2}\right).\label{eq:intro-normal-mu-sigma}
+\end{equation}
+
+\end_inset
+
+This is the density function of the normal distribution with mean 
+\begin_inset Formula $\mu$
+\end_inset
+
+ and variance 
+\begin_inset Formula $\sigma^{2}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Description
+Exercise: Prove that the density function 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:intro-normal-mu-sigma"
+
+\end_inset
+
+ is suitably normalized (it must integrate to 
+\begin_inset Formula $1$
+\end_inset
+
+ between 
+\begin_inset Formula $\pm\infty$
+\end_inset
+
+.
+ Prove that its mean is 
+\begin_inset Formula $\mu$
+\end_inset
+
+ and variance 
+\begin_inset Formula $\sigma^{2}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:intro-heights-normal-law"
+
+\end_inset
+
+ was obtained as follows.
+ After histogramming Pearson's height data, we considered the normal distributio
+n 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:intro-normal-mu-sigma"
+
+\end_inset
+
+ with mean 
+\begin_inset Formula $\mu=67.78$
+\end_inset
+
+ inches and standard deviation 
+\begin_inset Formula $\sigma=2.744$
+\end_inset
+
+ inches.
+ The mean and variance match the Pearson data set.
+ The graph of the density function 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:intro-normal-mu-sigma"
+
+\end_inset
+
+ is scaled by a factor 
+\begin_inset Formula $S$
+\end_inset
+
+ to make the area under it equal to the area under the histogram.
+\end_layout
+
+\begin_layout Description
+Exercise: Argue that the area under a histogram with equal bins is equal
+ to the total number of samples times the size of each bin.
+\end_layout
+
+\end_body
+\end_document

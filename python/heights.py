@@ -23,7 +23,7 @@ if __name__ == '__main__':
     print('           mean = ', mean)
     print('            std = ', sigma)
     from matplotlib import pyplot as plt
-    bins = np.linspace(min(data), max(data), 15)
+    bins = np.linspace(min(data), max(data), 16)
     plt.hist(data, bins = bins)
     
     x = np.linspace(min(data), max(data), 500)
@@ -33,7 +33,9 @@ if __name__ == '__main__':
     nml = nml * data.size*(bins[1] - bins[0]) 
     plt.plot(x, nml, 'k', lw = 5) 
     plt.xlabel('Height in Inches')
-    plt.savefig('heights.pdf')
+    x = raw_input('save figure? y/n:')
+    if x == 'y':
+        plt.savefig('heights.pdf')
     plt.show()
 
     
