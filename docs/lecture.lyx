@@ -274,6 +274,22 @@ reference "fig:intro-heights-normal-law"
  still many things in it that are yet not understood.
 \end_layout
 
+\begin_layout Description
+Note: The source for this document as well as the python programs used to
+ produce the figures are posted at 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://github.com/divakarvi/14-kvpy
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Subsection
 Random variables
 \end_layout
@@ -1760,7 +1776,7 @@ Now if a rocket is shooting through space, we may not be able to get accurate
  which is given by 
 \begin_inset Formula 
 \begin{equation}
-z_{n}=x_{n}+\text{Gaussian noise of mean \ensuremath{0}and variance \ensuremath{\sigma^{2}}}.\label{eq:kalman-zn}
+z_{n}=x_{n}+\text{Gaussian noise of mean \ensuremath{0} and variance \ensuremath{\sigma^{2}}}.\label{eq:kalman-zn}
 \end{equation}
 
 \end_inset
