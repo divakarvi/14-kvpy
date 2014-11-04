@@ -4,6 +4,10 @@
 \begin_header
 \textclass paper
 \use_default_options true
+\begin_modules
+theorems-ams
+theorems-sec
+\end_modules
 \maintain_unincluded_children false
 \language english
 \language_package default
@@ -668,8 +672,72 @@ Exercise: Give an example of a random variable whose expectation is
  Give an example of a random variable whose expectation does not exist.
 \end_layout
 
+\begin_layout Description
+Exercise: If 
+\begin_inset Formula $X$
+\end_inset
+
+ and 
+\begin_inset Formula $Y$
+\end_inset
+
+ are independent random variables and may be represented using a density
+ function, prove that 
+\begin_inset Formula $\mathbb{E}XY=\mathbb{E}X\:\mathbb{E}Y.$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Description
+Exercise: If 
+\begin_inset Formula $X$
+\end_inset
+
+ and 
+\begin_inset Formula $Y$
+\end_inset
+
+ are independent random variables and may be represented using a density
+ function, If 
+\begin_inset Formula $X$
+\end_inset
+
+ and 
+\begin_inset Formula $Y$
+\end_inset
+
+ are independent random variables and may be represented using a density
+ function, as above, and 
+\begin_inset Formula $f$
+\end_inset
+
+ and 
+\begin_inset Formula $g$
+\end_inset
+
+ are any continuous functions prove that 
+\begin_inset Formula 
+\[
+\mathbb{E}f(X)g(Y)=\mathbb{E}f(x)\:\mathbb{E}g(Y).
+\]
+
+\end_inset
+
+You may assume that all functions that arise in the calculation are integrable.
+\end_layout
+
 \begin_layout Subsection
-Variance and standard deviation
+Variance and standard deviation 
+\begin_inset Formula $X$
+\end_inset
+
+ and 
+\begin_inset Formula $Y$
+\end_inset
+
+ are independent random variables and may be represented using a density
+ function
 \end_layout
 
 \begin_layout Standard
@@ -896,6 +964,599 @@ reference "eq:intro-normal-mu-sigma"
 \begin_layout Description
 Exercise: Argue that the area under a histogram with equal bins is equal
  to the total number of samples times the size of each bin.
+\end_layout
+
+\begin_layout Section
+A central limit theorem
+\end_layout
+
+\begin_layout Standard
+If the mean 
+\begin_inset Formula $\mu$
+\end_inset
+
+ and the variance 
+\begin_inset Formula $\sigma^{2}$
+\end_inset
+
+ match those of the data, the normal distribution is a good fit to Pearson's
+ heights data set (see Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:intro-heights-normal-law"
+
+\end_inset
+
+).
+ Why does the normal distribution fit the height data set? 
+\end_layout
+
+\begin_layout Standard
+The answer to that question is not fully understood.
+ In this section, we derive a central limit theorem.
+ When a lot of random variables are added and then suitably normalized,
+ the distribution of their sum tends to converge to the normal distribution.
+ In this section, we will work through a single example to understand that
+ phenomenon.
+\end_layout
+
+\begin_layout Standard
+It used to be believed that the convergence to the normal distribution was
+ a consequence of summing 
+\emph on
+independent
+\emph default
+ random variables.
+ There are many, many examples where the sum of dependent random variables
+ is known to converge to the normal distribution.
+ Nevertheless the basic example we tackle assumes that random variables
+ that are summed to be independent.
+\end_layout
+
+\begin_layout Subsection
+Statement of the theorem
+\end_layout
+
+\begin_layout Standard
+Let 
+\begin_inset Formula $X$
+\end_inset
+
+ be a random variable with 
+\begin_inset Formula $\mathbb{P}(X=1)=\mathbb{P}(X=-1)=1/2$
+\end_inset
+
+.
+ By symmetry we have
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\mu=\mathbb{E}X=0.\label{eq:clt-X-mean}
+\end{equation}
+
+\end_inset
+
+In addition, 
+\begin_inset Formula 
+\begin{equation}
+\sigma^{2}=\mathbb{E}(X-\mu)^{2}=\mathbb{E}X^{2}=1.\label{eq:clt-X-variance}
+\end{equation}
+
+\end_inset
+
+The random variable 
+\begin_inset Formula $X$
+\end_inset
+
+ has mean 
+\begin_inset Formula $0$
+\end_inset
+
+ and variance 
+\begin_inset Formula $1$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+The distribution of the random variable 
+\begin_inset Formula $X$
+\end_inset
+
+ is very far from being normal.
+ However, we will see that summing many random variables with same distribution
+ as 
+\begin_inset Formula $X$
+\end_inset
+
+ gives the normal distribution.
+ 
+\end_layout
+
+\begin_layout Standard
+Let 
+\begin_inset Formula $X_{1},\ldots,X_{n}$
+\end_inset
+
+ be a sequence of independent random variables each of which, like 
+\begin_inset Formula $X$
+\end_inset
+
+, is equally likely to be 
+\begin_inset Formula $+1$
+\end_inset
+
+ or 
+\begin_inset Formula $-1$
+\end_inset
+
+.
+ Consider the sum 
+\begin_inset Formula 
+\[
+S_{n}=X_{1}+\cdots+X_{n}.
+\]
+
+\end_inset
+
+ We begin by calculating the mean and variance of 
+\begin_inset Formula $S_{n}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+We have 
+\begin_inset Formula 
+\[
+\mathbb{E}S_{n}=\mathbb{E}X_{1}+\cdots+\mathbb{E}X_{n}=0.
+\]
+
+\end_inset
+
+The variance calculation is similar.
+\begin_inset Formula 
+\begin{eqnarray*}
+\mathbb{E}S_{n}^{2} & = & \mathbb{E}\left(X_{1}+\cdots+X_{n}\right)^{2}\\
+ & = & \sum_{i=1}^{n}\mathbb{E}X_{i}^{2}+2\sum_{1\leq i<j<n}\mathbb{E}X_{i}X_{j}\\
+ & = & \sum_{i=1}^{n}\mathbb{E}X_{i}^{2}+2\sum_{1\leq i<j\leq n}\mathbb{E}X_{i}\,\mathbb{E}X_{j}\\
+ & = & n.
+\end{eqnarray*}
+
+\end_inset
+
+The third equality above is justified because the 
+\begin_inset Formula $X_{i}$
+\end_inset
+
+ are independent.
+ The final equality follows from 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:clt-X-mean"
+
+\end_inset
+
+ and 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:clt-X-variance"
+
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+So the sum 
+\begin_inset Formula $S_{n}$
+\end_inset
+
+ has mean 
+\begin_inset Formula $0$
+\end_inset
+
+, variance 
+\begin_inset Formula $n$
+\end_inset
+
+, and standard deviation 
+\begin_inset Formula $\sqrt{n}$
+\end_inset
+
+.
+ The standard deviation is a measure of the order of fluctuations.
+ If 
+\begin_inset Formula $n$
+\end_inset
+
+ independent and identical random variables are added, the standard deviation
+ of their sum grows only like 
+\begin_inset Formula $\sqrt{n}$
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+The random variable 
+\begin_inset Formula $S_{n}/\sqrt{n}$
+\end_inset
+
+ has mean 
+\begin_inset Formula $0$
+\end_inset
+
+ and variance 
+\begin_inset Formula $1$
+\end_inset
+
+.
+ It converges in distribution to the normal law.
+\end_layout
+
+\begin_layout Theorem
+\begin_inset Formula $\lim_{n\rightarrow\infty}\mathbb{P}\left(a\leq\frac{S_{n}}{\sqrt{n}}\leq b\right)=\frac{1}{\sqrt{2\pi}}\int_{a}^{b}\exp(-x^{2}/2)\: dx.$
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "thm:clt-clt"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+This central limit theorem makes precise the notion that the order of fluctuatio
+ns of 
+\begin_inset Formula $S_{n}$
+\end_inset
+
+ is the same as its standard deviation.
+\end_layout
+
+\begin_layout Subsection
+Calculation of 
+\begin_inset Formula $\mathbb{E}\exp\left(tX\right)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Let 
+\begin_inset Formula $t$
+\end_inset
+
+ be any number real or complex.
+ We define the random variable 
+\begin_inset Formula $\exp(tX)$
+\end_inset
+
+ using the series expansion:
+\begin_inset Formula 
+\[
+\exp(tX)=1+tX+\frac{t^{2}X^{2}}{2!}+\frac{t^{3}X^{3}}{3!}+\cdots
+\]
+
+\end_inset
+
+Here 
+\begin_inset Formula $t$
+\end_inset
+
+ may be any real or complex number.
+\end_layout
+
+\begin_layout Standard
+Since 
+\begin_inset Formula $\mathbb{P}(X=1)=\mathbb{P}(X=-1)=1/2$
+\end_inset
+
+, we have 
+\begin_inset Formula 
+\[
+\mathbb{E}X^{n}=\begin{cases}
+0 & \quad\text{if \ensuremath{n} is odd}\\
+1 & \quad\text{if \ensuremath{n} is even.}
+\end{cases}
+\]
+
+\end_inset
+
+Therefore 
+\begin_inset Formula 
+\begin{eqnarray*}
+\mathbb{E}\exp(tX) & = & 1+\frac{t^{2}}{2!}+\frac{t^{4}}{4!}+\frac{t^{6}}{6!}+\cdots\\
+ & = & \cos(it).
+\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Description
+Exercise: Use the power series of 
+\begin_inset Formula $\cos x$
+\end_inset
+
+ to prove that 
+\begin_inset Formula 
+\[
+\cos it=1+\sum_{n=1}^{\infty}\frac{t^{2n}}{2n!}.
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+This calculation of the expectation
+\begin_inset Formula $\mathbb{E}\exp(tX)$
+\end_inset
+
+ is the basis of our proof of the central limit theorem.
+\end_layout
+
+\begin_layout Subsection
+Calculation of 
+\begin_inset Formula $\mathbb{E}\exp(S_{n}/\sqrt{n})$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Next we turn to the calculation of the expectation of the random variable
+ 
+\begin_inset Formula 
+\[
+\frac{S_{n}}{\sqrt{n}}=\frac{X_{1}+\cdots+X_{n}}{\sqrt{n}}.
+\]
+
+\end_inset
+
+When we see a sum like this it appears strange to divide by 
+\begin_inset Formula $\sqrt{n}$
+\end_inset
+
+ instead of by 
+\begin_inset Formula $n$
+\end_inset
+
+.
+ Of course, division by 
+\begin_inset Formula $\sqrt{n}$
+\end_inset
+
+ is justified by the variance calculation of 
+\begin_inset Formula $S_{n}$
+\end_inset
+
+ and normalizing the variance to 
+\begin_inset Formula $1$
+\end_inset
+
+ is key to the central limit theorem.
+\end_layout
+
+\begin_layout Standard
+Since the 
+\begin_inset Formula $X_{i}$
+\end_inset
+
+ are independent, we have 
+\begin_inset Formula 
+\begin{eqnarray*}
+\mathbb{E}\exp\left(\frac{S_{n}}{\sqrt{n}}\right) & = & \mathbb{E}\exp\left(\frac{X_{1}}{\sqrt{n}}\right).\exp\left(\frac{X_{2}}{\sqrt{n}}\right)\ldots\exp\left(\frac{X_{n}}{\sqrt{n}}\right)\\
+ & = & \mathbb{E}\exp\left(\frac{X_{1}}{\sqrt{n}}\right).\mathbb{E}\exp\left(\frac{X_{2}}{\sqrt{n}}\right)\ldots\mathbb{E}\exp\left(\frac{X_{n}}{\sqrt{n}}\right)\\
+ & = & \left(\cos\left(\frac{it}{\sqrt{n}}\right)\right)^{n}
+\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Towards the central limit theorem
+\end_layout
+
+\begin_layout Standard
+Let 
+\begin_inset Formula $\mathcal{N}$
+\end_inset
+
+ be the normal variable with mean 
+\begin_inset Formula $0$
+\end_inset
+
+ and variance 
+\begin_inset Formula $1$
+\end_inset
+
+ (the standard normal distribution).
+ Then 
+\begin_inset Formula 
+\begin{eqnarray*}
+\mathbb{E}\exp(t\mathcal{N}) & = & \frac{1}{2\sqrt{\pi}}\int_{-\infty}^{\infty}\mathbb{e}^{tx}\mathbb{e}^{-x^{2}/2}\, dx\\
+ & = & \frac{\mathbb{e}^{t^{2}/2}}{\sqrt{2\pi}}\int_{-\infty}^{\infty}\mathbb{e}^{-(x-t)^{2}/2}\, dx\\
+ & = & \exp(t^{2}/2)\quad\text{after the substitution \ensuremath{u=x-t}}.
+\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Theorem
+\begin_inset Formula $\lim_{n\rightarrow\infty}\mathbb{E}\exp(S_{n}/\sqrt{n})=\exp(t^{2}/2)$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Proof
+We need to show that 
+\begin_inset Formula 
+\[
+\lim_{n\rightarrow\infty}\left(\cos\left(\frac{it}{\sqrt{n}}\right)\right)^{n}=\exp(t^{2}/2).
+\]
+
+\end_inset
+
+This limit may be evaluated by noting that 
+\begin_inset Formula $\cos(it/\sqrt{n})\approx1+t^{2}/n$
+\end_inset
+
+ for large 
+\begin_inset Formula $n$
+\end_inset
+
+ and then using 
+\begin_inset Formula 
+\begin{eqnarray*}
+\lim_{n\rightarrow\infty}\left(1+\frac{t^{2}}{n}\right)^{n} & = & \lim\left(\left(1+\frac{t^{2}}{n}\right)^{\frac{n}{t^{2}}}\right)^{t^{2}}\\
+ & = & \left(\lim_{x\rightarrow\infty}\left(1+\frac{1}{x}\right)^{x}\right)^{t^{2}}\\
+ & = & \mathbb{e}^{t^{2}/2}
+\end{eqnarray*}
+
+\end_inset
+
+The last limit with 
+\begin_inset Formula $x\rightarrow\infty$
+\end_inset
+
+ is one of the standard ways to define the number 
+\begin_inset Formula $\mathbb{e}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Proof
+Another proof would be to take the log and then use l'Hospital's rule.
+\end_layout
+
+\begin_layout Standard
+We are now almost on the cusp of completing the proof of the central limit
+ theorem 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "thm:clt-clt"
+
+\end_inset
+
+.
+ We know that 
+\begin_inset Formula 
+\[
+\lim_{n\rightarrow\infty}\mathbb{E}\exp\left(\frac{tS_{n}}{\sqrt{n}}\right)=\exp(t^{2}/2)=\mathbb{E}\exp(t\mathcal{N}),
+\]
+
+\end_inset
+
+where 
+\begin_inset Formula $\mathcal{N}$
+\end_inset
+
+ is a random variable of the standard normal distribution.
+ This is true for any 
+\begin_inset Formula $t$
+\end_inset
+
+ real or complex.
+\end_layout
+
+\begin_layout Standard
+To complete the proof we may let 
+\begin_inset Formula $t=i\omega$
+\end_inset
+
+ to be purely imaginary and then use the theory of Fourier transforms.
+ It is not right to sneak in a major idea like Fourier transforms in the
+ middle of some other discussion.
+ Therefore we leave out this part of the proof.
+ 
+\end_layout
+
+\begin_layout Description
+Exercise: Let 
+\begin_inset Formula $X$
+\end_inset
+
+ take the value 
+\begin_inset Formula $+1$
+\end_inset
+
+ with probability 
+\begin_inset Formula $p$
+\end_inset
+
+ and the value 
+\begin_inset Formula $-1$
+\end_inset
+
+ with probability 
+\begin_inset Formula $1-p$
+\end_inset
+
+.
+ Calculate the mean 
+\begin_inset Formula $\mu$
+\end_inset
+
+ and variance 
+\begin_inset Formula $\sigma^{2}$
+\end_inset
+
+ of 
+\begin_inset Formula $X$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Description
+Exercise: Let 
+\begin_inset Formula $X_{1},\ldots,X_{n}$
+\end_inset
+
+ be a sequence of independent random variables of the same distribution
+ as 
+\begin_inset Formula $X$
+\end_inset
+
+ in the previous exercise.
+ Let 
+\begin_inset Formula $S_{n}=X_{1}+\cdots+X_{n}$
+\end_inset
+
+.
+ Prove that 
+\begin_inset Formula 
+\[
+\lim_{n\rightarrow\infty}\mathbb{E}\exp t\left(\frac{S_{n}-n\mu}{\sqrt{n}\sigma}\right)=\exp(t^{2}/2).
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+The Kalman filter
 \end_layout
 
 \end_body
