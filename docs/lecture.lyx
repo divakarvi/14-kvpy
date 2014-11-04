@@ -115,7 +115,7 @@ Introduction: random variables, mean, and variance
 
 \begin_layout Standard
 In this lecture, we will introduce the normal distribution, which is one
- of the of great ideas in mathematics.
+ of the great ideas in mathematics.
  Its applicability is very wide, touching every area of the sciences.
  In addition, there are mathematical questions related to it that are still
  a subject of active research.
@@ -131,7 +131,7 @@ To gain an understanding of the normal distribution, we will begin with
 \end_layout
 
 \begin_layout Standard
-Our next step is to deduce a very special case of the Kalman filter.
+Our next aim is to deduce a very special case of the Kalman filter.
  The Kalman filter is undoubtedly one of the most consequential ideas in
  applied mathematics.
  Its applications are profound.
@@ -157,7 +157,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename ../python/heights.pdf
+	filename ../figs-python/heights.pdf
 	scale 50
 
 \end_inset
@@ -207,7 +207,7 @@ reference "fig:intro-heights-normal-law"
  The figure has two items in it.
  The first item is a histogram.
  The heights of 1078 fathers (as well as their sons, but we ignore the sons)
- was recorded by the eminent statistician Karl Pearson.
+ were recorded by the eminent statistician Karl Pearson.
  The minimum recorded height was 
 \begin_inset Formula $59$
 \end_inset
@@ -339,8 +339,8 @@ Certain random variables are discrete.
 \end_layout
 
 \begin_layout Standard
-Certain other random variables may be specified in terms of a probability
- density function 
+Certain other random variables may be specified in terms of a continuous
+ probability density function 
 \begin_inset Formula $p(x)$
 \end_inset
 
@@ -699,15 +699,6 @@ Exercise: If
 \end_inset
 
  are independent random variables and may be represented using a density
- function, If 
-\begin_inset Formula $X$
-\end_inset
-
- and 
-\begin_inset Formula $Y$
-\end_inset
-
- are independent random variables and may be represented using a density
  function, as above, and 
 \begin_inset Formula $f$
 \end_inset
@@ -728,16 +719,7 @@ You may assume that all functions that arise in the calculation are integrable.
 \end_layout
 
 \begin_layout Subsection
-Variance and standard deviation 
-\begin_inset Formula $X$
-\end_inset
-
- and 
-\begin_inset Formula $Y$
-\end_inset
-
- are independent random variables and may be represented using a density
- function
+Variance and standard deviation
 \end_layout
 
 \begin_layout Standard
@@ -908,7 +890,7 @@ reference "eq:intro-normal-mu-sigma"
 \begin_inset Formula $\pm\infty$
 \end_inset
 
-.
+).
  Prove that its mean is 
 \begin_inset Formula $\mu$
 \end_inset
@@ -1009,8 +991,8 @@ independent
  random variables.
  There are many, many examples where the sum of dependent random variables
  is known to converge to the normal distribution.
- Nevertheless the basic example we tackle assumes that random variables
- that are summed to be independent.
+ Nevertheless the basic example we tackle assumes the random variables that
+ are summed to be independent.
 \end_layout
 
 \begin_layout Subsection
@@ -1263,14 +1245,10 @@ Since
 \end_inset
 
 , we have 
-\begin_inset Formula 
-\[
-\mathbb{E}X^{n}=\begin{cases}
-0 & \quad\text{if \ensuremath{n} is odd}\\
-1 & \quad\text{if \ensuremath{n} is even.}
-\end{cases}
-\]
-
+\begin_inset Formula $\mathbb{E}X^{n}=\begin{cases}
+0 & \quad\text{if \ensuremath{n}is odd}\\
+1 & \quad\text{if \ensuremath{n}is even.}
+\end{cases}$
 \end_inset
 
 Therefore 
@@ -1302,7 +1280,7 @@ Exercise: Use the power series of
 \end_layout
 
 \begin_layout Standard
-This calculation of the expectation
+This calculation of the expectation 
 \begin_inset Formula $\mathbb{E}\exp(tX)$
 \end_inset
 
@@ -1485,7 +1463,7 @@ To complete the proof we may let
 \end_inset
 
  to be purely imaginary and then use the theory of Fourier transforms.
- It is not right to sneak in a major idea like Fourier transforms in the
+ It is not good to sneak in a major idea like Fourier transforms in the
  middle of some other discussion.
  Therefore we leave out this part of the proof.
  
@@ -1557,6 +1535,735 @@ Exercise: Let
 
 \begin_layout Section
 The Kalman filter
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../figs-python/signal.pdf
+	scale 40
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../figs-python/xest.pdf
+	scale 40
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../figs-python/yest.pdf
+	scale 40
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+In part (a), 
+\begin_inset Formula $x$
+\end_inset
+
+ and 
+\begin_inset Formula $y$
+\end_inset
+
+ are the true signals and 
+\begin_inset Formula $z$
+\end_inset
+
+ is a noisy observation of 
+\begin_inset Formula $y$
+\end_inset
+
+.
+ The error in 
+\begin_inset Formula $z$
+\end_inset
+
+ can be considerable, as evident from the plots.
+ Parts (b) and (c) show the signal as estimated from the noisy observations
+ 
+\begin_inset Formula $z$
+\end_inset
+
+ using a Kalman filter.
+ The estimates match the true signal much better.
+ 
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Kalman"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+What is the Kalman filter? Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Kalman"
+
+\end_inset
+
+ will help us answer that question.
+\end_layout
+
+\begin_layout Standard
+To begin with there is dynamics.
+ If the current state is 
+\begin_inset Formula $(x_{n},y_{n})$
+\end_inset
+
+ the state at 
+\begin_inset Formula $n+1$
+\end_inset
+
+ is 
+\begin_inset Formula 
+\begin{eqnarray}
+x_{n+1} & = & \frac{x_{n}}{\sqrt{2}}-\frac{y_{n}}{\sqrt{2}}\nonumber \\
+y_{n+1} & = & \frac{x_{n}}{\sqrt{2}}+\frac{y_{n}}{\sqrt{2}}\label{eq:kalman-dynamics}
+\end{eqnarray}
+
+\end_inset
+
+If the state 
+\begin_inset Formula $x_{n},y_{n}$
+\end_inset
+
+ is interpreted as a point in the plane, at every step it gets rotated by
+ 
+\begin_inset Formula $45^{0}$
+\end_inset
+
+ in the counter-clockwise sense.
+\end_layout
+
+\begin_layout Standard
+The dynamics here is exceedingly simple.
+ However, for motivation, we may think of it as a physical model of the
+ motion of a rocket.
+ The real equations in that situation will be more complicated.
+ However, the simplification is still good enough to help us understand
+ the most import idea behind the Kalman filter.
+\end_layout
+
+\begin_layout Standard
+Now if a rocket is shooting through space, we may not be able to get accurate
+ measurement of its position.
+ Here we assume that the observable is 
+\begin_inset Formula $z_{n}$
+\end_inset
+
+ which is given by 
+\begin_inset Formula 
+\begin{equation}
+z_{n}=x_{n}+\text{Gaussian noise of mean \ensuremath{0}and variance \ensuremath{\sigma^{2}}}.\label{eq:kalman-zn}
+\end{equation}
+
+\end_inset
+
+Note that normally distributed random variables are also said to be Gaussian.
+ Now the problem is to reconstruct the state of the rocket using a sequence
+ of noisy observations:
+\begin_inset Formula 
+\[
+z_{1},z_{2},z_{3},\ldots
+\]
+
+\end_inset
+
+We have knowledge of the exact dynamical equations 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:kalman-dynamics"
+
+\end_inset
+
+ but cannot observe 
+\begin_inset Formula $x_{n}$
+\end_inset
+
+ and 
+\begin_inset Formula $y_{n}$
+\end_inset
+
+.
+ All that we may observe is 
+\begin_inset Formula $z_{n}$
+\end_inset
+
+ which is 
+\begin_inset Formula $y_{n}+\text{noise}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+This problem is not so easy.
+ Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Kalman"
+
+\end_inset
+
+(a) shows 
+\begin_inset Formula $x,y,z$
+\end_inset
+
+ as a function of 
+\begin_inset Formula $n$
+\end_inset
+
+ with 
+\begin_inset Formula $\sigma=2.0$
+\end_inset
+
+.
+ The standard deviation is substantial and it is hard to tell from the figure
+ if 
+\begin_inset Formula $z_{n}$
+\end_inset
+
+ is approximating 
+\begin_inset Formula $y_{n}$
+\end_inset
+
+ or 
+\begin_inset Formula $x_{n}$
+\end_inset
+
+.
+ Whatever it is approximating, the approximation is very noisy.
+\end_layout
+
+\begin_layout Standard
+The estimated signals in parts (b) and (c) of the same figure are much more
+ accurate.
+ The estimates are certainly tracking the signal.
+ That is the magic of the Kalman filter.
+ In spite of the fact, that the observations are noisy, the filter manages
+ to reconstruct the current state with reasonable accuracy.
+\end_layout
+
+\begin_layout Subsection
+Current state according to Kalman
+\end_layout
+
+\begin_layout Standard
+At step 
+\begin_inset Formula $n$
+\end_inset
+
+, the Kalman filter does not really know for sure where the rocket is.
+ It thinks of the current state as a pair of random variables 
+\begin_inset Formula $X_{n},Y_{n}$
+\end_inset
+
+ with the probability density function being 
+\begin_inset Formula 
+\begin{equation}
+\frac{\sqrt{a_{n}c_{n}-b_{n}^{2}}}{\pi}\exp-\left(a_{n}\left(X_{n}-\mu_{n}\right)^{2}+2b_{n}\left(X_{n}-\mu_{n}\right)\left(Y_{n}-\nu_{n}\right)+c_{n}\left(Y_{n}-\nu_{n}\right)^{2}\right).\label{eq:kalman-xnyn-pdf}
+\end{equation}
+
+\end_inset
+
+For this density function to make sense, the exponent must be always negative.
+ The discriminant of the quadratic equation implies the conditions 
+\begin_inset Formula 
+\begin{eqnarray*}
+a_{n},c_{n} & > & 0\\
+a_{n}c_{n} & > & b_{n}^{2}.
+\end{eqnarray*}
+
+\end_inset
+
+We will always assume these conditions.
+\end_layout
+
+\begin_layout Description
+Exercise: Prove that the probability density function 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:kalman-xnyn-pdf"
+
+\end_inset
+
+ is correctly normalized.
+ To integrate it over 
+\begin_inset Formula $-\infty<X_{n},Y_{n}<\infty$
+\end_inset
+
+, you may start with the identity
+\begin_inset Formula 
+\[
+ax^{2}+2bxy+cz^{2}=a\left(x+\frac{by}{a}\right)^{2}+y^{2}\left(c-\frac{b^{2}}{a}\right).
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Description
+Exercise: Use symmetry to deduce that 
+\begin_inset Formula $\mathbb{E}X_{n}=\mu_{n}$
+\end_inset
+
+ and 
+\begin_inset Formula $\mathbb{E}Y_{n}=\nu_{n}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Description
+Exercise: For a greater challenge with handling integrals, prove that 
+\begin_inset Formula 
+\[
+\mathbb{E}\left(X_{n}-\mu_{n}\right)^{2}=\frac{a_{n}}{2\left(a_{n}c_{n}-b_{n}^{2}\right)}\quad\mathbb{E}\left(Y_{n}-\nu_{n}\right)^{2}=\frac{c_{n}}{2\left(a_{n}c_{n}-b_{n}^{2}\right)}.
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Thus the Kalman filter takes the expectation of the current position to
+ be 
+\begin_inset Formula $\mu_{n},\nu_{n}$
+\end_inset
+
+.
+ If the quantities
+\begin_inset Formula 
+\[
+\frac{a_{n}}{2\left(a_{n}c_{n}-b_{n}^{2}\right)},\:\frac{c_{n}}{2\left(a_{n}c_{n}-b_{n}^{2}\right)}
+\]
+
+\end_inset
+
+are tiny if means we have a lot of confidence that the current state is
+ near 
+\begin_inset Formula $\mu_{n},\nu_{n}$
+\end_inset
+
+.
+ That happens for example if 
+\begin_inset Formula $a_{n},c_{n}$
+\end_inset
+
+ are very large and 
+\begin_inset Formula $b_{n}$
+\end_inset
+
+ is much smaller in magnitude.
+ 
+\end_layout
+
+\begin_layout Subsection
+Updating from 
+\begin_inset Formula $X_{n},Y_{n}$
+\end_inset
+
+ to 
+\begin_inset Formula $X_{n+1},Y_{n+1}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The dynamical equations 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:kalman-dynamics"
+
+\end_inset
+
+ are used to update from time 
+\begin_inset Formula $n$
+\end_inset
+
+ to time 
+\begin_inset Formula $n+1$
+\end_inset
+
+.
+ Therefore the expectations of 
+\begin_inset Formula $X_{n+1},Y_{n+1}$
+\end_inset
+
+ are as follows:
+\begin_inset Formula 
+\begin{eqnarray*}
+\mathbb{E}X_{n+1} & = & \mu=\frac{\mu_{n}-\nu_{n}}{\sqrt{2}}\\
+\mathbb{E}Y_{n+1} & = & \nu=\frac{\mu_{n}+\nu_{n}}{\sqrt{2}}.
+\end{eqnarray*}
+
+\end_inset
+
+To update the probability density function to 
+\begin_inset Formula $n+1$
+\end_inset
+
+, we need only make the substitution
+\begin_inset Formula 
+\begin{eqnarray*}
+X_{n}-\mu_{n} & = & \frac{\left(X_{n+1}-\mu\right)+\left(Y_{n+1}-\nu\right)}{\sqrt{2}}\\
+Y_{n}-\nu_{n} & = & \frac{-\left(X_{n+1}-\mu\right)+\left(Y_{n+1}-\nu\right)}{\sqrt{2}}
+\end{eqnarray*}
+
+\end_inset
+
+in the probability density function 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:kalman-xnyn-pdf"
+
+\end_inset
+
+.
+ Notice that this transformation has determinant equal to 
+\begin_inset Formula $+1$
+\end_inset
+
+.
+ We get the probability density function to be 
+\begin_inset Formula 
+\begin{equation}
+\frac{\sqrt{ac-b^{2}}}{\pi}\exp-\left(a\left(X_{n+1}-\mu\right)^{2}+2b\left(X_{n+1}-\mu\right)\left(Y_{n+1}-\nu\right)+c\left(Y_{n+1}-\nu\right)^{2}\right).\label{eq:kalman-xn1yn1-pdf}
+\end{equation}
+
+\end_inset
+
+The quantities 
+\begin_inset Formula $\mu,\nu$
+\end_inset
+
+ were defined above.
+ From the substitution, we may deduce
+\begin_inset Formula 
+\begin{eqnarray*}
+a & = & \frac{a_{n}+c_{n}}{2}-b_{n}\\
+b & = & \frac{a_{n}-c_{n}}{2}\\
+c & = & \frac{a_{n}+c_{n}}{2}+b_{n}.
+\end{eqnarray*}
+
+\end_inset
+
+So from thinking of the state at time 
+\begin_inset Formula $n$
+\end_inset
+
+ using 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:kalman-xnyn-pdf"
+
+\end_inset
+
+, the Kalman filter moves to thinking of the state at time 
+\begin_inset Formula $n+1$
+\end_inset
+
+ using the probability density function 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:kalman-xn1yn1-pdf"
+
+\end_inset
+
+.
+ This step is actually fairly trivial.
+\end_layout
+
+\begin_layout Subsection
+Incorporating the observation 
+\begin_inset Formula $Z_{n+1}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Now comes the main idea in the Kalman filter.
+ Once we have the probability density function 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:kalman-xn1yn1-pdf"
+
+\end_inset
+
+, how do we update it to reflect the measurement 
+\begin_inset Formula $Z_{n+1}$
+\end_inset
+
+? The measurement 
+\begin_inset Formula $Z_{n+1}$
+\end_inset
+
+, though noisy, is our only knowledge of what is happening inside the system.
+ Therefore it is crucial to incorporate it correctly into our model.
+\end_layout
+
+\begin_layout Standard
+As Kalman pointed out in his 1960 paper, this is essentially a conditional
+ probability calculation.
+ We know that 
+\begin_inset Formula $Z_{n+1}=Y_{n+1}+\eta$
+\end_inset
+
+ where 
+\begin_inset Formula $\eta$
+\end_inset
+
+ is normally distributed with mean 
+\begin_inset Formula $0$
+\end_inset
+
+ and variance 
+\begin_inset Formula $\sigma^{2}$
+\end_inset
+
+.
+ So we may include 
+\begin_inset Formula $\eta$
+\end_inset
+
+ with 
+\begin_inset Formula $X_{n+1},Y_{n+1}$
+\end_inset
+
+ and write the joint density function as:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\frac{\sqrt{ac-b^{2}}}{\pi}\exp-\left(a\left(X_{n+1}-\mu\right)^{2}+2b\left(X_{n+1}-\mu\right)\left(Y_{n+1}-\nu\right)+c\left(Y_{n+1}-\nu\right)^{2}\right)\times\frac{\exp(-\eta^{2}/2\sigma^{2})}{\sqrt{2\pi}\sigma}.
+\]
+
+\end_inset
+
+Here we make the substitution 
+\begin_inset Formula $\eta=Z_{n+1}-Y_{n+1}$
+\end_inset
+
+to bring the observation 
+\begin_inset Formula $Z_{n+1}$
+\end_inset
+
+ into the picture.
+ We get 
+\begin_inset Formula 
+\begin{eqnarray*}
+\frac{\sqrt{ac-b^{2}}}{\pi}\exp-\left(a\left(X_{n+1}-\mu\right)^{2}+2b\left(X_{n+1}-\mu\right)\left(Y_{n+1}-\nu\right)+c\left(Y_{n+1}-\nu\right)^{2}\right)\\
+\times\frac{\exp(-\left(Z_{n+1}-Y_{n+1}\right)^{2}/2\sigma^{2})}{\sqrt{2\pi}\sigma}.
+\end{eqnarray*}
+
+\end_inset
+
+Now comes a calculation which involves rewriting 
+\begin_inset Formula 
+\[
+a\left(X_{n+1}-\mu\right)^{2}+2b\left(X_{n+1}-\mu\right)\left(Y_{n+1}-\nu\right)+c\left(Y_{n+1}-\nu\right)^{2}+\frac{\left(Z_{n+1}-Y_{n+1}\right)^{2}}{2\sigma^{2}}
+\]
+
+\end_inset
+
+as 
+\begin_inset Formula 
+\begin{eqnarray*}
+a_{n+1}\left(X_{n+1}-\mu_{n+1}\right)^{2}+2b_{n+1}\left(X_{n+1}-\mu_{n+1}\right)\left(Y_{n+1}-\nu_{n+1}\right)+c_{n+1}\left(Y_{n+1}-\nu_{n+1}\right)^{2}\\
++\text{something that depends upon \ensuremath{Z_{n+1}}but not \ensuremath{X_{n+1}}or \ensuremath{Y_{n+1}}.}
+\end{eqnarray*}
+
+\end_inset
+
+For those who are comfortable with algebra, this calculation should not
+ be hard.
+ Through this calculation we get that
+\begin_inset Formula 
+\begin{eqnarray*}
+a_{n+1} & = & a\\
+b_{n+1} & = & b\\
+c_{n+1} & = & c+\frac{1}{2\sigma^{2}}.
+\end{eqnarray*}
+
+\end_inset
+
+In addition, 
+\begin_inset Formula $\mu_{n+1}$
+\end_inset
+
+ and 
+\begin_inset Formula $\nu_{n+1}$
+\end_inset
+
+ are obtained by solving the equations 
+\begin_inset Formula 
+\begin{eqnarray*}
+-2a(\mu_{n+1}-\mu)-2b\left(\nu_{n+1}-\nu\right) & = & 0\\
+-2b\left(\mu_{n+1}-\mu\right)-2\left(c+\frac{1}{2\sigma^{2}}\right)\left(\nu_{n+1}-\nu\right) & = & -\frac{Z_{n+1}}{\sigma^{2}}.
+\end{eqnarray*}
+
+\end_inset
+
+Notice that observation 
+\begin_inset Formula $Z_{n+1}$
+\end_inset
+
+ is making us adjust the expected positions.
+ 
+\end_layout
+
+\begin_layout Standard
+At this point the filter equations are complete.
+ To go from time step 
+\begin_inset Formula $n+1$
+\end_inset
+
+ to time step 
+\begin_inset Formula $n+2$
+\end_inset
+
+, we repeat the same process.
+ To begin the filter, we have to make a random guess for 
+\begin_inset Formula $\mu_{0},\nu_{0}$
+\end_inset
+
+ as well as the parameters 
+\begin_inset Formula $a_{0},b_{0},c_{0}$
+\end_inset
+
+.
+ Thereafter the Kalman filter uses the observations to update the estimated
+ state at every step.
+\end_layout
+
+\begin_layout Standard
+In Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Kalman"
+
+\end_inset
+
+ (b) and (c), the estimates for 
+\begin_inset Formula $x_{n},y_{n}$
+\end_inset
+
+ that are graphed are the means 
+\begin_inset Formula $\mu_{n},\nu_{n}$
+\end_inset
+
+.
 \end_layout
 
 \end_body

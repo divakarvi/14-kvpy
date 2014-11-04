@@ -1,0 +1,1355 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<meta name="generator" content="http://www.nongnu.org/elyxer/"/>
+<meta name="create-date" content="2014-11-05"/>
+<link rel="stylesheet" href="lyx.css" type="text/css" media="all"/>
+<title>The Normal Distribution from Gauss to Kalman</title>
+</head>
+<body>
+<div id="globalWrapper">
+<h1 class="title">
+The Normal Distribution from Gauss to Kalman
+</h1>
+<h2 class="author">
+Divakar Viswanath
+</h2>
+<div class="Address">
+Department of Mathematics, University of Michigan
+</div>
+<h2 class="Date">
+November 2014
+</h2>
+<div class="fulltoc">
+<div class="tocheader">
+Table of Contents
+</div>
+<div class="tocindent">
+<div class="toc">
+<a class="Link" href="#toc-Section-1">Section 1: Introduction: random variables, mean, and variance</a>
+</div>
+<div class="tocindent">
+<div class="toc">
+<a class="Link" href="#toc-Subsection-1.1">Subsection 1.1: Random variables</a>
+</div>
+<div class="toc">
+<a class="Link" href="#toc-Subsection-1.2">Subsection 1.2: Mean or expectation</a>
+</div>
+<div class="toc">
+<a class="Link" href="#toc-Subsection-1.3">Subsection 1.3: Variance and standard deviation</a>
+</div>
+<div class="toc">
+<a class="Link" href="#toc-Subsection-1.4">Subsection 1.4: The normal distribution</a>
+</div>
+</div>
+<div class="toc">
+<a class="Link" href="#toc-Section-2">Section 2: A central limit theorem</a>
+</div>
+<div class="tocindent">
+<div class="toc">
+<a class="Link" href="#toc-Subsection-2.1">Subsection 2.1: Statement of the theorem</a>
+</div>
+<div class="toc">
+<a class="Link" href="#toc-Subsection-2.2">Subsection 2.2: Calculation of <span class="formula"></span></a>
+</div>
+<div class="toc">
+<a class="Link" href="#toc-Subsection-2.3">Subsection 2.3: Calculation of <span class="formula"></span></a>
+</div>
+<div class="toc">
+<a class="Link" href="#toc-Subsection-2.4">Subsection 2.4: Towards the central limit theorem</a>
+</div>
+</div>
+<div class="toc">
+<a class="Link" href="#toc-Section-3">Section 3: The Kalman filter</a>
+</div>
+<div class="tocindent">
+<div class="toc">
+<a class="Link" href="#toc-Subsection-3.1">Subsection 3.1: Current state according to Kalman</a>
+</div>
+<div class="toc">
+<a class="Link" href="#toc-Subsection-3.2">Subsection 3.2: Updating from <span class="formula"></span> to <span class="formula"></span></a>
+</div>
+<div class="toc">
+<a class="Link" href="#toc-Subsection-3.3">Subsection 3.3: Incorporating the observation <span class="formula"></span></a>
+</div>
+</div>
+</div>
+
+</div>
+<h1 class="Section">
+<a class="toc" name="toc-Section-1">1</a> Introduction: random variables, mean, and variance
+</h1>
+<div class="Unindented">
+In this lecture, we will introduce the normal distribution, which is one of the great ideas in mathematics. Its applicability is very wide, touching every area of the sciences. In addition, there are mathematical questions related to it that are still a subject of active research.
+</div>
+<div class="Indented">
+To gain an understanding of the normal distribution, we will begin with a simple example and rigorously deduce the central limit theorem for that example. The central limit theorem gives a partial explanation for why the normal distribution occurs in so many situations. 
+</div>
+<div class="Indented">
+Our next aim is to deduce a very special case of the Kalman filter. The Kalman filter is undoubtedly one of the most consequential ideas in applied mathematics. Its applications are profound. The cell phone in your pocket may have a Kalman filter. Although I have no direct knowledge, I am certain that India’s Mars mission Mangalyaan makes extensive use of Kalman filters. 
+</div>
+<div class="Indented">
+The Kalman filter is a method for the systematic estimation of means and variances. So we will begin by understanding random variables, means or expectations, and variances.
+</div>
+<div class="Indented">
+<div class="float">
+<a class="Label" name="fig:intro-heights-normal-law"> </a><div class="figure">
+<div class="center">
+<img class="embedded" src="figs-python/heights.png" alt="figure figs-python/heights.png" style="width: 288px; max-width: 576px; height: 216px; max-height: 432px;"/>
+
+</div>
+<div class="caption">
+Figure 1 Normal law fit to the height distribution of 1078 subjects (fathers) in Pearson’s data set.
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="Indented">
+Figure <a class="Reference" href="#fig:intro-heights-normal-law">1↑</a> provides some motivation for our study of the normal law as well as means and variances. The figure has two items in it. The first item is a histogram. The heights of 1078 fathers (as well as their sons, but we ignore the sons) were recorded by the eminent statistician Karl Pearson. The minimum recorded height was <span class="formula">59</span> inches (which is an inch short fo <span class="formula">5</span> feet) and the maximum was <span class="formula">75.4</span> inches (which is <span class="formula">3.4</span> inches above <span class="formula">6</span> feet). To obtain this histogram, this range of heights is divided into <span class="formula">15</span> bins so that every bin is approximately an inch. The vertical axis of the figure shows the number of persons in each bin.
+</div>
+<div class="Indented">
+The second item in Figure <a class="Reference" href="#fig:intro-heights-normal-law">1↑</a> is the normal fit to the heights data. As you can see the fit is good but not very accurate. The convergence to the normal law is quite slow, typically at the rate <span class="formula"><i>n</i><sup> − 1 ⁄ 2</sup></span> if the number of data points is <span class="formula"><i>n</i></span>. We will understand Figure <a class="Reference" href="#fig:intro-heights-normal-law">1↑</a> better as we progress in this lecture, but as far as I am aware there are still many things in it that are yet not understood.
+</div>
+<h2 class="Subsection">
+<a class="toc" name="toc-Subsection-1.1">1.1</a> Random variables
+</h2>
+<div class="Unindented">
+The random variable is a mathematical abstraction of phenomena that we cannot calculate perfectly. The complete definition of a random variable is a little complicated. The difficulties in defining a random variable are related to the difficulties in defining a set axiomatically. We will not go into those difficulties. Instead, we assume that the notion of a random variable <span class="formula"><i>X</i></span> is a given. That means that for any set <span class="formula"><i>A</i></span>, we know the probability <div class="formula">
+ℙ<span class="symbol">(</span><i>X</i> ∈ <i>A</i><span class="symbol">)</span>.
+</div>
+
+</div>
+<div class="Indented">
+Certain random variables are discrete. That means they take values in a finite set <span class="formula"><span class="symbol">{</span><i>a</i><sub>1</sub>, …, <i>a</i><sub><i>M</i></sub><span class="symbol">}</span></span> or a countable set. For example, <span class="formula"><i>X</i></span> may take only the two values <span class="formula">±1</span>. In that case if we give the probabilities <span class="formula">ℙ(1)</span> and <span class="formula">ℙ( − 1)</span> then we have specified the random variable completely. The probabilities must of course sum to <span class="formula">1</span>. 
+</div>
+<div class="Indented">
+Certain other random variables may be specified in terms of a continuous probability density function <span class="formula"><i>p</i>(<i>x</i>)</span>, where <span class="formula"><i>x</i> ∈ ℝ</span>. In this case,<tt><div class="formula">
+ℙ<span class="symbol">(</span><i>a</i> ≤ <i>X</i> ≤ <i>b</i><span class="symbol">)</span> = <span class="limits"><sup class="limit"><i>b</i></sup><span class="limit">⌠</span><span class="limit">⌡</span><sub class="limit"><i>a</i></sub></span><i>p</i>(<i>x</i>) <i>dx</i>.
+</div>
+</tt>We require the normalization condition <span class="formula"><span class="limits"><span class="limit">∫</span></span><span class="scripts"><sup class="script">∞</sup><sub class="script"> − ∞</sub></span><i>p</i>(<i>x</i>) <i>dx</i> = 0</span>. 
+</div>
+<div class="Indented">
+Notice that discrete random variables cannot be represented using densities. That problem can be dealt with fairly easily by passing to the Stieltjes integral, which is the next step from the Riemann integral. One can make up examples of random variables that cannot be represented using the Stieltjes integral. Modern definitions of random variables rely upon the Lebesgue theory and its extensions.
+</div>
+<div class="Indented">
+The probability density function <span class="formula"><i>p</i>(<i>x</i>, <i>y</i>)</span> represents two random variables <span class="formula"><i>X</i>, <i>Y</i></span> simultaneously. It is assumed to be continuous. We have <div class="formula">
+<span class="environment"><span class="arrayrow">
+<span class="arraycell align-r">
+ℙ<span class="symbol">(</span><i>a</i> ≤ <i>X</i> ≤ <i>b</i>,  <i>c</i> ≤ <i>Y</i> ≤ <i>d</i><span class="symbol">)</span>
+</span>
+<span class="arraycell align-c">
+ = 
+</span>
+<span class="arraycell align-l">
+<span class="limits"><sup class="limit"><i>d</i></sup><span class="limit">⌠</span><span class="limit">⌡</span><sub class="limit"><i>c</i></sub></span><span class="limits"><sup class="limit"><i>b</i></sup><span class="limit">⌠</span><span class="limit">⌡</span><sub class="limit"><i>a</i></sub></span><i>p</i>(<i>x</i>, <i>y</i>) <i>dx</i> <i>dy</i>
+</span>
+
+</span>
+<span class="arrayrow">
+<span class="arraycell align-r">
+ 
+</span>
+<span class="arraycell align-c">
+ 
+</span>
+<span class="arraycell align-l">
+ 
+</span>
+
+</span>
+<span class="arrayrow">
+<span class="arraycell align-r">
+ℙ<span class="symbol">(</span><i>a</i> ≤ <i>X</i> ≤ <i>b</i><span class="symbol">)</span>
+</span>
+<span class="arraycell align-c">
+ = 
+</span>
+<span class="arraycell align-l">
+<span class="limits"><sup class="limit">∞</sup><span class="limit">⌠</span><span class="limit">⌡</span><sub class="limit"> − ∞</sub></span><span class="limits"><sup class="limit"><i>b</i></sup><span class="limit">⌠</span><span class="limit">⌡</span><sub class="limit"><i>a</i></sub></span><i>p</i>(<i>x</i>, <i>y</i>) <i>dx</i> <i>dy</i>
+</span>
+
+</span>
+<span class="arrayrow">
+<span class="arraycell align-r">
+ 
+</span>
+<span class="arraycell align-c">
+ 
+</span>
+<span class="arraycell align-l">
+ 
+</span>
+
+</span>
+<span class="arrayrow">
+<span class="arraycell align-r">
+ℙ<span class="symbol">(</span><i>c</i> ≤ <i>Y</i> ≤ <i>c</i><span class="symbol">)</span>
+</span>
+<span class="arraycell align-c">
+ = 
+</span>
+<span class="arraycell align-l">
+<span class="limits"><sup class="limit"><i>d</i></sup><span class="limit">⌠</span><span class="limit">⌡</span><sub class="limit"><i>c</i></sub></span><span class="limits"><sup class="limit">∞</sup><span class="limit">⌠</span><span class="limit">⌡</span><sub class="limit"> − ∞</sub></span><i>p</i>(<i>x</i>, <i>y</i>) <i>dx</i> <i>dy</i>.
+</span>
+
+</span>
+</span>
+</div>
+The normalization condition here is that <span class="formula"><span class="limits"><span class="limit">∫</span></span><span class="scripts"><sup class="script">∞</sup><sub class="script"> − ∞</sub></span><span class="limits"><span class="limit">∫</span></span><span class="scripts"><sup class="script">∞</sup><sub class="script"> − ∞</sub></span><i>p</i>(<i>x</i>, <i>y</i>) <i>dx</i> <i>dy</i> = 1</span>. We can obtain the density functions of <span class="formula"><i>X</i></span> and <span class="formula"><i>Y</i></span> as<div class="formula">
+<span class="environment"><span class="arrayrow">
+<span class="arraycell align-r">
+<i>p</i><sub><i>X</i></sub>(<i>x</i>)
+</span>
+<span class="arraycell align-c">
+ = 
+</span>
+<span class="arraycell align-l">
+<span class="limits"><sup class="limit">∞</sup><span class="limit">⌠</span><span class="limit">⌡</span><sub class="limit"> − ∞</sub></span><i>p</i>(<i>x</i>, <i>y</i>) <i>dy</i>
+</span>
+
+</span>
+<span class="arrayrow">
+<span class="arraycell align-r">
+ 
+</span>
+<span class="arraycell align-c">
+ 
+</span>
+<span class="arraycell align-l">
+ 
+</span>
+
+</span>
+<span class="arrayrow">
+<span class="arraycell align-r">
+<i>p</i><sub><i>Y</i></sub>(<i>y</i>)
+</span>
+<span class="arraycell align-c">
+ = 
+</span>
+<span class="arraycell align-l">
+<span class="limits"><sup class="limit">∞</sup><span class="limit">⌠</span><span class="limit">⌡</span><sub class="limit"> − ∞</sub></span><i>p</i>(<i>x</i>, <i>y</i>) <i>dx</i>.
+</span>
+
+</span>
+</span>
+</div>
+In the same manner, we can consider joint density functions for any finite number of random variables. 
+</div>
+<div class="Indented">
+The joint density function holds information about how the random variables are related to each other. If much of the mass of the density function <span class="formula"><i>p</i>(<i>x</i>, <i>y</i>)</span> is concentrated near the diagonal <span class="formula"><i>x</i> = <i>y</i></span>, then the random variables <span class="formula"><i>X</i></span> and <span class="formula"><i>Y</i></span> are highly correlated and take nearly the same value much of the time.
+</div>
+<div class="Indented">
+<i>Independence </i>is one of the key concepts. The random variables <span class="formula"><i>X</i></span> and <span class="formula"><i>Y</i></span> are independent if <div class="formula">
+ℙ<span class="symbol">(</span><i>X</i> ∈ <i>A</i> <span class="text">and</span> <i>Y</i> ∈ <i>B</i><span class="symbol">)</span> = ℙ<span class="symbol">(</span><i>x</i> ∈ <i>A</i><span class="symbol">)</span>ℙ<span class="symbol">(</span><i>y</i> ∈ <i>B</i><span class="symbol">)</span>, 
+</div>
+where <span class="formula"><i>A</i></span> and <span class="formula"><i>B</i></span> are any two sets. Similarly, <span class="formula"><i>X</i><sub>1</sub>, …, <i>X</i><sub><i>n</i></sub></span> are an independent sequence of random variables if <div class="formula">
+ℙ<span class="symbol">(</span><i>X</i><sub>1</sub> ∈ <i>A</i><sub>1</sub>, …, <i>X</i><sub><i>n</i></sub> ∈ <i>A</i><sub><i>n</i></sub><span class="symbol">)</span> = <span class="limits"><sup class="limit"><i>n</i></sup><span class="limit">∏</span><sub class="limit"><i>i</i> = 1</sub></span>ℙ<span class="symbol">(</span><i>X</i><sub><i>i</i></sub> ∈ <i>A</i><sub><i>i</i></sub><span class="symbol">)</span>.
+</div>
+The random variables represented by the density function <span class="formula"><i>p</i><span class="symbol">(</span><i>x</i><sub>1</sub>, …, <i>x</i><sub><i>n</i></sub><span class="symbol">)</span></span> are independent if <span class="formula"><i>p</i><span class="symbol">(</span><i>x</i><sub>1</sub>, …, <i>x</i><sub><i>n</i></sub><span class="symbol">)</span> = <i>p</i><sub>1</sub><span class="symbol">(</span><i>x</i><sub>1</sub><span class="symbol">)</span><i>p</i><sub>2</sub><span class="symbol">(</span><i>x</i><sub>2</sub><span class="symbol">)</span>…<i>p</i><sub><i>n</i></sub><span class="symbol">(</span><i>x</i><sub><i>n</i></sub><span class="symbol">)</span></span>. They are independent and identically distributed if <div class="formula">
+<i>p</i><span class="symbol">(</span><i>x</i><sub>1</sub>, …, <i>x</i><sub><i>n</i></sub><span class="symbol">)</span> = <i>p</i>(<i>x</i><sub>1</sub>)<i>p</i>(<i>x</i><sub>2</sub>)…<i>p</i>(<i>x</i><sub><i>n</i></sub>).
+</div>
+The definition of independence extends to discrete random variables as well.
+</div>
+<h2 class="Subsection">
+<a class="toc" name="toc-Subsection-1.2">1.2</a> Mean or expectation
+</h2>
+<div class="Unindented">
+If <span class="formula"><i>X</i></span> is a discrete random variable that takes the values <span class="formula"><i>a</i><sub>1</sub>, …, <i>a</i><sub><i>M</i></sub></span> with probabilities <span class="formula"><i>p</i><sub>1</sub>, …, <i>p</i><sub><i>M</i></sub></span>, respectively, then its mean is given by <div class="formula">
+<span class="fraction"><span class="ignored">(</span><span class="numerator"><i>p</i><sub>1</sub><i>a</i><sub>1</sub> + ⋯ + <i>p</i><sub><i>M</i></sub><i>a</i><sub><i>M</i></sub></span><span class="ignored">)/(</span><span class="denominator"><i>M</i></span><span class="ignored">)</span></span>.
+</div>
+In the mathematical literature, the mean is called expectation or expected value and denoted <span class="formula">𝔼<i>X</i></span>. If the random variable is represented using the density function <span class="formula"><i>p</i>(<i>x</i>)</span>, then we have <div class="formula">
+𝔼<i>X</i> = <span class="limits"><sup class="limit">∞</sup><span class="limit">⌠</span><span class="limit">⌡</span><sub class="limit"> − ∞</sub></span><i>xp</i>(<i>x</i>) <i>dx</i>.
+</div>
+If <span class="formula"><i>f</i>(⋅)</span> is a suitable function, then we have <span class="formula">𝔼<i>f</i>(<i>X</i>) = <span class="limits"><span class="limit">∫</span></span><span class="scripts"><sup class="script">∞</sup><sub class="script"> − ∞</sub></span><i>f</i>(<i>x</i>) <i>p</i>(<i>x</i>) <i>dx</i>.</span>
+</div>
+<div class="Indented">
+If <span class="formula"><i>X</i><sub>1</sub>, …, <i>X</i><sub><i>n</i></sub></span> are a sequence of random variables then we may prove that <div class="formula">
+𝔼<span class="symbol">(</span><i>X</i><sub>1</sub> + ⋯ + <i>X</i><sub><i>n</i></sub><span class="symbol">)</span> = 𝔼<i>X</i><sub>1</sub> + ⋯ + 𝔼<i>X</i><sub><i>n</i></sub>.
+</div>
+The proof does not assume that the <span class="formula"><i>X</i><sub><i>i</i></sub></span> are independent.
+</div>
+<div class="Description">
+<span class="Description-entry">Exercise:</span> Prove the above identity assuming the random variables <span class="formula"><i>X</i><sub>1</sub>, …, <i>X</i><sub><i>n</i></sub></span> to be represented by the density function <span class="formula"><i>p</i><span class="symbol">(</span><i>x</i><sub>1</sub>, …, <i>x</i><sub><i>n</i></sub><span class="symbol">)</span></span>.
+</div>
+<div class="Description">
+<span class="Description-entry">Exercise:</span> Let <span class="formula"><i>π</i><sub>1</sub>, …, <i>π</i><sub><i>n</i></sub></span> be a random permutation of the numbers <span class="formula">1, …, <i>n</i></span> which is equally likely to be any one of the <span class="formula"><i>n</i>!</span> possible permutations. We say that the permutation has a descent at the position <span class="formula"><i>i</i></span> if and only if <span class="formula"><i>π</i><sub><i>i</i></sub> &gt; <i>π</i><sub><i>i</i> + 1</sub></span>. A permutation may have <span class="formula"><i>d</i></span> descents with <span class="formula">0 ≤ <i>d</i> ≤ <i>n</i> − 1.</span>
+</div>
+<ul>
+<li class="nested">
+<ul>
+<li>
+Find the permutation with <span class="formula">0</span> descents. 
+</li>
+<li>
+Find the permutation with <span class="formula"><i>n</i> − 1</span> descents.
+</li>
+<li>
+Prove that the expected number of descents is <span class="formula">(<i>n</i> − 1) ⁄ 2</span>.
+</li>
+
+</ul>
+<div class="--Separator--">
+
+</div>
+
+</li>
+
+</ul>
+<div class="Description">
+<span class="Description-entry">Exercise:</span> Give an example of a random variable whose expectation is <span class="formula">∞</span>. Give an example of a random variable whose expectation does not exist.
+</div>
+<div class="Description">
+<span class="Description-entry">Exercise:</span> If <span class="formula"><i>X</i></span> and <span class="formula"><i>Y</i></span> are independent random variables and may be represented using a density function, prove that <span class="formula">𝔼<i>XY</i> = 𝔼<i>X</i> 𝔼<i>Y</i>.</span>
+</div>
+<div class="Description">
+<span class="Description-entry">Exercise:</span> If <span class="formula"><i>X</i></span> and <span class="formula"><i>Y</i></span> are independent random variables and may be represented using a density function, as above, and <span class="formula"><i>f</i></span> and <span class="formula"><i>g</i></span> are any continuous functions prove that <div class="formula">
+𝔼<i>f</i>(<i>X</i>)<i>g</i>(<i>Y</i>) = 𝔼<i>f</i>(<i>x</i>) 𝔼<i>g</i>(<i>Y</i>).
+</div>
+You may assume that all functions that arise in the calculation are integrable.
+</div>
+<h2 class="Subsection">
+<a class="toc" name="toc-Subsection-1.3">1.3</a> Variance and standard deviation
+</h2>
+<div class="Unindented">
+If we know only the mean of a random variable, we know practically nothing about it. If we know its mean and its standard deviation, we have a great deal of information, as we will soon understand. What then is standard deviation?
+</div>
+<div class="Indented">
+The standard deviation, or the variance which is the square of the standard deviation, quantifies the typical size of fluctuations. If <span class="formula">𝔼<i>X</i> = <i>μ</i></span>, then the variance <span class="formula"><i>σ</i><sup>2</sup></span> of <span class="formula"><i>X</i></span> is defined as <div class="formula">
+<i>σ</i><sup>2</sup> = 𝔼<span class="symbol">(</span><i>X</i> − <i>μ</i><span class="symbol">)</span><sup>2</sup>.
+</div>
+The standard deviation is <span class="formula"><i>σ</i></span>. It is often called the root-mean-square value since it is given by <span class="formula"><span class="sqrt"><span class="radical">√</span><span class="ignored">(</span><span class="root">𝔼<span class="symbol">(</span><i>X</i> − <i>μ</i><span class="symbol">)</span><sup>2</sup></span><span class="ignored">)</span></span></span>. 
+</div>
+<div class="Description">
+<span class="Description-entry">Exercise:</span> Prove that <span class="formula"><i>σ</i><sup>2</sup> = 𝔼<i>X</i><sup>2</sup> − <span class="symbol">(</span>𝔼<i>X</i><span class="symbol">)</span><sup>2</sup></span>. 
+</div>
+<div class="Description">
+<span class="Description-entry">Exercise:</span> Give an example of a variable whose mean is finite and standard deviation infinite.
+</div>
+<h2 class="Subsection">
+<a class="toc" name="toc-Subsection-1.4">1.4</a> The normal distribution
+</h2>
+<div class="Unindented">
+The density function of the standard normal distribution is given by <div class="formula">
+<a class="eqnumber" name="eq:intro-std-normal">(1) </a><span class="fraction"><span class="ignored">(</span><span class="numerator">1</span><span class="ignored">)/(</span><span class="denominator"><span class="sqrt"><span class="radical">√</span><span class="ignored">(</span><span class="root">2<i>π</i></span><span class="ignored">)</span></span></span><span class="ignored">)</span></span>exp<span class="symbol">(</span> − <i>x</i><sup>2</sup> ⁄ 2<span class="symbol">)</span>.
+</div>
+It is properly normalized because <div class="formula">
+<span class="fraction"><span class="ignored">(</span><span class="numerator">1</span><span class="ignored">)/(</span><span class="denominator"><span class="sqrt"><span class="radical">√</span><span class="ignored">(</span><span class="root">2<i>π</i></span><span class="ignored">)</span></span></span><span class="ignored">)</span></span><span class="limits"><sup class="limit">∞</sup><span class="limit">⌠</span><span class="limit">⌡</span><sub class="limit"> − ∞</sub></span>exp( − <i>x</i><sup>2</sup> ⁄ 2) <i>dx</i> = <span class="fraction"><span class="ignored">(</span><span class="numerator">1</span><span class="ignored">)/(</span><span class="denominator"><span class="sqrt"><span class="radical">√</span><span class="ignored">(</span><span class="root"><i>π</i></span><span class="ignored">)</span></span></span><span class="ignored">)</span></span><span class="limits"><sup class="limit">∞</sup><span class="limit">⌠</span><span class="limit">⌡</span><sub class="limit"> − ∞</sub></span>exp( − <i>x</i><sup>2</sup>) <i>dx</i> = 1.
+</div>
+This latter integral (called Gaussian integral) was first evaluated by Laplace. The popular method for evaluating it using double integrals and polar coordinates (see the wikipedia article <a class="FlexURL" href="http://en.wikipedia.org/wiki/Gaussian_integral">http://en.wikipedia.org/wiki/Gaussian_integral</a>) is due to Poisson and based on an earlier method of Laplace. 
+</div>
+<div class="Indented">
+Given the Gaussian integral, it follows that <div class="formula">
+<a class="eqnumber" name="eq:intro-normal-law">(2) </a><span class="fraction"><span class="ignored">(</span><span class="numerator">1</span><span class="ignored">)/(</span><span class="denominator"><span class="sqrt"><span class="radical">√</span><span class="ignored">(</span><span class="root">2<i>π</i></span><span class="ignored">)</span></span></span><span class="ignored">)</span></span><span class="limits"><sup class="limit">∞</sup><span class="limit">⌠</span><span class="limit">⌡</span><sub class="limit"> − ∞</sub></span><i>x</i><sup>2</sup>exp( − <i>x</i><sup>2</sup> ⁄ 2) <i>dx</i> = 1.
+</div>
+Since the mean of the standard normal distribution <a class="Reference" href="#eq:intro-std-normal">(1↑)</a> is zero by symmetry, it follows that its variance and standard deviation are both <span class="formula">1</span>.
+</div>
+<div class="Description">
+<span class="Description-entry">Exercise:</span> Prove that<div class="formula">
+<span class="fraction"><span class="ignored">(</span><span class="numerator">1</span><span class="ignored">)/(</span><span class="denominator"><span class="sqrt"><span class="radical">√</span><span class="ignored">(</span><span class="root">2<i>π</i></span><span class="ignored">)</span></span></span><span class="ignored">)</span></span><span class="limits"><sup class="limit">∞</sup><span class="limit">⌠</span><span class="limit">⌡</span><sub class="limit"> − ∞</sub></span><i>x</i><sup>2</sup>exp( − <i>x</i><sup>2</sup> ⁄ 2) <i>dx</i> = 1.
+</div>
+
+</div>
+<div class="Unindented">
+Next consider the density function<div class="formula">
+<a class="eqnumber" name="eq:intro-normal-mu-sigma">(3) </a><span class="fraction"><span class="ignored">(</span><span class="numerator">1</span><span class="ignored">)/(</span><span class="denominator"><span class="sqrt"><span class="radical">√</span><span class="ignored">(</span><span class="root">2<i>π</i></span><span class="ignored">)</span></span><i>σ</i></span><span class="ignored">)</span></span>exp<span class="symbol">(</span> − <span class="symbol">(</span><i>x</i> − <i>μ</i><span class="symbol">)</span><sup>2</sup> ⁄ 2<i>σ</i><sup>2</sup><span class="symbol">)</span>.
+</div>
+This is the density function of the normal distribution with mean <span class="formula"><i>μ</i></span> and variance <span class="formula"><i>σ</i><sup>2</sup></span>.
+</div>
+<div class="Description">
+<span class="Description-entry">Exercise:</span> Prove that the density function <a class="Reference" href="#eq:intro-normal-mu-sigma">(3↑)</a> is suitably normalized (it must integrate to <span class="formula">1</span> between <span class="formula">±∞</span>). Prove that its mean is <span class="formula"><i>μ</i></span> and variance <span class="formula"><i>σ</i><sup>2</sup></span>.
+</div>
+<div class="Unindented">
+Figure <a class="Reference" href="#fig:intro-heights-normal-law">1↑</a> was obtained as follows. After histogramming Pearson’s height data, we considered the normal distribution <a class="Reference" href="#eq:intro-normal-mu-sigma">(3↑)</a> with mean <span class="formula"><i>μ</i> = 67.78</span> inches and standard deviation <span class="formula"><i>σ</i> = 2.744</span> inches. The mean and variance match the Pearson data set. The graph of the density function <a class="Reference" href="#eq:intro-normal-mu-sigma">(3↑)</a> is scaled by a factor <span class="formula"><i>S</i></span> to make the area under it equal to the area under the histogram.
+</div>
+<div class="Description">
+<span class="Description-entry">Exercise:</span> Argue that the area under a histogram with equal bins is equal to the total number of samples times the size of each bin.
+</div>
+<h1 class="Section">
+<a class="toc" name="toc-Section-2">2</a> A central limit theorem
+</h1>
+<div class="Unindented">
+If the mean <span class="formula"><i>μ</i></span> and the variance <span class="formula"><i>σ</i><sup>2</sup></span> match those of the data, the normal distribution is a good fit to Pearson’s heights data set (see Figure <a class="Reference" href="#fig:intro-heights-normal-law">1↑</a>). Why does the normal distribution fit the height data set? 
+</div>
+<div class="Indented">
+The answer to that question is not fully understood. In this section, we derive a central limit theorem. When a lot of random variables are added and then suitably normalized, the distribution of their sum tends to converge to the normal distribution. In this section, we will work through a single example to understand that phenomenon.
+</div>
+<div class="Indented">
+It used to be believed that the convergence to the normal distribution was a consequence of summing <i>independent</i> random variables. There are many, many examples where the sum of dependent random variables is known to converge to the normal distribution. Nevertheless the basic example we tackle assumes the random variables that are summed to be independent.
+</div>
+<h2 class="Subsection">
+<a class="toc" name="toc-Subsection-2.1">2.1</a> Statement of the theorem
+</h2>
+<div class="Unindented">
+Let <span class="formula"><i>X</i></span> be a random variable with <span class="formula">ℙ(<i>X</i> = 1) = ℙ(<i>X</i> =  − 1) = 1 ⁄ 2</span>. By symmetry we have
+</div>
+<div class="Indented">
+<div class="formula">
+<a class="eqnumber" name="eq:clt-X-mean">(4) </a><i>μ</i> = 𝔼<i>X</i> = 0.
+</div>
+In addition, <div class="formula">
+<a class="eqnumber" name="eq:clt-X-variance">(5) </a><i>σ</i><sup>2</sup> = 𝔼(<i>X</i> − <i>μ</i>)<sup>2</sup> = 𝔼<i>X</i><sup>2</sup> = 1.
+</div>
+The random variable <span class="formula"><i>X</i></span> has mean <span class="formula">0</span> and variance <span class="formula">1</span>.
+</div>
+<div class="Indented">
+The distribution of the random variable <span class="formula"><i>X</i></span> is very far from being normal. However, we will see that summing many random variables with same distribution as <span class="formula"><i>X</i></span> gives the normal distribution. 
+</div>
+<div class="Indented">
+Let <span class="formula"><i>X</i><sub>1</sub>, …, <i>X</i><sub><i>n</i></sub></span> be a sequence of independent random variables each of which, like <span class="formula"><i>X</i></span>, is equally likely to be <span class="formula"> + 1</span> or <span class="formula"> − 1</span>. Consider the sum <div class="formula">
+<i>S</i><sub><i>n</i></sub> = <i>X</i><sub>1</sub> + ⋯ + <i>X</i><sub><i>n</i></sub>.
+</div>
+ We begin by calculating the mean and variance of <span class="formula"><i>S</i><sub><i>n</i></sub></span>.
+</div>
+<div class="Indented">
+We have <div class="formula">
+𝔼<i>S</i><sub><i>n</i></sub> = 𝔼<i>X</i><sub>1</sub> + ⋯ + 𝔼<i>X</i><sub><i>n</i></sub> = 0.
+</div>
+The variance calculation is similar.<div class="formula">
+<span class="environment"><span class="arrayrow">
+<span class="arraycell align-r">
+𝔼<i>S</i><span class="scripts"><sup class="script">2</sup><sub class="script"><i>n</i></sub></span>
+</span>
+<span class="arraycell align-c">
+ = 
+</span>
+<span class="arraycell align-l">
+𝔼<span class="symbol">(</span><i>X</i><sub>1</sub> + ⋯ + <i>X</i><sub><i>n</i></sub><span class="symbol">)</span><sup>2</sup>
+</span>
+
+</span>
+<span class="arrayrow">
+<span class="arraycell align-r">
+ 
+</span>
+<span class="arraycell align-c">
+ 
+</span>
+<span class="arraycell align-l">
+ 
+</span>
+
+</span>
+<span class="arrayrow">
+<span class="arraycell align-r">
+
+</span>
+<span class="arraycell align-c">
+ = 
+</span>
+<span class="arraycell align-l">
+<span class="limits"><sup class="limit"><i>n</i></sup><span class="limit">⎲</span><span class="limit">⎳</span><sub class="limit"><i>i</i> = 1</sub></span>𝔼<i>X</i><span class="scripts"><sup class="script">2</sup><sub class="script"><i>i</i></sub></span> + 2<span class="limits"><sup class="limit"> </sup><span class="limit">⎲</span><span class="limit">⎳</span><sub class="limit">1 ≤ <i>i</i> &lt; <i>j</i> &lt; <i>n</i></sub></span>𝔼<i>X</i><sub><i>i</i></sub><i>X</i><sub><i>j</i></sub>
+</span>
+
+</span>
+<span class="arrayrow">
+<span class="arraycell align-r">
+ 
+</span>
+<span class="arraycell align-c">
+ 
+</span>
+<span class="arraycell align-l">
+ 
+</span>
+
+</span>
+<span class="arrayrow">
+<span class="arraycell align-r">
+
+</span>
+<span class="arraycell align-c">
+ = 
+</span>
+<span class="arraycell align-l">
+<span class="limits"><sup class="limit"><i>n</i></sup><span class="limit">⎲</span><span class="limit">⎳</span><sub class="limit"><i>i</i> = 1</sub></span>𝔼<i>X</i><span class="scripts"><sup class="script">2</sup><sub class="script"><i>i</i></sub></span> + 2<span class="limits"><sup class="limit"> </sup><span class="limit">⎲</span><span class="limit">⎳</span><sub class="limit">1 ≤ <i>i</i> &lt; <i>j</i> ≤ <i>n</i></sub></span>𝔼<i>X</i><sub><i>i</i></sub> 𝔼<i>X</i><sub><i>j</i></sub>
+</span>
+
+</span>
+<span class="arrayrow">
+<span class="arraycell align-r">
+ 
+</span>
+<span class="arraycell align-c">
+ 
+</span>
+<span class="arraycell align-l">
+ 
+</span>
+
+</span>
+<span class="arrayrow">
+<span class="arraycell align-r">
+
+</span>
+<span class="arraycell align-c">
+ = 
+</span>
+<span class="arraycell align-l">
+<i>n</i>.
+</span>
+
+</span>
+</span>
+</div>
+The third equality above is justified because the <span class="formula"><i>X</i><sub><i>i</i></sub></span> are independent. The final equality follows from <a class="Reference" href="#eq:clt-X-mean">(4↑)</a> and <a class="Reference" href="#eq:clt-X-variance">(5↑)</a>. 
+</div>
+<div class="Indented">
+So the sum <span class="formula"><i>S</i><sub><i>n</i></sub></span> has mean <span class="formula">0</span>, variance <span class="formula"><i>n</i></span>, and standard deviation <span class="formula"><span class="sqrt"><span class="radical">√</span><span class="ignored">(</span><span class="root"><i>n</i></span><span class="ignored">)</span></span></span>. The standard deviation is a measure of the order of fluctuations. If <span class="formula"><i>n</i></span> independent and identical random variables are added, the standard deviation of their sum grows only like <span class="formula"><span class="sqrt"><span class="radical">√</span><span class="ignored">(</span><span class="root"><i>n</i></span><span class="ignored">)</span></span></span>. 
+</div>
+<div class="Indented">
+The random variable <span class="formula"><i>S</i><sub><i>n</i></sub> ⁄ <span class="sqrt"><span class="radical">√</span><span class="ignored">(</span><span class="root"><i>n</i></span><span class="ignored">)</span></span></span> has mean <span class="formula">0</span> and variance <span class="formula">1</span>. It converges in distribution to the normal law.
+</div>
+<div class="Description">
+<span class="Description-entry">Theorem:</span>  <span class="formula"><span class="limits"><span class="limit">lim</span></span><sub><i>n</i> → ∞</sub>ℙ<span class="array"><span class="arrayrow"><span class="bracket align-left">⎛</span></span><span class="arrayrow"><span class="bracket align-left">⎝</span></span></span><i>a</i> ≤ <span class="fraction"><span class="ignored">(</span><span class="numerator"><i>S</i><sub><i>n</i></sub></span><span class="ignored">)/(</span><span class="denominator"><span class="sqrt"><span class="radical">√</span><span class="ignored">(</span><span class="root"><i>n</i></span><span class="ignored">)</span></span></span><span class="ignored">)</span></span> ≤ <i>b</i><span class="array"><span class="arrayrow"><span class="bracket align-right">⎞</span></span><span class="arrayrow"><span class="bracket align-right">⎠</span></span></span> = <span class="fraction"><span class="ignored">(</span><span class="numerator">1</span><span class="ignored">)/(</span><span class="denominator"><span class="sqrt"><span class="radical">√</span><span class="ignored">(</span><span class="root">2<i>π</i></span><span class="ignored">)</span></span></span><span class="ignored">)</span></span><span class="limits"><span class="limit">∫</span></span><span class="scripts"><sup class="script"><i>b</i></sup><sub class="script"><i>a</i></sub></span>exp( − <i>x</i><sup>2</sup> ⁄ 2) <i>dx</i>.</span><a class="Label" name="thm:clt-clt"> </a>
+</div>
+<div class="Unindented">
+This central limit theorem makes precise the notion that the order of fluctuations of <span class="formula"><i>S</i><sub><i>n</i></sub></span> is the same as its standard deviation.
+</div>
+<h2 class="Subsection">
+<a class="toc" name="toc-Subsection-2.2">2.2</a> Calculation of <span class="formula">𝔼exp<span class="symbol">(</span><i>tX</i><span class="symbol">)</span></span>
+</h2>
+<div class="Unindented">
+Let <span class="formula"><i>t</i></span> be any number real or complex. We define the random variable <span class="formula">exp(<i>tX</i>)</span> using the series expansion:<div class="formula">
+exp(<i>tX</i>) = 1 + <i>tX</i> + <span class="fraction"><span class="ignored">(</span><span class="numerator"><i>t</i><sup>2</sup><i>X</i><sup>2</sup></span><span class="ignored">)/(</span><span class="denominator">2!</span><span class="ignored">)</span></span> + <span class="fraction"><span class="ignored">(</span><span class="numerator"><i>t</i><sup>3</sup><i>X</i><sup>3</sup></span><span class="ignored">)/(</span><span class="denominator">3!</span><span class="ignored">)</span></span> + ⋯
+</div>
+Here <span class="formula"><i>t</i></span> may be any real or complex number.
+</div>
+<div class="Indented">
+Since <span class="formula">ℙ(<i>X</i> = 1) = ℙ(<i>X</i> =  − 1) = 1 ⁄ 2</span>, we have <span class="formula">𝔼<i>X</i><sup><i>n</i></sup> = <span class="array"><span class="arrayrow"><span class="bracket align-l">⎧</span></span><span class="arrayrow"><span class="bracket align-l">⎨</span></span><span class="arrayrow"><span class="bracket align-l">⎩</span></span></span><span class="bracketcases">
+<span class="arrayrow">
+<span class="case align-l">
+0 
+</span>
+<span class="case align-l">
+ <span class="text"> if <span class="ensuremath">n</span>is odd</span> 
+</span>
+
+</span>
+<span class="arrayrow">
+<span class="case align-l">
+  
+</span>
+<span class="case align-l">
+  
+</span>
+
+</span>
+<span class="arrayrow">
+<span class="case align-l">
+1 
+</span>
+<span class="case align-l">
+ <span class="text"> if <span class="ensuremath">n</span>is even.</span> 
+</span>
+
+</span>
+
+</span>
+</span>Therefore <div class="formula">
+<span class="environment"><span class="arrayrow">
+<span class="arraycell align-r">
+𝔼exp(<i>tX</i>)
+</span>
+<span class="arraycell align-c">
+ = 
+</span>
+<span class="arraycell align-l">
+1 + <span class="fraction"><span class="ignored">(</span><span class="numerator"><i>t</i><sup>2</sup></span><span class="ignored">)/(</span><span class="denominator">2!</span><span class="ignored">)</span></span> + <span class="fraction"><span class="ignored">(</span><span class="numerator"><i>t</i><sup>4</sup></span><span class="ignored">)/(</span><span class="denominator">4!</span><span class="ignored">)</span></span> + <span class="fraction"><span class="ignored">(</span><span class="numerator"><i>t</i><sup>6</sup></span><span class="ignored">)/(</span><span class="denominator">6!</span><span class="ignored">)</span></span> + ⋯
+</span>
+
+</span>
+<span class="arrayrow">
+<span class="arraycell align-r">
+ 
+</span>
+<span class="arraycell align-c">
+ 
+</span>
+<span class="arraycell align-l">
+ 
+</span>
+
+</span>
+<span class="arrayrow">
+<span class="arraycell align-r">
+
+</span>
+<span class="arraycell align-c">
+ = 
+</span>
+<span class="arraycell align-l">
+cos(<i>it</i>).
+</span>
+
+</span>
+</span>
+</div>
+
+</div>
+<div class="Description">
+<span class="Description-entry">Exercise:</span> Use the power series of <span class="formula">cos<i>x</i></span> to prove that <div class="formula">
+cos<i>it</i> = 1 + <span class="limits"><sup class="limit">∞</sup><span class="limit">⎲</span><span class="limit">⎳</span><sub class="limit"><i>n</i> = 1</sub></span><span class="fraction"><span class="ignored">(</span><span class="numerator"><i>t</i><sup>2<i>n</i></sup></span><span class="ignored">)/(</span><span class="denominator">2<i>n</i>!</span><span class="ignored">)</span></span>.
+</div>
+
+</div>
+<div class="Unindented">
+This calculation of the expectation <span class="formula">𝔼exp(<i>tX</i>)</span> is the basis of our proof of the central limit theorem.
+</div>
+<h2 class="Subsection">
+<a class="toc" name="toc-Subsection-2.3">2.3</a> Calculation of <span class="formula">𝔼exp(<i>S</i><sub><i>n</i></sub> ⁄ <span class="sqrt"><span class="radical">√</span><span class="ignored">(</span><span class="root"><i>n</i></span><span class="ignored">)</span></span>)</span>
+</h2>
+<div class="Unindented">
+Next we turn to the calculation of the expectation of the random variable <div class="formula">
+<span class="fraction"><span class="ignored">(</span><span class="numerator"><i>S</i><sub><i>n</i></sub></span><span class="ignored">)/(</span><span class="denominator"><span class="sqrt"><span class="radical">√</span><span class="ignored">(</span><span class="root"><i>n</i></span><span class="ignored">)</span></span></span><span class="ignored">)</span></span> = <span class="fraction"><span class="ignored">(</span><span class="numerator"><i>X</i><sub>1</sub> + ⋯ + <i>X</i><sub><i>n</i></sub></span><span class="ignored">)/(</span><span class="denominator"><span class="sqrt"><span class="radical">√</span><span class="ignored">(</span><span class="root"><i>n</i></span><span class="ignored">)</span></span></span><span class="ignored">)</span></span>.
+</div>
+When we see a sum like this it appears strange to divide by <span class="formula"><span class="sqrt"><span class="radical">√</span><span class="ignored">(</span><span class="root"><i>n</i></span><span class="ignored">)</span></span></span> instead of by <span class="formula"><i>n</i></span>. Of course, division by <span class="formula"><span class="sqrt"><span class="radical">√</span><span class="ignored">(</span><span class="root"><i>n</i></span><span class="ignored">)</span></span></span> is justified by the variance calculation of <span class="formula"><i>S</i><sub><i>n</i></sub></span> and normalizing the variance to <span class="formula">1</span> is key to the central limit theorem.
+</div>
+<div class="Indented">
+Since the <span class="formula"><i>X</i><sub><i>i</i></sub></span> are independent, we have <div class="formula">
+<span class="environment"><span class="arrayrow">
+<span class="arraycell align-r">
+𝔼exp<span class="array"><span class="arrayrow"><span class="bracket align-left">⎛</span></span><span class="arrayrow"><span class="bracket align-left">⎝</span></span></span><span class="fraction"><span class="ignored">(</span><span class="numerator"><i>S</i><sub><i>n</i></sub></span><span class="ignored">)/(</span><span class="denominator"><span class="sqrt"><span class="radical">√</span><span class="ignored">(</span><span class="root"><i>n</i></span><span class="ignored">)</span></span></span><span class="ignored">)</span></span><span class="array"><span class="arrayrow"><span class="bracket align-right">⎞</span></span><span class="arrayrow"><span class="bracket align-right">⎠</span></span></span>
+</span>
+<span class="arraycell align-c">
+ = 
+</span>
+<span class="arraycell align-l">
+𝔼exp<span class="array"><span class="arrayrow"><span class="bracket align-left">⎛</span></span><span class="arrayrow"><span class="bracket align-left">⎝</span></span></span><span class="fraction"><span class="ignored">(</span><span class="numerator"><i>X</i><sub>1</sub></span><span class="ignored">)/(</span><span class="denominator"><span class="sqrt"><span class="radical">√</span><span class="ignored">(</span><span class="root"><i>n</i></span><span class="ignored">)</span></span></span><span class="ignored">)</span></span><span class="array"><span class="arrayrow"><span class="bracket align-right">⎞</span></span><span class="arrayrow"><span class="bracket align-right">⎠</span></span></span>.exp<span class="array"><span class="arrayrow"><span class="bracket align-left">⎛</span></span><span class="arrayrow"><span class="bracket align-left">⎝</span></span></span><span class="fraction"><span class="ignored">(</span><span class="numerator"><i>X</i><sub>2</sub></span><span class="ignored">)/(</span><span class="denominator"><span class="sqrt"><span class="radical">√</span><span class="ignored">(</span><span class="root"><i>n</i></span><span class="ignored">)</span></span></span><span class="ignored">)</span></span><span class="array"><span class="arrayrow"><span class="bracket align-right">⎞</span></span><span class="arrayrow"><span class="bracket align-right">⎠</span></span></span>…exp<span class="array"><span class="arrayrow"><span class="bracket align-left">⎛</span></span><span class="arrayrow"><span class="bracket align-left">⎝</span></span></span><span class="fraction"><span class="ignored">(</span><span class="numerator"><i>X</i><sub><i>n</i></sub></span><span class="ignored">)/(</span><span class="denominator"><span class="sqrt"><span class="radical">√</span><span class="ignored">(</span><span class="root"><i>n</i></span><span class="ignored">)</span></span></span><span class="ignored">)</span></span><span class="array"><span class="arrayrow"><span class="bracket align-right">⎞</span></span><span class="arrayrow"><span class="bracket align-right">⎠</span></span></span>
+</span>
+
+</span>
+<span class="arrayrow">
+<span class="arraycell align-r">
+ 
+</span>
+<span class="arraycell align-c">
+ 
+</span>
+<span class="arraycell align-l">
+ 
+</span>
+
+</span>
+<span class="arrayrow">
+<span class="arraycell align-r">
+
+</span>
+<span class="arraycell align-c">
+ = 
+</span>
+<span class="arraycell align-l">
+𝔼exp<span class="array"><span class="arrayrow"><span class="bracket align-left">⎛</span></span><span class="arrayrow"><span class="bracket align-left">⎝</span></span></span><span class="fraction"><span class="ignored">(</span><span class="numerator"><i>X</i><sub>1</sub></span><span class="ignored">)/(</span><span class="denominator"><span class="sqrt"><span class="radical">√</span><span class="ignored">(</span><span class="root"><i>n</i></span><span class="ignored">)</span></span></span><span class="ignored">)</span></span><span class="array"><span class="arrayrow"><span class="bracket align-right">⎞</span></span><span class="arrayrow"><span class="bracket align-right">⎠</span></span></span>.𝔼exp<span class="array"><span class="arrayrow"><span class="bracket align-left">⎛</span></span><span class="arrayrow"><span class="bracket align-left">⎝</span></span></span><span class="fraction"><span class="ignored">(</span><span class="numerator"><i>X</i><sub>2</sub></span><span class="ignored">)/(</span><span class="denominator"><span class="sqrt"><span class="radical">√</span><span class="ignored">(</span><span class="root"><i>n</i></span><span class="ignored">)</span></span></span><span class="ignored">)</span></span><span class="array"><span class="arrayrow"><span class="bracket align-right">⎞</span></span><span class="arrayrow"><span class="bracket align-right">⎠</span></span></span>…𝔼exp<span class="array"><span class="arrayrow"><span class="bracket align-left">⎛</span></span><span class="arrayrow"><span class="bracket align-left">⎝</span></span></span><span class="fraction"><span class="ignored">(</span><span class="numerator"><i>X</i><sub><i>n</i></sub></span><span class="ignored">)/(</span><span class="denominator"><span class="sqrt"><span class="radical">√</span><span class="ignored">(</span><span class="root"><i>n</i></span><span class="ignored">)</span></span></span><span class="ignored">)</span></span><span class="array"><span class="arrayrow"><span class="bracket align-right">⎞</span></span><span class="arrayrow"><span class="bracket align-right">⎠</span></span></span>
+</span>
+
+</span>
+<span class="arrayrow">
+<span class="arraycell align-r">
+ 
+</span>
+<span class="arraycell align-c">
+ 
+</span>
+<span class="arraycell align-l">
+ 
+</span>
+
+</span>
+<span class="arrayrow">
+<span class="arraycell align-r">
+
+</span>
+<span class="arraycell align-c">
+ = 
+</span>
+<span class="arraycell align-l">
+<span class="array"><span class="arrayrow"><span class="bracket align-left">⎛</span></span><span class="arrayrow"><span class="bracket align-left">⎝</span></span></span>cos<span class="array"><span class="arrayrow"><span class="bracket align-left">⎛</span></span><span class="arrayrow"><span class="bracket align-left">⎝</span></span></span><span class="fraction"><span class="ignored">(</span><span class="numerator"><i>it</i></span><span class="ignored">)/(</span><span class="denominator"><span class="sqrt"><span class="radical">√</span><span class="ignored">(</span><span class="root"><i>n</i></span><span class="ignored">)</span></span></span><span class="ignored">)</span></span><span class="array"><span class="arrayrow"><span class="bracket align-right">⎞</span></span><span class="arrayrow"><span class="bracket align-right">⎠</span></span></span><span class="array"><span class="arrayrow"><span class="bracket align-right">⎞</span></span><span class="arrayrow"><span class="bracket align-right">⎠</span></span></span><sup><i>n</i></sup>
+</span>
+
+</span>
+</span>
+</div>
+
+</div>
+<h2 class="Subsection">
+<a class="toc" name="toc-Subsection-2.4">2.4</a> Towards the central limit theorem
+</h2>
+<div class="Unindented">
+Let <span class="formula"><span class="scriptfont">N</span></span> be the normal variable with mean <span class="formula">0</span> and variance <span class="formula">1</span> (the standard normal distribution). Then <div class="formula">
+<span class="environment"><span class="arrayrow">
+<span class="arraycell align-r">
+𝔼exp(<i>t</i><span class="scriptfont">N</span>)
+</span>
+<span class="arraycell align-c">
+ = 
+</span>
+<span class="arraycell align-l">
+<span class="fraction"><span class="ignored">(</span><span class="numerator">1</span><span class="ignored">)/(</span><span class="denominator">2<span class="sqrt"><span class="radical">√</span><span class="ignored">(</span><span class="root"><i>π</i></span><span class="ignored">)</span></span></span><span class="ignored">)</span></span><span class="limits"><sup class="limit">∞</sup><span class="limit">⌠</span><span class="limit">⌡</span><sub class="limit"> − ∞</sub></span><span class="blackboard">e</span><sup><i>tx</i></sup><span class="blackboard">e</span><sup> − <i>x</i><sup>2</sup> ⁄ 2</sup> <i>dx</i>
+</span>
+
+</span>
+<span class="arrayrow">
+<span class="arraycell align-r">
+ 
+</span>
+<span class="arraycell align-c">
+ 
+</span>
+<span class="arraycell align-l">
+ 
+</span>
+
+</span>
+<span class="arrayrow">
+<span class="arraycell align-r">
+
+</span>
+<span class="arraycell align-c">
+ = 
+</span>
+<span class="arraycell align-l">
+<span class="fraction"><span class="ignored">(</span><span class="numerator"><span class="blackboard">e</span><sup><i>t</i><sup>2</sup> ⁄ 2</sup></span><span class="ignored">)/(</span><span class="denominator"><span class="sqrt"><span class="radical">√</span><span class="ignored">(</span><span class="root">2<i>π</i></span><span class="ignored">)</span></span></span><span class="ignored">)</span></span><span class="limits"><sup class="limit">∞</sup><span class="limit">⌠</span><span class="limit">⌡</span><sub class="limit"> − ∞</sub></span><span class="blackboard">e</span><sup> − (<i>x</i> − <i>t</i>)<sup>2</sup> ⁄ 2</sup> <i>dx</i>
+</span>
+
+</span>
+<span class="arrayrow">
+<span class="arraycell align-r">
+ 
+</span>
+<span class="arraycell align-c">
+ 
+</span>
+<span class="arraycell align-l">
+ 
+</span>
+
+</span>
+<span class="arrayrow">
+<span class="arraycell align-r">
+
+</span>
+<span class="arraycell align-c">
+ = 
+</span>
+<span class="arraycell align-l">
+exp(<i>t</i><sup>2</sup> ⁄ 2) <span class="text"> after the substitution <span class="ensuremath">u = x − t</span></span>.
+</span>
+
+</span>
+</span>
+</div>
+
+</div>
+<div class="Description">
+<span class="Description-entry">Theorem:</span>  <span class="formula"><span class="limits"><span class="limit">lim</span></span><sub><i>n</i> → ∞</sub>𝔼exp(<i>S</i><sub><i>n</i></sub> ⁄ <span class="sqrt"><span class="radical">√</span><span class="ignored">(</span><span class="root"><i>n</i></span><span class="ignored">)</span></span>) = exp(<i>t</i><sup>2</sup> ⁄ 2)</span>.
+</div>
+<div class="Proof">
+We need to show that <div class="formula">
+<span class="limits"><sup class="limit"> </sup><span class="limit">lim</span><sub class="limit"><i>n</i> → ∞</sub></span><span class="array"><span class="arrayrow"><span class="bracket align-left">⎛</span></span><span class="arrayrow"><span class="bracket align-left">⎝</span></span></span>cos<span class="array"><span class="arrayrow"><span class="bracket align-left">⎛</span></span><span class="arrayrow"><span class="bracket align-left">⎝</span></span></span><span class="fraction"><span class="ignored">(</span><span class="numerator"><i>it</i></span><span class="ignored">)/(</span><span class="denominator"><span class="sqrt"><span class="radical">√</span><span class="ignored">(</span><span class="root"><i>n</i></span><span class="ignored">)</span></span></span><span class="ignored">)</span></span><span class="array"><span class="arrayrow"><span class="bracket align-right">⎞</span></span><span class="arrayrow"><span class="bracket align-right">⎠</span></span></span><span class="array"><span class="arrayrow"><span class="bracket align-right">⎞</span></span><span class="arrayrow"><span class="bracket align-right">⎠</span></span></span><sup><i>n</i></sup> = exp(<i>t</i><sup>2</sup> ⁄ 2).
+</div>
+This limit may be evaluated by noting that <span class="formula">cos(<i>it</i> ⁄ <span class="sqrt"><span class="radical">√</span><span class="ignored">(</span><span class="root"><i>n</i></span><span class="ignored">)</span></span>) ≈ 1 + <i>t</i><sup>2</sup> ⁄ <i>n</i></span> for large <span class="formula"><i>n</i></span> and then using <div class="formula">
+<span class="environment"><span class="arrayrow">
+<span class="arraycell align-r">
+<span class="limits"><sup class="limit"> </sup><span class="limit">lim</span><sub class="limit"><i>n</i> → ∞</sub></span><span class="array"><span class="arrayrow"><span class="bracket align-left">⎛</span></span><span class="arrayrow"><span class="bracket align-left">⎝</span></span></span>1 + <span class="fraction"><span class="ignored">(</span><span class="numerator"><i>t</i><sup>2</sup></span><span class="ignored">)/(</span><span class="denominator"><i>n</i></span><span class="ignored">)</span></span><span class="array"><span class="arrayrow"><span class="bracket align-right">⎞</span></span><span class="arrayrow"><span class="bracket align-right">⎠</span></span></span><sup><i>n</i></sup>
+</span>
+<span class="arraycell align-c">
+ = 
+</span>
+<span class="arraycell align-l">
+<span class="limits"><span class="limit">lim</span></span><span class="array"><span class="arrayrow"><span class="bracket align-left">⎛</span></span><span class="arrayrow"><span class="bracket align-left">⎝</span></span></span><span class="array"><span class="arrayrow"><span class="bracket align-left">⎛</span></span><span class="arrayrow"><span class="bracket align-left">⎝</span></span></span>1 + <span class="fraction"><span class="ignored">(</span><span class="numerator"><i>t</i><sup>2</sup></span><span class="ignored">)/(</span><span class="denominator"><i>n</i></span><span class="ignored">)</span></span><span class="array"><span class="arrayrow"><span class="bracket align-right">⎞</span></span><span class="arrayrow"><span class="bracket align-right">⎠</span></span></span><sup><span class="fraction"><span class="ignored">(</span><span class="numerator"><i>n</i></span><span class="ignored">)/(</span><span class="denominator"><i>t</i><sup>2</sup></span><span class="ignored">)</span></span></sup><span class="array"><span class="arrayrow"><span class="bracket align-right">⎞</span></span><span class="arrayrow"><span class="bracket align-right">⎠</span></span></span><sup><i>t</i><sup>2</sup></sup>
+</span>
+
+</span>
+<span class="arrayrow">
+<span class="arraycell align-r">
+ 
+</span>
+<span class="arraycell align-c">
+ 
+</span>
+<span class="arraycell align-l">
+ 
+</span>
+
+</span>
+<span class="arrayrow">
+<span class="arraycell align-r">
+
+</span>
+<span class="arraycell align-c">
+ = 
+</span>
+<span class="arraycell align-l">
+<span class="array"><span class="arrayrow"><span class="bracket align-left">⎛</span></span><span class="arrayrow"><span class="bracket align-left">⎝</span></span></span><span class="limits"><sup class="limit"> </sup><span class="limit">lim</span><sub class="limit"><i>x</i> → ∞</sub></span><span class="array"><span class="arrayrow"><span class="bracket align-left">⎛</span></span><span class="arrayrow"><span class="bracket align-left">⎝</span></span></span>1 + <span class="fraction"><span class="ignored">(</span><span class="numerator">1</span><span class="ignored">)/(</span><span class="denominator"><i>x</i></span><span class="ignored">)</span></span><span class="array"><span class="arrayrow"><span class="bracket align-right">⎞</span></span><span class="arrayrow"><span class="bracket align-right">⎠</span></span></span><sup><i>x</i></sup><span class="array"><span class="arrayrow"><span class="bracket align-right">⎞</span></span><span class="arrayrow"><span class="bracket align-right">⎠</span></span></span><sup><i>t</i><sup>2</sup></sup>
+</span>
+
+</span>
+<span class="arrayrow">
+<span class="arraycell align-r">
+ 
+</span>
+<span class="arraycell align-c">
+ 
+</span>
+<span class="arraycell align-l">
+ 
+</span>
+
+</span>
+<span class="arrayrow">
+<span class="arraycell align-r">
+
+</span>
+<span class="arraycell align-c">
+ = 
+</span>
+<span class="arraycell align-l">
+<span class="blackboard"> e</span><sup><i>t</i><sup>2</sup> ⁄ 2</sup>
+</span>
+
+</span>
+</span>
+</div>
+The last limit with <span class="formula"><i>x</i> → ∞</span> is one of the standard ways to define the number <span class="formula"><span class="blackboard">e</span></span>.
+</div>
+<div class="Proof">
+Another proof would be to take the log and then use l’Hospital’s rule.
+</div>
+<div class="Unindented">
+We are now almost on the cusp of completing the proof of the central limit theorem <a class="Reference" href="#thm:clt-clt">2.1↑</a>. We know that <div class="formula">
+<span class="limits"><sup class="limit"> </sup><span class="limit">lim</span><sub class="limit"><i>n</i> → ∞</sub></span>𝔼exp<span class="array"><span class="arrayrow"><span class="bracket align-left">⎛</span></span><span class="arrayrow"><span class="bracket align-left">⎝</span></span></span><span class="fraction"><span class="ignored">(</span><span class="numerator"><i>tS</i><sub><i>n</i></sub></span><span class="ignored">)/(</span><span class="denominator"><span class="sqrt"><span class="radical">√</span><span class="ignored">(</span><span class="root"><i>n</i></span><span class="ignored">)</span></span></span><span class="ignored">)</span></span><span class="array"><span class="arrayrow"><span class="bracket align-right">⎞</span></span><span class="arrayrow"><span class="bracket align-right">⎠</span></span></span> = exp(<i>t</i><sup>2</sup> ⁄ 2) = 𝔼exp(<i>t</i><span class="scriptfont">N</span>), 
+</div>
+where <span class="formula"><span class="scriptfont">N</span></span> is a random variable of the standard normal distribution. This is true for any <span class="formula"><i>t</i></span> real or complex.
+</div>
+<div class="Indented">
+To complete the proof we may let <span class="formula"><i>t</i> = <i>i</i><i>ω</i></span> to be purely imaginary and then use the theory of Fourier transforms. It is not right to sneak in a major idea like Fourier transforms in the middle of some other discussion. Therefore we leave out this part of the proof. 
+</div>
+<div class="Description">
+<span class="Description-entry">Exercise:</span> Let <span class="formula"><i>X</i></span> take the value <span class="formula"> + 1</span> with probability <span class="formula"><i>p</i></span> and the value <span class="formula"> − 1</span> with probability <span class="formula">1 − <i>p</i></span>. Calculate the mean <span class="formula"><i>μ</i></span> and variance <span class="formula"><i>σ</i><sup>2</sup></span> of <span class="formula"><i>X</i></span>.
+</div>
+<div class="Description">
+<span class="Description-entry">Exercise:</span> Let <span class="formula"><i>X</i><sub>1</sub>, …, <i>X</i><sub><i>n</i></sub></span> be a sequence of independent random variables of the same distribution as <span class="formula"><i>X</i></span> in the previous exercise. Let <span class="formula"><i>S</i><sub><i>n</i></sub> = <i>X</i><sub>1</sub> + ⋯ + <i>X</i><sub><i>n</i></sub></span>. Prove that <div class="formula">
+<span class="limits"><sup class="limit"> </sup><span class="limit">lim</span><sub class="limit"><i>n</i> → ∞</sub></span>𝔼exp<i>t</i><span class="array"><span class="arrayrow"><span class="bracket align-left">⎛</span></span><span class="arrayrow"><span class="bracket align-left">⎝</span></span></span><span class="fraction"><span class="ignored">(</span><span class="numerator"><i>S</i><sub><i>n</i></sub> − <i>n</i><i>μ</i></span><span class="ignored">)/(</span><span class="denominator"><span class="sqrt"><span class="radical">√</span><span class="ignored">(</span><span class="root"><i>n</i></span><span class="ignored">)</span></span><i>σ</i></span><span class="ignored">)</span></span><span class="array"><span class="arrayrow"><span class="bracket align-right">⎞</span></span><span class="arrayrow"><span class="bracket align-right">⎠</span></span></span> = exp(<i>t</i><sup>2</sup> ⁄ 2).
+</div>
+
+</div>
+<h1 class="Section">
+<a class="toc" name="toc-Section-3">3</a> The Kalman filter
+</h1>
+<div class="Unindented">
+<div class="float">
+<a class="Label" name="fig:Kalman"> </a><div class="multifigure">
+<span class="float">
+<div class="figure">
+<div class="center">
+<img class="embedded" src="figs-python/signal.png" alt="figure figs-python/signal.png" style="width: 230px; max-width: 576px; height: 172px; max-height: 432px;"/>
+<div class="caption">
+(a) 
+</div>
+
+</div>
+
+</div>
+
+</span>
+<div class="center">
+<span class="float">
+<div class="figure">
+<div class="center">
+<img class="embedded" src="figs-python/xest.png" alt="figure figs-python/xest.png" style="width: 230px; max-width: 576px; height: 172px; max-height: 432px;"/>
+<div class="caption">
+(b) 
+</div>
+
+</div>
+
+</div>
+
+</span>
+<span class="float">
+<div class="figure">
+<div class="center">
+<img class="embedded" src="figs-python/yest.png" alt="figure figs-python/yest.png" style="width: 230px; max-width: 576px; height: 172px; max-height: 432px;"/>
+<div class="caption">
+(c) 
+</div>
+
+</div>
+
+</div>
+
+</span>
+
+</div>
+<div class="caption">
+Figure 2 In part (a), <span class="formula"><i>x</i></span> and <span class="formula"><i>y</i></span> are the true signals and <span class="formula"><i>z</i></span> is a noisy observation of <span class="formula"><i>y</i></span>. The error in <span class="formula"><i>z</i></span> can be considerable, as evident from the plots. Parts (b) and (c) show the signal as estimated from the noisy observations <span class="formula"><i>z</i></span> using a Kalman filter. The estimates match the true signal much better. 
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="Indented">
+What is the Kalman filter? Figure <a class="Reference" href="#fig:Kalman">2↑</a> will help us answer that question.
+</div>
+<div class="Indented">
+To begin with there is dynamics. If the current state is <span class="formula">(<i>x</i><sub><i>n</i></sub>, <i>y</i><sub><i>n</i></sub>)</span> the state at <span class="formula"><i>n</i> + 1</span> is <div class="formula">
+<a class="eqnumber" name="eq:kalman-dynamics">(6) </a><span class="environment"><span class="arrayrow">
+<span class="arraycell align-r">
+<i>x</i><sub><i>n</i> + 1</sub>
+</span>
+<span class="arraycell align-c">
+ = 
+</span>
+<span class="arraycell align-l">
+<span class="fraction"><span class="ignored">(</span><span class="numerator"><i>x</i><sub><i>n</i></sub></span><span class="ignored">)/(</span><span class="denominator"><span class="sqrt"><span class="radical">√</span><span class="ignored">(</span><span class="root">2</span><span class="ignored">)</span></span></span><span class="ignored">)</span></span> − <span class="fraction"><span class="ignored">(</span><span class="numerator"><i>y</i><sub><i>n</i></sub></span><span class="ignored">)/(</span><span class="denominator"><span class="sqrt"><span class="radical">√</span><span class="ignored">(</span><span class="root">2</span><span class="ignored">)</span></span></span><span class="ignored">)</span></span>
+</span>
+
+</span>
+<span class="arrayrow">
+<span class="arraycell align-r">
+ 
+</span>
+<span class="arraycell align-c">
+ 
+</span>
+<span class="arraycell align-l">
+ 
+</span>
+
+</span>
+<span class="arrayrow">
+<span class="arraycell align-r">
+<i>y</i><sub><i>n</i> + 1</sub>
+</span>
+<span class="arraycell align-c">
+ = 
+</span>
+<span class="arraycell align-l">
+<span class="fraction"><span class="ignored">(</span><span class="numerator"><i>x</i><sub><i>n</i></sub></span><span class="ignored">)/(</span><span class="denominator"><span class="sqrt"><span class="radical">√</span><span class="ignored">(</span><span class="root">2</span><span class="ignored">)</span></span></span><span class="ignored">)</span></span> + <span class="fraction"><span class="ignored">(</span><span class="numerator"><i>y</i><sub><i>n</i></sub></span><span class="ignored">)/(</span><span class="denominator"><span class="sqrt"><span class="radical">√</span><span class="ignored">(</span><span class="root">2</span><span class="ignored">)</span></span></span><span class="ignored">)</span></span>
+</span>
+
+</span>
+</span>
+</div>
+If the state <span class="formula"><i>x</i><sub><i>n</i></sub>, <i>y</i><sub><i>n</i></sub></span> is interpreted as a point in the plane, at every step it gets rotated by <span class="formula">45<sup>0</sup></span> in the counter-clockwise sense.
+</div>
+<div class="Indented">
+The dynamics here is exceedingly simple. However, for motivation, we may think of it as a physical model of the motion of a rocket. The real equations in that situation will be more complicated. However, the simplification is still good enough to help us understand the most import idea behind the Kalman filter.
+</div>
+<div class="Indented">
+Now if a rocket is shooting through space, we may not be able to get accurate measurement of its position. Here we assume that the observable is <span class="formula"><i>z</i><sub><i>n</i></sub></span> which is given by <div class="formula">
+<a class="eqnumber" name="eq:kalman-zn">(7) </a><i>z</i><sub><i>n</i></sub> = <i>x</i><sub><i>n</i></sub> + <span class="text">Gaussian noise of mean <span class="ensuremath">0</span>and variance <span class="ensuremath">σ<sup>2</sup></span></span>.
+</div>
+Note that normally distributed random variables are also said to be Gaussian. Now the problem is to reconstruct the state of the rocket using a sequence of noisy observations:<div class="formula">
+<i>z</i><sub>1</sub>, <i>z</i><sub>2</sub>, <i>z</i><sub>3</sub>, …
+</div>
+We have knowledge of the exact dynamical equations <a class="Reference" href="#eq:kalman-dynamics">(6↑)</a> but cannot observe <span class="formula"><i>x</i><sub><i>n</i></sub></span> and <span class="formula"><i>y</i><sub><i>n</i></sub></span>. All that we may observe is <span class="formula"><i>z</i><sub><i>n</i></sub></span> which is <span class="formula"><i>y</i><sub><i>n</i></sub> + <span class="text">noise</span></span>.
+</div>
+<div class="Indented">
+This problem is not so easy. Figure <a class="Reference" href="#fig:Kalman">2↑</a>(a) shows <span class="formula"><i>x</i>, <i>y</i>, <i>z</i></span> as a function of <span class="formula"><i>n</i></span> with <span class="formula"><i>σ</i> = 2.0</span>. The standard deviation is substantial and it is hard to tell from the figure if <span class="formula"><i>z</i><sub><i>n</i></sub></span> is approximating <span class="formula"><i>y</i><sub><i>n</i></sub></span> or <span class="formula"><i>x</i><sub><i>n</i></sub></span>. Whatever it is approximating, the approximation is very noisy.
+</div>
+<div class="Indented">
+The estimated signals in parts (b) and (c) of the same figure are much more accurate. The estimates are certainly tracking the signal. That is the magic of the Kalman filter. In spite of the fact, that the observations are noisy, the filter manages to reconstruct the current state with reasonable accuracy.
+</div>
+<h2 class="Subsection">
+<a class="toc" name="toc-Subsection-3.1">3.1</a> Current state according to Kalman
+</h2>
+<div class="Unindented">
+At step <span class="formula"><i>n</i></span>, the Kalman filter does not really know for sure where the rocket is. It thinks of the current state as a pair of random variables <span class="formula"><i>X</i><sub><i>n</i></sub>, <i>Y</i><sub><i>n</i></sub></span> with the probability density function being <div class="formula">
+<a class="eqnumber" name="eq:kalman-xnyn-pdf">(8) </a><span class="fraction"><span class="ignored">(</span><span class="numerator"><span class="sqrt"><span class="radical">√</span><span class="ignored">(</span><span class="root"><i>a</i><sub><i>n</i></sub><i>c</i><sub><i>n</i></sub> − <i>b</i><span class="scripts"><sup class="script">2</sup><sub class="script"><i>n</i></sub></span></span><span class="ignored">)</span></span></span><span class="ignored">)/(</span><span class="denominator"><i>π</i></span><span class="ignored">)</span></span>exp − <span class="symbol">(</span><i>a</i><sub><i>n</i></sub><span class="symbol">(</span><i>X</i><sub><i>n</i></sub> − <i>μ</i><sub><i>n</i></sub><span class="symbol">)</span><sup>2</sup> + 2<i>b</i><sub><i>n</i></sub><span class="symbol">(</span><i>X</i><sub><i>n</i></sub> − <i>μ</i><sub><i>n</i></sub><span class="symbol">)</span><span class="symbol">(</span><i>Y</i><sub><i>n</i></sub> − <i>ν</i><sub><i>n</i></sub><span class="symbol">)</span> + <i>c</i><sub><i>n</i></sub><span class="symbol">(</span><i>Y</i><sub><i>n</i></sub> − <i>ν</i><sub><i>n</i></sub><span class="symbol">)</span><sup>2</sup><span class="symbol">)</span>.
+</div>
+For this density function to make sense, the exponent must be always negative. The discriminant of the quadratic equation implies the conditions <div class="formula">
+<span class="environment"><span class="arrayrow">
+<span class="arraycell align-r">
+<i>a</i><sub><i>n</i></sub>, <i>c</i><sub><i>n</i></sub>
+</span>
+<span class="arraycell align-c">
+ &gt; 
+</span>
+<span class="arraycell align-l">
+0
+</span>
+
+</span>
+<span class="arrayrow">
+<span class="arraycell align-r">
+ 
+</span>
+<span class="arraycell align-c">
+ 
+</span>
+<span class="arraycell align-l">
+ 
+</span>
+
+</span>
+<span class="arrayrow">
+<span class="arraycell align-r">
+<i>a</i><sub><i>n</i></sub><i>c</i><sub><i>n</i></sub>
+</span>
+<span class="arraycell align-c">
+ &gt; 
+</span>
+<span class="arraycell align-l">
+<i>b</i><span class="scripts"><sup class="script">2</sup><sub class="script"><i>n</i></sub></span>.
+</span>
+
+</span>
+</span>
+</div>
+We will always assume these conditions.
+</div>
+<div class="Description">
+<span class="Description-entry">Exercise:</span> Prove that the probability density function <a class="Reference" href="#eq:kalman-xnyn-pdf">(8↑)</a> is correctly normalized. To integrate it over <span class="formula"> − ∞ &lt; <i>X</i><sub><i>n</i></sub>, <i>Y</i><sub><i>n</i></sub> &lt; ∞</span>, you may start with the identity<div class="formula">
+<i>ax</i><sup>2</sup> + 2<i>bxy</i> + <i>cz</i><sup>2</sup> = <i>a</i><span class="array"><span class="arrayrow"><span class="bracket align-left">⎛</span></span><span class="arrayrow"><span class="bracket align-left">⎝</span></span></span><i>x</i> + <span class="fraction"><span class="ignored">(</span><span class="numerator"><i>by</i></span><span class="ignored">)/(</span><span class="denominator"><i>a</i></span><span class="ignored">)</span></span><span class="array"><span class="arrayrow"><span class="bracket align-right">⎞</span></span><span class="arrayrow"><span class="bracket align-right">⎠</span></span></span><sup>2</sup> + <i>y</i><sup>2</sup><span class="array"><span class="arrayrow"><span class="bracket align-left">⎛</span></span><span class="arrayrow"><span class="bracket align-left">⎝</span></span></span><i>c</i> − <span class="fraction"><span class="ignored">(</span><span class="numerator"><i>b</i><sup>2</sup></span><span class="ignored">)/(</span><span class="denominator"><i>a</i></span><span class="ignored">)</span></span><span class="array"><span class="arrayrow"><span class="bracket align-right">⎞</span></span><span class="arrayrow"><span class="bracket align-right">⎠</span></span></span>.
+</div>
+
+</div>
+<div class="Description">
+<span class="Description-entry">Exercise:</span> Use symmetry to deduce that <span class="formula">𝔼<i>X</i><sub><i>n</i></sub> = <i>μ</i><sub><i>n</i></sub></span> and <span class="formula">𝔼<i>Y</i><sub><i>n</i></sub> = <i>ν</i><sub><i>n</i></sub></span>.
+</div>
+<div class="Description">
+<span class="Description-entry">Exercise:</span> For a greater challenge with handling integrals, prove that <div class="formula">
+𝔼<span class="symbol">(</span><i>X</i><sub><i>n</i></sub> − <i>μ</i><sub><i>n</i></sub><span class="symbol">)</span><sup>2</sup> = <span class="fraction"><span class="ignored">(</span><span class="numerator"><i>a</i><sub><i>n</i></sub></span><span class="ignored">)/(</span><span class="denominator">2<span class="symbol">(</span><i>a</i><sub><i>n</i></sub><i>c</i><sub><i>n</i></sub> − <i>b</i><span class="scripts"><sup class="script">2</sup><sub class="script"><i>n</i></sub></span><span class="symbol">)</span></span><span class="ignored">)</span></span> 𝔼<span class="symbol">(</span><i>Y</i><sub><i>n</i></sub> − <i>ν</i><sub><i>n</i></sub><span class="symbol">)</span><sup>2</sup> = <span class="fraction"><span class="ignored">(</span><span class="numerator"><i>c</i><sub><i>n</i></sub></span><span class="ignored">)/(</span><span class="denominator">2<span class="symbol">(</span><i>a</i><sub><i>n</i></sub><i>c</i><sub><i>n</i></sub> − <i>b</i><span class="scripts"><sup class="script">2</sup><sub class="script"><i>n</i></sub></span><span class="symbol">)</span></span><span class="ignored">)</span></span>.
+</div>
+
+</div>
+<div class="Unindented">
+Thus the Kalman filter takes the expectation of the current position to be <span class="formula"><i>μ</i><sub><i>n</i></sub>, <i>ν</i><sub><i>n</i></sub></span>. If the quantities<div class="formula">
+<span class="fraction"><span class="ignored">(</span><span class="numerator"><i>a</i><sub><i>n</i></sub></span><span class="ignored">)/(</span><span class="denominator">2<span class="symbol">(</span><i>a</i><sub><i>n</i></sub><i>c</i><sub><i>n</i></sub> − <i>b</i><span class="scripts"><sup class="script">2</sup><sub class="script"><i>n</i></sub></span><span class="symbol">)</span></span><span class="ignored">)</span></span>,  <span class="fraction"><span class="ignored">(</span><span class="numerator"><i>c</i><sub><i>n</i></sub></span><span class="ignored">)/(</span><span class="denominator">2<span class="symbol">(</span><i>a</i><sub><i>n</i></sub><i>c</i><sub><i>n</i></sub> − <i>b</i><span class="scripts"><sup class="script">2</sup><sub class="script"><i>n</i></sub></span><span class="symbol">)</span></span><span class="ignored">)</span></span>
+</div>
+are tiny if means we have a lot of confidence that the current state is near <span class="formula"><i>μ</i><sub><i>n</i></sub>, <i>ν</i><sub><i>n</i></sub></span>. That happens for example if <span class="formula"><i>a</i><sub><i>n</i></sub>, <i>c</i><sub><i>n</i></sub></span> are very large and <span class="formula"><i>b</i><sub><i>n</i></sub></span> is much smaller in magnitude. 
+</div>
+<h2 class="Subsection">
+<a class="toc" name="toc-Subsection-3.2">3.2</a> Updating from <span class="formula"><i>X</i><sub><i>n</i></sub>, <i>Y</i><sub><i>n</i></sub></span> to <span class="formula"><i>X</i><sub><i>n</i> + 1</sub>, <i>Y</i><sub><i>n</i> + 1</sub></span>
+</h2>
+<div class="Unindented">
+The dynamical equations <a class="Reference" href="#eq:kalman-dynamics">(6↑)</a> are used to update from time <span class="formula"><i>n</i></span> to time <span class="formula"><i>n</i> + 1</span>. Therefore the expectations of <span class="formula"><i>X</i><sub><i>n</i> + 1</sub>, <i>Y</i><sub><i>n</i> + 1</sub></span> are as follows:<div class="formula">
+<span class="environment"><span class="arrayrow">
+<span class="arraycell align-r">
+𝔼<i>X</i><sub><i>n</i> + 1</sub>
+</span>
+<span class="arraycell align-c">
+ = 
+</span>
+<span class="arraycell align-l">
+<i>μ</i> = <span class="fraction"><span class="ignored">(</span><span class="numerator"><i>μ</i><sub><i>n</i></sub> − <i>ν</i><sub><i>n</i></sub></span><span class="ignored">)/(</span><span class="denominator"><span class="sqrt"><span class="radical">√</span><span class="ignored">(</span><span class="root">2</span><span class="ignored">)</span></span></span><span class="ignored">)</span></span>
+</span>
+
+</span>
+<span class="arrayrow">
+<span class="arraycell align-r">
+ 
+</span>
+<span class="arraycell align-c">
+ 
+</span>
+<span class="arraycell align-l">
+ 
+</span>
+
+</span>
+<span class="arrayrow">
+<span class="arraycell align-r">
+𝔼<i>Y</i><sub><i>n</i> + 1</sub>
+</span>
+<span class="arraycell align-c">
+ = 
+</span>
+<span class="arraycell align-l">
+<i>ν</i> = <span class="fraction"><span class="ignored">(</span><span class="numerator"><i>μ</i><sub><i>n</i></sub> + <i>ν</i><sub><i>n</i></sub></span><span class="ignored">)/(</span><span class="denominator"><span class="sqrt"><span class="radical">√</span><span class="ignored">(</span><span class="root">2</span><span class="ignored">)</span></span></span><span class="ignored">)</span></span>.
+</span>
+
+</span>
+</span>
+</div>
+To update the probability density function to <span class="formula"><i>n</i> + 1</span>, we need only make the substitution<div class="formula">
+<span class="environment"><span class="arrayrow">
+<span class="arraycell align-r">
+<i>X</i><sub><i>n</i></sub> − <i>μ</i><sub><i>n</i></sub>
+</span>
+<span class="arraycell align-c">
+ = 
+</span>
+<span class="arraycell align-l">
+<span class="fraction"><span class="ignored">(</span><span class="numerator"><span class="symbol">(</span><i>X</i><sub><i>n</i> + 1</sub> − <i>μ</i><span class="symbol">)</span> + <span class="symbol">(</span><i>Y</i><sub><i>n</i> + 1</sub> − <i>ν</i><span class="symbol">)</span></span><span class="ignored">)/(</span><span class="denominator"><span class="sqrt"><span class="radical">√</span><span class="ignored">(</span><span class="root">2</span><span class="ignored">)</span></span></span><span class="ignored">)</span></span>
+</span>
+
+</span>
+<span class="arrayrow">
+<span class="arraycell align-r">
+ 
+</span>
+<span class="arraycell align-c">
+ 
+</span>
+<span class="arraycell align-l">
+ 
+</span>
+
+</span>
+<span class="arrayrow">
+<span class="arraycell align-r">
+<i>Y</i><sub><i>n</i></sub> − <i>ν</i><sub><i>n</i></sub>
+</span>
+<span class="arraycell align-c">
+ = 
+</span>
+<span class="arraycell align-l">
+<span class="fraction"><span class="ignored">(</span><span class="numerator"> − <span class="symbol">(</span><i>X</i><sub><i>n</i> + 1</sub> − <i>μ</i><span class="symbol">)</span> + <span class="symbol">(</span><i>Y</i><sub><i>n</i> + 1</sub> − <i>ν</i><span class="symbol">)</span></span><span class="ignored">)/(</span><span class="denominator"><span class="sqrt"><span class="radical">√</span><span class="ignored">(</span><span class="root">2</span><span class="ignored">)</span></span></span><span class="ignored">)</span></span>
+</span>
+
+</span>
+</span>
+</div>
+in the probability density function <a class="Reference" href="#eq:kalman-xnyn-pdf">(8↑)</a>. Notice that this transformation has determinant equal to <span class="formula"> + 1</span>. We get the probability density function to be <div class="formula">
+<a class="eqnumber" name="eq:kalman-xn1yn1-pdf">(9) </a><span class="fraction"><span class="ignored">(</span><span class="numerator"><span class="sqrt"><span class="radical">√</span><span class="ignored">(</span><span class="root"><i>ac</i> − <i>b</i><sup>2</sup></span><span class="ignored">)</span></span></span><span class="ignored">)/(</span><span class="denominator"><i>π</i></span><span class="ignored">)</span></span>exp − <span class="symbol">(</span><i>a</i><span class="symbol">(</span><i>X</i><sub><i>n</i> + 1</sub> − <i>μ</i><span class="symbol">)</span><sup>2</sup> + 2<i>b</i><span class="symbol">(</span><i>X</i><sub><i>n</i> + 1</sub> − <i>μ</i><span class="symbol">)</span><span class="symbol">(</span><i>Y</i><sub><i>n</i> + 1</sub> − <i>ν</i><span class="symbol">)</span> + <i>c</i><span class="symbol">(</span><i>Y</i><sub><i>n</i> + 1</sub> − <i>ν</i><span class="symbol">)</span><sup>2</sup><span class="symbol">)</span>.
+</div>
+The quantities <span class="formula"><i>μ</i>, <i>ν</i></span> were defined above. From the substitution, we may deduce<div class="formula">
+<span class="environment"><span class="arrayrow">
+<span class="arraycell align-r">
+<i>a</i>
+</span>
+<span class="arraycell align-c">
+ = 
+</span>
+<span class="arraycell align-l">
+<span class="fraction"><span class="ignored">(</span><span class="numerator"><i>a</i><sub><i>n</i></sub> + <i>c</i><sub><i>n</i></sub></span><span class="ignored">)/(</span><span class="denominator">2</span><span class="ignored">)</span></span> − <i>b</i><sub><i>n</i></sub>
+</span>
+
+</span>
+<span class="arrayrow">
+<span class="arraycell align-r">
+ 
+</span>
+<span class="arraycell align-c">
+ 
+</span>
+<span class="arraycell align-l">
+ 
+</span>
+
+</span>
+<span class="arrayrow">
+<span class="arraycell align-r">
+<i>b</i>
+</span>
+<span class="arraycell align-c">
+ = 
+</span>
+<span class="arraycell align-l">
+<span class="fraction"><span class="ignored">(</span><span class="numerator"><i>a</i><sub><i>n</i></sub> − <i>c</i><sub><i>n</i></sub></span><span class="ignored">)/(</span><span class="denominator">2</span><span class="ignored">)</span></span>
+</span>
+
+</span>
+<span class="arrayrow">
+<span class="arraycell align-r">
+ 
+</span>
+<span class="arraycell align-c">
+ 
+</span>
+<span class="arraycell align-l">
+ 
+</span>
+
+</span>
+<span class="arrayrow">
+<span class="arraycell align-r">
+<i>c</i>
+</span>
+<span class="arraycell align-c">
+ = 
+</span>
+<span class="arraycell align-l">
+<span class="fraction"><span class="ignored">(</span><span class="numerator"><i>a</i><sub><i>n</i></sub> + <i>c</i><sub><i>n</i></sub></span><span class="ignored">)/(</span><span class="denominator">2</span><span class="ignored">)</span></span> + <i>b</i><sub><i>n</i></sub>.
+</span>
+
+</span>
+</span>
+</div>
+So from thinking of the state at time <span class="formula"><i>n</i></span> using <a class="Reference" href="#eq:kalman-xnyn-pdf">(8↑)</a>, the Kalman filter moves to thinking of the state at time <span class="formula"><i>n</i> + 1</span> using the probability density function <a class="Reference" href="#eq:kalman-xn1yn1-pdf">(9↑)</a>. This step is actually fairly trivial.
+</div>
+<h2 class="Subsection">
+<a class="toc" name="toc-Subsection-3.3">3.3</a> Incorporating the observation <span class="formula"><i>Z</i><sub><i>n</i> + 1</sub></span>
+</h2>
+<div class="Unindented">
+Now comes the main idea in the Kalman filter. Once we have the probability density function <a class="Reference" href="#eq:kalman-xn1yn1-pdf">(9↑)</a>, how do we update it to reflect the measurement <span class="formula"><i>Z</i><sub><i>n</i> + 1</sub></span>? The measurement <span class="formula"><i>Z</i><sub><i>n</i> + 1</sub></span>, though noisy, is our only knowledge of what is happening inside the system. Therefore it is crucial to incorporate it correctly into our model.
+</div>
+<div class="Indented">
+As Kalman pointed out in his 1960 paper, this is essentially a conditional probability calculation. We know that <span class="formula"><i>Z</i><sub><i>n</i> + 1</sub> = <i>Y</i><sub><i>n</i> + 1</sub> + <i>η</i></span> where <span class="formula"><i>η</i></span> is normally distributed with mean <span class="formula">0</span> and variance <span class="formula"><i>σ</i><sup>2</sup></span>. So we may include <span class="formula"><i>η</i></span> with <span class="formula"><i>X</i><sub><i>n</i> + 1</sub>, <i>Y</i><sub><i>n</i> + 1</sub></span> and write the joint density function as:
+</div>
+<div class="Indented">
+<div class="formula">
+<span class="fraction"><span class="ignored">(</span><span class="numerator"><span class="sqrt"><span class="radical">√</span><span class="ignored">(</span><span class="root"><i>ac</i> − <i>b</i><sup>2</sup></span><span class="ignored">)</span></span></span><span class="ignored">)/(</span><span class="denominator"><i>π</i></span><span class="ignored">)</span></span>exp − <span class="symbol">(</span><i>a</i><span class="symbol">(</span><i>X</i><sub><i>n</i> + 1</sub> − <i>μ</i><span class="symbol">)</span><sup>2</sup> + 2<i>b</i><span class="symbol">(</span><i>X</i><sub><i>n</i> + 1</sub> − <i>μ</i><span class="symbol">)</span><span class="symbol">(</span><i>Y</i><sub><i>n</i> + 1</sub> − <i>ν</i><span class="symbol">)</span> + <i>c</i><span class="symbol">(</span><i>Y</i><sub><i>n</i> + 1</sub> − <i>ν</i><span class="symbol">)</span><sup>2</sup><span class="symbol">)</span> × <span class="fraction"><span class="ignored">(</span><span class="numerator">exp( − <i>η</i><sup>2</sup> ⁄ 2<i>σ</i><sup>2</sup>)</span><span class="ignored">)/(</span><span class="denominator"><span class="sqrt"><span class="radical">√</span><span class="ignored">(</span><span class="root">2<i>π</i></span><span class="ignored">)</span></span><i>σ</i></span><span class="ignored">)</span></span>.
+</div>
+Here we make the substitution <span class="formula"><i>η</i> = <i>Z</i><sub><i>n</i> + 1</sub> − <i>Y</i><sub><i>n</i> + 1</sub></span>to bring the observation <span class="formula"><i>Z</i><sub><i>n</i> + 1</sub></span> into the picture. We get <div class="formula">
+<span class="environment"><span class="arrayrow">
+<span class="arraycell align-r">
+<span class="fraction"><span class="ignored">(</span><span class="numerator"><span class="sqrt"><span class="radical">√</span><span class="ignored">(</span><span class="root"><i>ac</i> − <i>b</i><sup>2</sup></span><span class="ignored">)</span></span></span><span class="ignored">)/(</span><span class="denominator"><i>π</i></span><span class="ignored">)</span></span>exp − <span class="symbol">(</span><i>a</i><span class="symbol">(</span><i>X</i><sub><i>n</i> + 1</sub> − <i>μ</i><span class="symbol">)</span><sup>2</sup> + 2<i>b</i><span class="symbol">(</span><i>X</i><sub><i>n</i> + 1</sub> − <i>μ</i><span class="symbol">)</span><span class="symbol">(</span><i>Y</i><sub><i>n</i> + 1</sub> − <i>ν</i><span class="symbol">)</span> + <i>c</i><span class="symbol">(</span><i>Y</i><sub><i>n</i> + 1</sub> − <i>ν</i><span class="symbol">)</span><sup>2</sup><span class="symbol">)</span>
+</span>
+
+</span>
+<span class="arrayrow">
+<span class="arraycell align-r">
+ 
+</span>
+
+</span>
+<span class="arrayrow">
+<span class="arraycell align-r">
+ × <span class="fraction"><span class="ignored">(</span><span class="numerator">exp( − <span class="symbol">(</span><i>Z</i><sub><i>n</i> + 1</sub> − <i>Y</i><sub><i>n</i> + 1</sub><span class="symbol">)</span><sup>2</sup> ⁄ 2<i>σ</i><sup>2</sup>)</span><span class="ignored">)/(</span><span class="denominator"><span class="sqrt"><span class="radical">√</span><span class="ignored">(</span><span class="root">2<i>π</i></span><span class="ignored">)</span></span><i>σ</i></span><span class="ignored">)</span></span>.
+</span>
+
+</span>
+</span>
+</div>
+Now comes a calculation which involves rewriting <div class="formula">
+<i>a</i><span class="symbol">(</span><i>X</i><sub><i>n</i> + 1</sub> − <i>μ</i><span class="symbol">)</span><sup>2</sup> + 2<i>b</i><span class="symbol">(</span><i>X</i><sub><i>n</i> + 1</sub> − <i>μ</i><span class="symbol">)</span><span class="symbol">(</span><i>Y</i><sub><i>n</i> + 1</sub> − <i>ν</i><span class="symbol">)</span> + <i>c</i><span class="symbol">(</span><i>Y</i><sub><i>n</i> + 1</sub> − <i>ν</i><span class="symbol">)</span><sup>2</sup> + <span class="fraction"><span class="ignored">(</span><span class="numerator"><span class="symbol">(</span><i>Z</i><sub><i>n</i> + 1</sub> − <i>Y</i><sub><i>n</i> + 1</sub><span class="symbol">)</span><sup>2</sup></span><span class="ignored">)/(</span><span class="denominator">2<i>σ</i><sup>2</sup></span><span class="ignored">)</span></span>
+</div>
+as <div class="formula">
+<span class="environment"><span class="arrayrow">
+<span class="arraycell align-r">
+<i>a</i><sub><i>n</i> + 1</sub><span class="symbol">(</span><i>X</i><sub><i>n</i> + 1</sub> − <i>μ</i><sub><i>n</i> + 1</sub><span class="symbol">)</span><sup>2</sup> + 2<i>b</i><sub><i>n</i> + 1</sub><span class="symbol">(</span><i>X</i><sub><i>n</i> + 1</sub> − <i>μ</i><sub><i>n</i> + 1</sub><span class="symbol">)</span><span class="symbol">(</span><i>Y</i><sub><i>n</i> + 1</sub> − <i>ν</i><sub><i>n</i> + 1</sub><span class="symbol">)</span> + <i>c</i><sub><i>n</i> + 1</sub><span class="symbol">(</span><i>Y</i><sub><i>n</i> + 1</sub> − <i>ν</i><sub><i>n</i> + 1</sub><span class="symbol">)</span><sup>2</sup>
+</span>
+
+</span>
+<span class="arrayrow">
+<span class="arraycell align-r">
+ 
+</span>
+
+</span>
+<span class="arrayrow">
+<span class="arraycell align-r">
+ + <span class="text"> something that depends upon <span class="ensuremath">Z<sub>n + 1</sub></span>but not <span class="ensuremath">X<sub>n + 1</sub></span>or <span class="ensuremath">Y<sub>n + 1</sub></span>.</span>
+</span>
+
+</span>
+</span>
+</div>
+For those who are comfortable with algebra, this calculation should not be hard. Through this calculation we get that<div class="formula">
+<span class="environment"><span class="arrayrow">
+<span class="arraycell align-r">
+<i>a</i><sub><i>n</i> + 1</sub>
+</span>
+<span class="arraycell align-c">
+ = 
+</span>
+<span class="arraycell align-l">
+<i>a</i>
+</span>
+
+</span>
+<span class="arrayrow">
+<span class="arraycell align-r">
+ 
+</span>
+<span class="arraycell align-c">
+ 
+</span>
+<span class="arraycell align-l">
+ 
+</span>
+
+</span>
+<span class="arrayrow">
+<span class="arraycell align-r">
+<i>b</i><sub><i>n</i> + 1</sub>
+</span>
+<span class="arraycell align-c">
+ = 
+</span>
+<span class="arraycell align-l">
+<i>b</i>
+</span>
+
+</span>
+<span class="arrayrow">
+<span class="arraycell align-r">
+ 
+</span>
+<span class="arraycell align-c">
+ 
+</span>
+<span class="arraycell align-l">
+ 
+</span>
+
+</span>
+<span class="arrayrow">
+<span class="arraycell align-r">
+<i>c</i><sub><i>n</i> + 1</sub>
+</span>
+<span class="arraycell align-c">
+ = 
+</span>
+<span class="arraycell align-l">
+<i>c</i> + <span class="fraction"><span class="ignored">(</span><span class="numerator">1</span><span class="ignored">)/(</span><span class="denominator">2<i>σ</i><sup>2</sup></span><span class="ignored">)</span></span>.
+</span>
+
+</span>
+</span>
+</div>
+In addition, <span class="formula"><i>μ</i><sub><i>n</i> + 1</sub></span> and <span class="formula"><i>ν</i><sub><i>n</i> + 1</sub></span> are obtained by solving the equations <div class="formula">
+<span class="environment"><span class="arrayrow">
+<span class="arraycell align-r">
+ − 2<i>a</i>(<i>μ</i><sub><i>n</i> + 1</sub> − <i>μ</i>) − 2<i>b</i><span class="symbol">(</span><i>ν</i><sub><i>n</i> + 1</sub> − <i>ν</i><span class="symbol">)</span>
+</span>
+<span class="arraycell align-c">
+ = 
+</span>
+<span class="arraycell align-l">
+0
+</span>
+
+</span>
+<span class="arrayrow">
+<span class="arraycell align-r">
+ 
+</span>
+<span class="arraycell align-c">
+ 
+</span>
+<span class="arraycell align-l">
+ 
+</span>
+
+</span>
+<span class="arrayrow">
+<span class="arraycell align-r">
+ − 2<i>b</i><span class="symbol">(</span><i>μ</i><sub><i>n</i> + 1</sub> − <i>μ</i><span class="symbol">)</span> − 2<span class="array"><span class="arrayrow"><span class="bracket align-left">⎛</span></span><span class="arrayrow"><span class="bracket align-left">⎝</span></span></span><i>c</i> + <span class="fraction"><span class="ignored">(</span><span class="numerator">1</span><span class="ignored">)/(</span><span class="denominator">2<i>σ</i><sup>2</sup></span><span class="ignored">)</span></span><span class="array"><span class="arrayrow"><span class="bracket align-right">⎞</span></span><span class="arrayrow"><span class="bracket align-right">⎠</span></span></span><span class="symbol">(</span><i>ν</i><sub><i>n</i> + 1</sub> − <i>ν</i><span class="symbol">)</span>
+</span>
+<span class="arraycell align-c">
+ = 
+</span>
+<span class="arraycell align-l">
+ − <span class="fraction"><span class="ignored">(</span><span class="numerator"><i>Z</i><sub><i>n</i> + 1</sub></span><span class="ignored">)/(</span><span class="denominator"><i>σ</i><sup>2</sup></span><span class="ignored">)</span></span>.
+</span>
+
+</span>
+</span>
+</div>
+Notice that observation <span class="formula"><i>Z</i><sub><i>n</i> + 1</sub></span> is making us adjust the expected positions. 
+</div>
+<div class="Indented">
+At this point the filter equations are complete. To go from time step <span class="formula"><i>n</i> + 1</span> to time step <span class="formula"><i>n</i> + 2</span>, we repeat the same process. To begin the filter, we have to make a random guess for <span class="formula"><i>μ</i><sub>0</sub>, <i>ν</i><sub>0</sub></span> as well as the parameters <span class="formula"><i>a</i><sub>0</sub>, <i>b</i><sub>0</sub>, <i>c</i><sub>0</sub></span>. Thereafter the Kalman filter uses the observations to update the estimated state at every step.
+</div>
+<div class="Indented">
+In Figure <a class="Reference" href="#fig:Kalman">2↑</a> (b) and (c), the estimates for <span class="formula"><i>x</i><sub><i>n</i></sub>, <i>y</i><sub><i>n</i></sub></span> that are graphed are the means <span class="formula"><i>μ</i><sub><i>n</i></sub>, <i>ν</i><sub><i>n</i></sub></span>.
+</div>
+
+<hr class="footer"/>
+<div class="footer">
+Copyright (C) 2014 Divakar Viswanath
+</div>
+</div>
+</body>
+</html>
