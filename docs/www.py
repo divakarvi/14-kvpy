@@ -93,6 +93,7 @@ if __name__ == '__main__':
 
     cmd = 'cp lyx.css ' + fname_pfx + '.html ~/Dropbox/Public/14-kvpy/'
     os.system(cmd)
+    print('copying to Dropbox')
     cmd = 'cp -r figs ~/Dropbox/Public/14-kvpy/'
     os.system(cmd)
 
