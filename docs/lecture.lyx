@@ -110,7 +110,7 @@ LatexCommand tableofcontents
 \end_layout
 
 \begin_layout Section
-Introduction: random variables, mean, and variance
+Introduction: random variables, expectation/mean, and variance
 \end_layout
 
 \begin_layout Standard
@@ -125,15 +125,14 @@ In this lecture, we will introduce the normal distribution, which is one
 To gain an understanding of the normal distribution, we will begin with
  a simple example and rigorously deduce the central limit theorem for that
  example.
- The central limit theorem gives a partial explanation for why the normal
+ The central limit theorem gives a partial explanation of why the normal
  distribution occurs in so many situations.
  
 \end_layout
 
 \begin_layout Standard
-Our next aim is to deduce a very special case of the Kalman filter.
- The Kalman filter is undoubtedly one of the most consequential ideas in
- applied mathematics.
+Our next step is to deduce a very special case of the Kalman filter.
+ The Kalman filter is one of the most consequential ideas in applied mathematics.
  Its applications are profound.
  The cell phone in your pocket may have a Kalman filter.
  Although I have no direct knowledge, I am certain that India's Mars mission
@@ -142,7 +141,7 @@ Our next aim is to deduce a very special case of the Kalman filter.
 \end_layout
 
 \begin_layout Standard
-The Kalman filter is a method for the systematic estimation of means and
+The Kalman filter is a method for the systematic calculation of means and
  variances.
  So we will begin by understanding random variables, means or expectations,
  and variances.
@@ -157,7 +156,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename ../figs-python/heights.pdf
+	filename ../figs/heights.pdf
 	scale 50
 
 \end_inset
@@ -202,8 +201,7 @@ reference "fig:intro-heights-normal-law"
 
 \end_inset
 
- provides some motivation for our study of the normal law as well as means
- and variances.
+ provides motivation for our study of the normal law.
  The figure has two items in it.
  The first item is a histogram.
  The heights of 1078 fathers (as well as their sons, but we ignore the sons)
@@ -212,7 +210,7 @@ reference "fig:intro-heights-normal-law"
 \begin_inset Formula $59$
 \end_inset
 
- inches (which is an inch short fo 
+ inches (which is an inch short of 
 \begin_inset Formula $5$
 \end_inset
 
@@ -378,7 +376,7 @@ Certain other random variables may be specified in terms of a continuous
 
 \family default
 We require the normalization condition 
-\begin_inset Formula $\int_{-\infty}^{\infty}p(x)\, dx=0$
+\begin_inset Formula $\int_{-\infty}^{\infty}p(x)\, dx=1$
 \end_inset
 
 .
@@ -612,6 +610,7 @@ Exercise: Prove the above identity assuming the random variables
 \end_inset
 
 .
+ You may assume the existence of all integrals that arise.
 \end_layout
 
 \begin_layout Description
@@ -699,10 +698,10 @@ Exercise: If
 
  are independent random variables and may be represented using a density
  function, prove that 
-\begin_inset Formula $\mathbb{E}XY=\mathbb{E}X\:\mathbb{E}Y.$
+\begin_inset Formula $\mathbb{E}XY=\mathbb{E}X\:\mathbb{E}Y$
 \end_inset
 
-
+, assuming all integrals that arise to exist.
 \end_layout
 
 \begin_layout Description
@@ -994,7 +993,7 @@ The answer to that question is not fully understood.
  In this section, we derive a central limit theorem.
  When a lot of random variables are added and then suitably normalized,
  the distribution of their sum tends to converge to the normal distribution.
- In this section, we will work through a single example to understand that
+ In this section, we will work with a single example to understand that
  phenomenon.
 \end_layout
 
@@ -1007,8 +1006,7 @@ independent
  random variables.
  There are many, many examples where the sum of dependent random variables
  is known to converge to the normal distribution.
- Nevertheless the basic example we tackle assumes the random variables that
- are summed to be independent.
+ Nevertheless the basic example we tackle assumes independence.
 \end_layout
 
 \begin_layout Subsection
@@ -1065,8 +1063,8 @@ The distribution of the random variable
 \end_inset
 
  is very far from being normal.
- However, we will see that summing many random variables with same distribution
- as 
+ However, we will see that summing many random variables with the same distribut
+ion as 
 \begin_inset Formula $X$
 \end_inset
 
@@ -1481,7 +1479,7 @@ To complete the proof we may let
  to be purely imaginary and then use the theory of Fourier transforms.
  It is not good to sneak in a major idea like Fourier transforms in the
  middle of some other discussion.
- Therefore we leave out this part of the proof.
+ Therefore we leave out that part of the proof.
  
 \end_layout
 
@@ -1568,7 +1566,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename ../figs-python/signal.pdf
+	filename ../figs/signal.pdf
 	scale 40
 
 \end_inset
@@ -1604,7 +1602,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename ../figs-python/xest.pdf
+	filename ../figs/xest.pdf
 	scale 40
 
 \end_inset
@@ -1636,7 +1634,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename ../figs-python/yest.pdf
+	filename ../figs/yest.pdf
 	scale 40
 
 \end_inset
@@ -1737,11 +1735,30 @@ To begin with there is dynamics.
 \end_inset
 
  is 
+\begin_inset Box Boxed
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "100col%"
+special "none"
+height "1in"
+height_special "totalheight"
+status open
+
+\begin_layout Plain Layout
 \begin_inset Formula 
 \begin{eqnarray}
 x_{n+1} & = & \frac{x_{n}}{\sqrt{2}}-\frac{y_{n}}{\sqrt{2}}\nonumber \\
 y_{n+1} & = & \frac{x_{n}}{\sqrt{2}}+\frac{y_{n}}{\sqrt{2}}\label{eq:kalman-dynamics}
 \end{eqnarray}
+
+\end_inset
+
+
+\end_layout
 
 \end_inset
 
@@ -1761,22 +1778,22 @@ If the state
 The dynamics here is exceedingly simple.
  However, for motivation, we may think of it as a physical model of the
  motion of a rocket.
- The real equations in that situation will be more complicated.
- However, the simplification is still good enough to help us understand
- the most import idea behind the Kalman filter.
+ The real equations in such situations will be more complicated.
+ However, the simplification is good enough to help us understand the most
+ import idea behind the Kalman filter.
 \end_layout
 
 \begin_layout Standard
-Now if a rocket is shooting through space, we may not be able to get accurate
+If a rocket is shooting through space, we may not be able to get accurate
  measurement of its position.
- Here we assume that the observable is 
+ Here we assume that the measured quantity is 
 \begin_inset Formula $z_{n}$
 \end_inset
 
  which is given by 
 \begin_inset Formula 
 \begin{equation}
-z_{n}=x_{n}+\text{Gaussian noise of mean \ensuremath{0} and variance \ensuremath{\sigma^{2}}}.\label{eq:kalman-zn}
+z_{n}=y_{n}+\text{Gaussian noise \ensuremath{\eta}of mean \ensuremath{0}and variance \ensuremath{\sigma^{2}}}.\label{eq:kalman-zn}
 \end{equation}
 
 \end_inset
@@ -1812,7 +1829,7 @@ reference "eq:kalman-dynamics"
 \end_inset
 
  which is 
-\begin_inset Formula $y_{n}+\text{noise}$
+\begin_inset Formula $y_{n}+\text{the noise \ensuremath{\eta}}$
 \end_inset
 
 .
@@ -1862,8 +1879,470 @@ The estimated signals in parts (b) and (c) of the same figure are much more
  accurate.
  The estimates are certainly tracking the signal.
  That is the magic of the Kalman filter.
- In spite of the fact, that the observations are noisy, the filter manages
- to reconstruct the current state with reasonable accuracy.
+ In spite of the fact that the observations are noisy, the filter manages
+ to reconstruct the current state with good accuracy.
+\end_layout
+
+\begin_layout Subsection
+A geometric account of the Kalman filter
+\end_layout
+
+\begin_layout Standard
+We will first give a purely geometric account of the Kalman filter.
+ This account is a little imprecise at the end, yet contains the basic idea.
+ 
+\end_layout
+
+\begin_layout Standard
+We may represent the normal distribution of density function 
+\begin_inset Formula 
+\[
+\frac{1}{\sqrt{2\pi}\sigma}\exp\left(-\frac{x^{2}}{2\sigma^{2}}\right)
+\]
+
+\end_inset
+
+as a line segment as shown in Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:normal1d"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../figs/normal1d.pdf
+	scale 40
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:normal1d"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+The red line segment is centered at the mean and its width is equal to the
+ width of the density function at one half its peak height.
+\end_layout
+
+\begin_layout Standard
+In the dynamical equations 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:kalman-dynamics"
+
+\end_inset
+
+, the state is a point in the 
+\begin_inset Formula $x,y$
+\end_inset
+
+ plane and therefore two dimensional.
+ So we need the two dimensional normal distribution.
+ Without going into the algebra, we may represent the two dimensional normal
+ distribution as shown in Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:normal2d"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../figs/normal2d.pdf
+	scale 40
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:normal2d"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In this case, the curve obtained by taking section of the probability density
+ function at one half its peak height is an ellipse.
+ The center of this ellipse is the mean of the normal distribution.
+ 
+\end_layout
+
+\begin_layout Standard
+After adopting this convention, we may think of the two dimensional normal
+ distribution as an ellipse in the plane.
+ In our example, the state 
+\begin_inset Formula $(x,y)$
+\end_inset
+
+ is two dimensional.
+ We do not know the state exactly but use the normal distribution to approximate
+ it.
+ The particular normal distribution we choose will be represented as an
+ ellipse in the 
+\begin_inset Formula $x,y$
+\end_inset
+
+ plane.
+\end_layout
+
+\begin_layout Standard
+Suppose we have an ellipse to approximate the state 
+\begin_inset Formula $(x_{n},y_{n})$
+\end_inset
+
+.
+ If we move to 
+\begin_inset Formula $(x_{n+1},y_{n+1})$
+\end_inset
+
+ following the dynamical law 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:kalman-dynamics"
+
+\end_inset
+
+, then the ellipse is updated as in Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:rotate"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../figs/rotate.pdf
+	scale 40
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:rotate"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In this figure, the approximation to the state at time 
+\begin_inset Formula $n$
+\end_inset
+
+ is the dashed ellipse.
+ The approximation to the state at 
+\begin_inset Formula $n+1$
+\end_inset
+
+ is then the solid ellipse.
+\end_layout
+
+\begin_layout Standard
+The key to the Kalman filter is the way it handles the noisy observation.
+ The noisy observation at time 
+\begin_inset Formula $n+1$
+\end_inset
+
+ is 
+\begin_inset Formula $z_{n+1}=y_{n+1}+\eta$
+\end_inset
+
+, where 
+\begin_inset Formula $\eta$
+\end_inset
+
+ is normally distributed.
+ The next step is to represent our estimate of the state at time 
+\begin_inset Formula $n+1$
+\end_inset
+
+ along with the noise in the same picture.
+ Following our earlier convention this representation will be an ellipsoid
+ as in Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:add-noise"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../figs/add_noise.pdf
+	scale 40
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:add-noise"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The ellipse in the 
+\begin_inset Formula $x,y$
+\end_inset
+
+, which approximated the state at time 
+\begin_inset Formula $n+1$
+\end_inset
+
+, has turned into an ellipsoid.
+ The 
+\begin_inset Formula $\eta$
+\end_inset
+
+ dimension has been added to the 
+\begin_inset Formula $x-y$
+\end_inset
+
+ plane.
+\end_layout
+
+\begin_layout Standard
+The measured quantity is 
+\begin_inset Formula $z_{n+1}=y_{n+1}+\eta$
+\end_inset
+
+.
+ The known value of 
+\begin_inset Formula $z_{n+1}$
+\end_inset
+
+ corresponds to a plane in 
+\begin_inset Formula $x,y,\eta$
+\end_inset
+
+ space.
+ This plane cuts the ellipsoid as in Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:section"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../figs/section.pdf
+	scale 40
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:section"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The intersection of the plane with the ellipsoid is an ellipse.
+ The Kalman filter projects this ellipse to the 
+\begin_inset Formula $x,y$
+\end_inset
+
+ plane, where it becomes another ellipse.
+ This ellipse become our updated approximation to the state at time 
+\begin_inset Formula $n+1$
+\end_inset
+
+, which includes the effect of the observation 
+\begin_inset Formula $z_{n+1}$
+\end_inset
+
+.
+ The same process is repeated at every step.
+ 
+\end_layout
+
+\begin_layout Standard
+If you follow this picture carefully, you will notice that taking a section
+ of the ellipsoid and projecting to the 
+\begin_inset Formula $x,y$
+\end_inset
+
+ plane can shift the center of the ellipse in the 
+\begin_inset Formula $x,y$
+\end_inset
+
+ plane.
+ The projected ellipse may need to be enlarged to match our convention for
+ representing the normal distribution.
+ Yet as a result of successive measurements each of which involves taking
+ a section of the ellipsoid, the projected ellipses begin to shrink and
+ shrink.
+ That is why the Kalman filter can track cell phones and rockets and satellites
+ accurately from even noisy observations.
+\end_layout
+
+\begin_layout Standard
+To actually implement the Kalman filter, we must turn this picture into
+ algebraic formulas.
+ That is what we now turn to.
 \end_layout
 
 \begin_layout Subsection
@@ -1941,7 +2420,7 @@ Exercise: Use symmetry to deduce that
 Exercise: For a greater challenge with handling integrals, prove that 
 \begin_inset Formula 
 \[
-\mathbb{E}\left(X_{n}-\mu_{n}\right)^{2}=\frac{a_{n}}{2\left(a_{n}c_{n}-b_{n}^{2}\right)}\quad\mathbb{E}\left(Y_{n}-\nu_{n}\right)^{2}=\frac{c_{n}}{2\left(a_{n}c_{n}-b_{n}^{2}\right)}.
+\mathbb{E}\left(X_{n}-\mu_{n}\right)^{2}=\frac{a_{n}}{2\left(a_{n}c_{n}-b_{n}^{2}\right)}\quad\mathbb{\text{and}\quad E}\left(Y_{n}-\nu_{n}\right)^{2}=\frac{c_{n}}{2\left(a_{n}c_{n}-b_{n}^{2}\right)}.
 \]
 
 \end_inset
@@ -2250,7 +2729,7 @@ At this point the filter equations are complete.
 \end_inset
 
 , we repeat the same process.
- To begin the filter, we have to make a random guess for 
+ To begin the filter, we may make a guess for 
 \begin_inset Formula $\mu_{0},\nu_{0}$
 \end_inset
 
@@ -2259,8 +2738,11 @@ At this point the filter equations are complete.
 \end_inset
 
 .
- Thereafter the Kalman filter uses the observations to update the estimated
- state at every step.
+ Thereafter the Kalman filter uses the measurements 
+\begin_inset Formula $Z_{n}$
+\end_inset
+
+ to update the estimated state at every step.
 \end_layout
 
 \begin_layout Standard

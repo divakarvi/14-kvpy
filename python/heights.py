@@ -6,7 +6,7 @@ def get_pearson_data():
     import os
     assert os.path.isfile('../data/Pearson.txt')
     data = np.loadtxt('../data/Pearson.txt', comments = '#')
-    data = data[:,0] #discard sons
+    data = data[:,0]
     mean = np.mean(data)
     sigma = np.std(data)#sigma**2 = variance, sigma = std deviation
     return data, mean, sigma

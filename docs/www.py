@@ -79,6 +79,8 @@ def lyx2html(fname_pfx):
     print(cmd)
     os.system(cmd)
 
+
+
 if __name__ == '__main__':
     assert len(sys.argv) == 2
     fname_pfx = sys.argv[1]
@@ -89,9 +91,8 @@ if __name__ == '__main__':
     lyx2lyx(fname_pfx)
     lyx2html(fname_pfx)
 
-    yno = raw_input('copy to Dropbox? y/n: ')
-    if yno == 'y':
-        cmd = 'cp lecture.html lyx.css ~/Dropbox/Public/14-kvpy/'
-        os.system(cmd)
-        cmd = 'cp -r figs-python ~/Dropbox/Public/14-kvpy/'
-        os.system(cmd)
+    cmd = 'cp lyx.css ' + fname_pfx + '.html ~/Dropbox/Public/14-kvpy/'
+    os.system(cmd)
+    cmd = 'cp -r figs ~/Dropbox/Public/14-kvpy/'
+    os.system(cmd)
+

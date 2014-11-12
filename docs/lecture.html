@@ -4,7 +4,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <meta name="generator" content="http://www.nongnu.org/elyxer/"/>
-<meta name="create-date" content="2014-11-05"/>
+<meta name="create-date" content="2014-11-10"/>
 <link rel="stylesheet" href="lyx.css" type="text/css" media="all"/>
 <title>The Normal Distribution from Gauss to Kalman</title>
 </head>
@@ -28,7 +28,7 @@ Table of Contents
 </div>
 <div class="tocindent">
 <div class="toc">
-<a class="Link" href="#toc-Section-1">Section 1: Introduction: random variables, mean, and variance</a>
+<a class="Link" href="#toc-Section-1">Section 1: Introduction: random variables, expectation/mean, and variance</a>
 </div>
 <div class="tocindent">
 <div class="toc">
@@ -66,38 +66,41 @@ Table of Contents
 </div>
 <div class="tocindent">
 <div class="toc">
-<a class="Link" href="#toc-Subsection-3.1">Subsection 3.1: Current state according to Kalman</a>
+<a class="Link" href="#toc-Subsection-3.1">Subsection 3.1: A geometric account of the Kalman filter</a>
 </div>
 <div class="toc">
-<a class="Link" href="#toc-Subsection-3.2">Subsection 3.2: Updating from <span class="formula"></span> to <span class="formula"></span></a>
+<a class="Link" href="#toc-Subsection-3.2">Subsection 3.2: Current state according to Kalman</a>
 </div>
 <div class="toc">
-<a class="Link" href="#toc-Subsection-3.3">Subsection 3.3: Incorporating the observation <span class="formula"></span></a>
+<a class="Link" href="#toc-Subsection-3.3">Subsection 3.3: Updating from <span class="formula"></span> to <span class="formula"></span></a>
+</div>
+<div class="toc">
+<a class="Link" href="#toc-Subsection-3.4">Subsection 3.4: Incorporating the observation <span class="formula"></span></a>
 </div>
 </div>
 </div>
 
 </div>
 <h1 class="Section">
-<a class="toc" name="toc-Section-1">1</a> Introduction: random variables, mean, and variance
+<a class="toc" name="toc-Section-1">1</a> Introduction: random variables, expectation/mean, and variance
 </h1>
 <div class="Unindented">
 In this lecture, we will introduce the normal distribution, which is one of the great ideas in mathematics. Its applicability is very wide, touching every area of the sciences. In addition, there are mathematical questions related to it that are still a subject of active research.
 </div>
 <div class="Indented">
-To gain an understanding of the normal distribution, we will begin with a simple example and rigorously deduce the central limit theorem for that example. The central limit theorem gives a partial explanation for why the normal distribution occurs in so many situations. 
+To gain an understanding of the normal distribution, we will begin with a simple example and rigorously deduce the central limit theorem for that example. The central limit theorem gives a partial explanation of why the normal distribution occurs in so many situations. 
 </div>
 <div class="Indented">
-Our next aim is to deduce a very special case of the Kalman filter. The Kalman filter is undoubtedly one of the most consequential ideas in applied mathematics. Its applications are profound. The cell phone in your pocket may have a Kalman filter. Although I have no direct knowledge, I am certain that India’s Mars mission Mangalyaan makes extensive use of Kalman filters. 
+Our next step is to deduce a very special case of the Kalman filter. The Kalman filter is one of the most consequential ideas in applied mathematics. Its applications are profound. The cell phone in your pocket may have a Kalman filter. Although I have no direct knowledge, I am certain that India’s Mars mission Mangalyaan makes extensive use of Kalman filters. 
 </div>
 <div class="Indented">
-The Kalman filter is a method for the systematic estimation of means and variances. So we will begin by understanding random variables, means or expectations, and variances.
+The Kalman filter is a method for the systematic calculation of means and variances. So we will begin by understanding random variables, means or expectations, and variances.
 </div>
 <div class="Indented">
 <div class="float">
 <a class="Label" name="fig:intro-heights-normal-law"> </a><div class="figure">
 <div class="center">
-<img class="embedded" src="figs-python/heights.png" alt="figure figs-python/heights.png" style="width: 288px; max-width: 576px; height: 216px; max-height: 432px;"/>
+<img class="embedded" src="figs/heights.png" alt="figure figs/heights.png" style="width: 288px; max-width: 576px; height: 216px; max-height: 432px;"/>
 
 </div>
 <div class="caption">
@@ -110,7 +113,7 @@ Figure 1 Normal law fit to the height distribution of 1078 subjects (fathers) 
 
 </div>
 <div class="Indented">
-Figure <a class="Reference" href="#fig:intro-heights-normal-law">1↑</a> provides some motivation for our study of the normal law as well as means and variances. The figure has two items in it. The first item is a histogram. The heights of 1078 fathers (as well as their sons, but we ignore the sons) were recorded by the eminent statistician Karl Pearson. The minimum recorded height was <span class="formula">59</span> inches (which is an inch short fo <span class="formula">5</span> feet) and the maximum was <span class="formula">75.4</span> inches (which is <span class="formula">3.4</span> inches above <span class="formula">6</span> feet). To obtain this histogram, this range of heights is divided into <span class="formula">15</span> bins so that every bin is approximately an inch. The vertical axis of the figure shows the number of persons in each bin.
+Figure <a class="Reference" href="#fig:intro-heights-normal-law">1↑</a> provides motivation for our study of the normal law. The figure has two items in it. The first item is a histogram. The heights of 1078 fathers (as well as their sons, but we ignore the sons) were recorded by the eminent statistician Karl Pearson. The minimum recorded height was <span class="formula">59</span> inches (which is an inch short of <span class="formula">5</span> feet) and the maximum was <span class="formula">75.4</span> inches (which is <span class="formula">3.4</span> inches above <span class="formula">6</span> feet). To obtain this histogram, this range of heights is divided into <span class="formula">15</span> bins so that every bin is approximately an inch. The vertical axis of the figure shows the number of persons in each bin.
 </div>
 <div class="Indented">
 The second item in Figure <a class="Reference" href="#fig:intro-heights-normal-law">1↑</a> is the normal fit to the heights data. As you can see the fit is good but not very accurate. The convergence to the normal law is quite slow, typically at the rate <span class="formula"><i>n</i><sup> − 1 ⁄ 2</sup></span> if the number of data points is <span class="formula"><i>n</i></span>. We will understand Figure <a class="Reference" href="#fig:intro-heights-normal-law">1↑</a> better as we progress in this lecture, but as far as I am aware there are still many things in it that are yet not understood.
@@ -134,7 +137,7 @@ Certain random variables are discrete. That means they take values in a finite s
 Certain other random variables may be specified in terms of a continuous probability density function <span class="formula"><i>p</i>(<i>x</i>)</span>, where <span class="formula"><i>x</i> ∈ ℝ</span>. In this case,<tt><div class="formula">
 ℙ<span class="symbol">(</span><i>a</i> ≤ <i>X</i> ≤ <i>b</i><span class="symbol">)</span> = <span class="limits"><sup class="limit"><i>b</i></sup><span class="limit">⌠</span><span class="limit">⌡</span><sub class="limit"><i>a</i></sub></span><i>p</i>(<i>x</i>) <i>dx</i>.
 </div>
-</tt>We require the normalization condition <span class="formula"><span class="limits"><span class="limit">∫</span></span><span class="scripts"><sup class="script">∞</sup><sub class="script"> − ∞</sub></span><i>p</i>(<i>x</i>) <i>dx</i> = 0</span>. 
+</tt>We require the normalization condition <span class="formula"><span class="limits"><span class="limit">∫</span></span><span class="scripts"><sup class="script">∞</sup><sub class="script"> − ∞</sub></span><i>p</i>(<i>x</i>) <i>dx</i> = 1</span>. 
 </div>
 <div class="Indented">
 Notice that discrete random variables cannot be represented using densities. That problem can be dealt with fairly easily by passing to the Stieltjes integral, which is the next step from the Riemann integral. One can make up examples of random variables that cannot be represented using the Stieltjes integral. Modern definitions of random variables rely upon the Lebesgue theory and its extensions.
@@ -278,7 +281,7 @@ If <span class="formula"><i>X</i><sub>1</sub>, …, <i>X</i><sub><i>n</i></s
 The proof does not assume that the <span class="formula"><i>X</i><sub><i>i</i></sub></span> are independent.
 </div>
 <div class="Description">
-<span class="Description-entry">Exercise:</span> Prove the above identity assuming the random variables <span class="formula"><i>X</i><sub>1</sub>, …, <i>X</i><sub><i>n</i></sub></span> to be represented by the density function <span class="formula"><i>p</i><span class="symbol">(</span><i>x</i><sub>1</sub>, …, <i>x</i><sub><i>n</i></sub><span class="symbol">)</span></span>.
+<span class="Description-entry">Exercise:</span> Prove the above identity assuming the random variables <span class="formula"><i>X</i><sub>1</sub>, …, <i>X</i><sub><i>n</i></sub></span> to be represented by the density function <span class="formula"><i>p</i><span class="symbol">(</span><i>x</i><sub>1</sub>, …, <i>x</i><sub><i>n</i></sub><span class="symbol">)</span></span>. You may assume the existence of all integrals that arise.
 </div>
 <div class="Description">
 <span class="Description-entry">Exercise:</span> Let <span class="formula"><i>π</i><sub>1</sub>, …, <i>π</i><sub><i>n</i></sub></span> be a random permutation of the numbers <span class="formula">1, …, <i>n</i></span> which is equally likely to be any one of the <span class="formula"><i>n</i>!</span> possible permutations. We say that the permutation has a descent at the position <span class="formula"><i>i</i></span> if and only if <span class="formula"><i>π</i><sub><i>i</i></sub> &gt; <i>π</i><sub><i>i</i> + 1</sub></span>. A permutation may have <span class="formula"><i>d</i></span> descents with <span class="formula">0 ≤ <i>d</i> ≤ <i>n</i> − 1.</span>
@@ -308,7 +311,7 @@ Prove that the expected number of descents is <span class="formula">(<i>n</i> 
 <span class="Description-entry">Exercise:</span> Give an example of a random variable whose expectation is <span class="formula">∞</span>. Give an example of a random variable whose expectation does not exist.
 </div>
 <div class="Description">
-<span class="Description-entry">Exercise:</span> If <span class="formula"><i>X</i></span> and <span class="formula"><i>Y</i></span> are independent random variables and may be represented using a density function, prove that <span class="formula">𝔼<i>XY</i> = 𝔼<i>X</i> 𝔼<i>Y</i>.</span>
+<span class="Description-entry">Exercise:</span> If <span class="formula"><i>X</i></span> and <span class="formula"><i>Y</i></span> are independent random variables and may be represented using a density function, prove that <span class="formula">𝔼<i>XY</i> = 𝔼<i>X</i> 𝔼<i>Y</i></span>, assuming all integrals that arise to exist.
 </div>
 <div class="Description">
 <span class="Description-entry">Exercise:</span> If <span class="formula"><i>X</i></span> and <span class="formula"><i>Y</i></span> are independent random variables and may be represented using a density function, as above, and <span class="formula"><i>f</i></span> and <span class="formula"><i>g</i></span> are any continuous functions prove that <div class="formula">
@@ -380,10 +383,10 @@ Figure <a class="Reference" href="#fig:intro-heights-normal-law">1↑</a> was ob
 If the mean <span class="formula"><i>μ</i></span> and the variance <span class="formula"><i>σ</i><sup>2</sup></span> match those of the data, the normal distribution is a good fit to Pearson’s heights data set (see Figure <a class="Reference" href="#fig:intro-heights-normal-law">1↑</a>). Why does the normal distribution fit the height data set? 
 </div>
 <div class="Indented">
-The answer to that question is not fully understood. In this section, we derive a central limit theorem. When a lot of random variables are added and then suitably normalized, the distribution of their sum tends to converge to the normal distribution. In this section, we will work through a single example to understand that phenomenon.
+The answer to that question is not fully understood. In this section, we derive a central limit theorem. When a lot of random variables are added and then suitably normalized, the distribution of their sum tends to converge to the normal distribution. In this section, we will work with a single example to understand that phenomenon.
 </div>
 <div class="Indented">
-It used to be believed that the convergence to the normal distribution was a consequence of summing <i>independent</i> random variables. There are many, many examples where the sum of dependent random variables is known to converge to the normal distribution. Nevertheless the basic example we tackle assumes the random variables that are summed to be independent.
+It used to be believed that the convergence to the normal distribution was a consequence of summing <i>independent</i> random variables. There are many, many examples where the sum of dependent random variables is known to converge to the normal distribution. Nevertheless the basic example we tackle assumes independence.
 </div>
 <h2 class="Subsection">
 <a class="toc" name="toc-Subsection-2.1">2.1</a> Statement of the theorem
@@ -401,7 +404,7 @@ In addition, <div class="formula">
 The random variable <span class="formula"><i>X</i></span> has mean <span class="formula">0</span> and variance <span class="formula">1</span>.
 </div>
 <div class="Indented">
-The distribution of the random variable <span class="formula"><i>X</i></span> is very far from being normal. However, we will see that summing many random variables with same distribution as <span class="formula"><i>X</i></span> gives the normal distribution. 
+The distribution of the random variable <span class="formula"><i>X</i></span> is very far from being normal. However, we will see that summing many random variables with the same distribution as <span class="formula"><i>X</i></span> gives the normal distribution. 
 </div>
 <div class="Indented">
 Let <span class="formula"><i>X</i><sub>1</sub>, …, <i>X</i><sub><i>n</i></sub></span> be a sequence of independent random variables each of which, like <span class="formula"><i>X</i></span>, is equally likely to be <span class="formula"> + 1</span> or <span class="formula"> − 1</span>. Consider the sum <div class="formula">
@@ -830,7 +833,7 @@ We are now almost on the cusp of completing the proof of the central limit theor
 where <span class="formula"><span class="scriptfont">N</span></span> is a random variable of the standard normal distribution. This is true for any <span class="formula"><i>t</i></span> real or complex.
 </div>
 <div class="Indented">
-To complete the proof we may let <span class="formula"><i>t</i> = <i>i</i><i>ω</i></span> to be purely imaginary and then use the theory of Fourier transforms. It is not good to sneak in a major idea like Fourier transforms in the middle of some other discussion. Therefore we leave out this part of the proof. 
+To complete the proof we may let <span class="formula"><i>t</i> = <i>i</i><i>ω</i></span> to be purely imaginary and then use the theory of Fourier transforms. It is not good to sneak in a major idea like Fourier transforms in the middle of some other discussion. Therefore we leave out that part of the proof. 
 </div>
 <div class="Description">
 <span class="Description-entry">Exercise:</span> Let <span class="formula"><i>X</i></span> take the value <span class="formula"> + 1</span> with probability <span class="formula"><i>p</i></span> and the value <span class="formula"> − 1</span> with probability <span class="formula">1 − <i>p</i></span>. Calculate the mean <span class="formula"><i>μ</i></span> and variance <span class="formula"><i>σ</i><sup>2</sup></span> of <span class="formula"><i>X</i></span>.
@@ -850,7 +853,7 @@ To complete the proof we may let <span class="formula"><i>t</i> = <i>i</i><i
 <span class="float">
 <div class="figure">
 <div class="center">
-<img class="embedded" src="figs-python/signal.png" alt="figure figs-python/signal.png" style="width: 230px; max-width: 576px; height: 172px; max-height: 432px;"/>
+<img class="embedded" src="figs/signal.png" alt="figure figs/signal.png" style="width: 230px; max-width: 576px; height: 172px; max-height: 432px;"/>
 <div class="caption">
 (a) 
 </div>
@@ -864,7 +867,7 @@ To complete the proof we may let <span class="formula"><i>t</i> = <i>i</i><i
 <span class="float">
 <div class="figure">
 <div class="center">
-<img class="embedded" src="figs-python/xest.png" alt="figure figs-python/xest.png" style="width: 230px; max-width: 576px; height: 172px; max-height: 432px;"/>
+<img class="embedded" src="figs/xest.png" alt="figure figs/xest.png" style="width: 230px; max-width: 576px; height: 172px; max-height: 432px;"/>
 <div class="caption">
 (b) 
 </div>
@@ -877,7 +880,7 @@ To complete the proof we may let <span class="formula"><i>t</i> = <i>i</i><i
 <span class="float">
 <div class="figure">
 <div class="center">
-<img class="embedded" src="figs-python/yest.png" alt="figure figs-python/yest.png" style="width: 230px; max-width: 576px; height: 172px; max-height: 432px;"/>
+<img class="embedded" src="figs/yest.png" alt="figure figs/yest.png" style="width: 230px; max-width: 576px; height: 172px; max-height: 432px;"/>
 <div class="caption">
 (c) 
 </div>
@@ -902,7 +905,8 @@ Figure 2 In part (a), <span class="formula"><i>x</i></span> and <span class="f
 What is the Kalman filter? Figure <a class="Reference" href="#fig:Kalman">2↑</a> will help us answer that question.
 </div>
 <div class="Indented">
-To begin with there is dynamics. If the current state is <span class="formula">(<i>x</i><sub><i>n</i></sub>, <i>y</i><sub><i>n</i></sub>)</span> the state at <span class="formula"><i>n</i> + 1</span> is <div class="formula">
+To begin with there is dynamics. If the current state is <span class="formula">(<i>x</i><sub><i>n</i></sub>, <i>y</i><sub><i>n</i></sub>)</span> the state at <span class="formula"><i>n</i> + 1</span> is <div class="Boxed" style="width: 100%;">
+<div class="formula">
 <a class="eqnumber" name="eq:kalman-dynamics">(6) </a><span class="environment"><span class="arrayrow">
 <span class="arraycell align-r">
 <i>x</i><sub><i>n</i> + 1</sub>
@@ -941,28 +945,162 @@ To begin with there is dynamics. If the current state is <span class="formula">(
 </span>
 </span>
 </div>
+
+</div>
 If the state <span class="formula"><i>x</i><sub><i>n</i></sub>, <i>y</i><sub><i>n</i></sub></span> is interpreted as a point in the plane, at every step it gets rotated by <span class="formula">45<sup>0</sup></span> in the counter-clockwise sense.
 </div>
 <div class="Indented">
-The dynamics here is exceedingly simple. However, for motivation, we may think of it as a physical model of the motion of a rocket. The real equations in that situation will be more complicated. However, the simplification is still good enough to help us understand the most import idea behind the Kalman filter.
+The dynamics here is exceedingly simple. However, for motivation, we may think of it as a physical model of the motion of a rocket. The real equations in such situations will be more complicated. However, the simplification is good enough to help us understand the most import idea behind the Kalman filter.
 </div>
 <div class="Indented">
-Now if a rocket is shooting through space, we may not be able to get accurate measurement of its position. Here we assume that the observable is <span class="formula"><i>z</i><sub><i>n</i></sub></span> which is given by <div class="formula">
-<a class="eqnumber" name="eq:kalman-zn">(7) </a><i>z</i><sub><i>n</i></sub> = <i>x</i><sub><i>n</i></sub> + <span class="text">Gaussian noise of mean <span class="ensuremath">0</span>and variance <span class="ensuremath">σ<sup>2</sup></span></span>.
+If a rocket is shooting through space, we may not be able to get accurate measurement of its position. Here we assume that the measured quantity is <span class="formula"><i>z</i><sub><i>n</i></sub></span> which is given by <div class="formula">
+<a class="eqnumber" name="eq:kalman-zn">(7) </a><i>z</i><sub><i>n</i></sub> = <i>y</i><sub><i>n</i></sub> + <span class="text">Gaussian noise <span class="ensuremath">η</span>of mean <span class="ensuremath">0</span>and variance <span class="ensuremath">σ<sup>2</sup></span></span>.
 </div>
 Note that normally distributed random variables are also said to be Gaussian. Now the problem is to reconstruct the state of the rocket using a sequence of noisy observations:<div class="formula">
 <i>z</i><sub>1</sub>, <i>z</i><sub>2</sub>, <i>z</i><sub>3</sub>, …
 </div>
-We have knowledge of the exact dynamical equations <a class="Reference" href="#eq:kalman-dynamics">(6↑)</a> but cannot observe <span class="formula"><i>x</i><sub><i>n</i></sub></span> and <span class="formula"><i>y</i><sub><i>n</i></sub></span>. All that we may observe is <span class="formula"><i>z</i><sub><i>n</i></sub></span> which is <span class="formula"><i>y</i><sub><i>n</i></sub> + <span class="text">noise</span></span>.
+We have knowledge of the exact dynamical equations <a class="Reference" href="#eq:kalman-dynamics">(6↑)</a> but cannot observe <span class="formula"><i>x</i><sub><i>n</i></sub></span> and <span class="formula"><i>y</i><sub><i>n</i></sub></span>. All that we may observe is <span class="formula"><i>z</i><sub><i>n</i></sub></span> which is <span class="formula"><i>y</i><sub><i>n</i></sub> + <span class="text">the noise <span class="ensuremath">η</span></span></span>.
 </div>
 <div class="Indented">
 This problem is not so easy. Figure <a class="Reference" href="#fig:Kalman">2↑</a>(a) shows <span class="formula"><i>x</i>, <i>y</i>, <i>z</i></span> as a function of <span class="formula"><i>n</i></span> with <span class="formula"><i>σ</i> = 2.0</span>. The standard deviation is substantial and it is hard to tell from the figure if <span class="formula"><i>z</i><sub><i>n</i></sub></span> is approximating <span class="formula"><i>y</i><sub><i>n</i></sub></span> or <span class="formula"><i>x</i><sub><i>n</i></sub></span>. Whatever it is approximating, the approximation is very noisy.
 </div>
 <div class="Indented">
-The estimated signals in parts (b) and (c) of the same figure are much more accurate. The estimates are certainly tracking the signal. That is the magic of the Kalman filter. In spite of the fact, that the observations are noisy, the filter manages to reconstruct the current state with reasonable accuracy.
+The estimated signals in parts (b) and (c) of the same figure are much more accurate. The estimates are certainly tracking the signal. That is the magic of the Kalman filter. In spite of the fact that the observations are noisy, the filter manages to reconstruct the current state with good accuracy.
 </div>
 <h2 class="Subsection">
-<a class="toc" name="toc-Subsection-3.1">3.1</a> Current state according to Kalman
+<a class="toc" name="toc-Subsection-3.1">3.1</a> A geometric account of the Kalman filter
+</h2>
+<div class="Unindented">
+We will first give a purely geometric account of the Kalman filter. This account is a little imprecise at the end, yet contains the basic idea. 
+</div>
+<div class="Indented">
+We may represent the normal distribution of density function <div class="formula">
+<span class="fraction"><span class="ignored">(</span><span class="numerator">1</span><span class="ignored">)/(</span><span class="denominator"><span class="sqrt"><span class="radical">√</span><span class="ignored">(</span><span class="root">2<i>π</i></span><span class="ignored">)</span></span><i>σ</i></span><span class="ignored">)</span></span>exp<span class="array"><span class="arrayrow"><span class="bracket align-left">⎛</span></span><span class="arrayrow"><span class="bracket align-left">⎝</span></span></span> − <span class="fraction"><span class="ignored">(</span><span class="numerator"><i>x</i><sup>2</sup></span><span class="ignored">)/(</span><span class="denominator">2<i>σ</i><sup>2</sup></span><span class="ignored">)</span></span><span class="array"><span class="arrayrow"><span class="bracket align-right">⎞</span></span><span class="arrayrow"><span class="bracket align-right">⎠</span></span></span>
+</div>
+as a line segment as shown in Figure <a class="Reference" href="#fig:normal1d">3↓</a>.
+</div>
+<div class="Indented">
+<div class="float">
+<a class="Label" name="fig:normal1d"> </a><div class="figure">
+<div class="center">
+<img class="embedded" src="figs/normal1d.png" alt="figure figs/normal1d.png" style="width: 146px; max-width: 367px; height: 122px; max-height: 306px;"/>
+<div class="caption">
+Figure 3 
+</div>
+
+</div>
+
+</div>
+
+</div>
+The red line segment is centered at the mean and its width is equal to the width of the density function at one half its peak height.
+</div>
+<div class="Indented">
+In the dynamical equations <a class="Reference" href="#eq:kalman-dynamics">(6↑)</a>, the state is a point in the <span class="formula"><i>x</i>, <i>y</i></span> plane and therefore two dimensional. So we need the two dimensional normal distribution. Without going into the algebra, we may represent the two dimensional normal distribution as shown in Figure <a class="Reference" href="#fig:normal2d">4↓</a>.
+</div>
+<div class="Indented">
+<div class="float">
+<a class="Label" name="fig:normal2d"> </a><div class="figure">
+<div class="PlainVisible">
+<div class="center">
+<img class="embedded" src="figs/normal2d.png" alt="figure figs/normal2d.png" style="width: 230px; max-width: 576px; height: 172px; max-height: 432px;"/>
+
+</div>
+<br/>
+<div class="center">
+<div class="caption">
+Figure 4 
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="Indented">
+In this case, the curve obtained by taking section of the probability density function at one half its peak height is an ellipse. The center of this ellipse is the mean of the normal distribution. 
+</div>
+<div class="Indented">
+After adopting this convention, we may think of the two dimensional normal distribution as an ellipse in the plane. In our example, the state <span class="formula">(<i>x</i>, <i>y</i>)</span> is two dimensional. We do not know the state exactly but use the normal distribution to approximate it. The particular normal distribution we choose will be represented as an ellipse in the <span class="formula"><i>x</i>, <i>y</i></span> plane.
+</div>
+<div class="Indented">
+Suppose we have an ellipse to approximate the state <span class="formula">(<i>x</i><sub><i>n</i></sub>, <i>y</i><sub><i>n</i></sub>)</span>. If we move to <span class="formula">(<i>x</i><sub><i>n</i> + 1</sub>, <i>y</i><sub><i>n</i> + 1</sub>)</span> following the dynamical law <a class="Reference" href="#eq:kalman-dynamics">(6↑)</a>, then the ellipse is updated as in Figure <a class="Reference" href="#fig:rotate">5↓</a>.
+</div>
+<div class="Indented">
+<div class="float">
+<a class="Label" name="fig:rotate"> </a><div class="figure">
+<div class="center">
+<img class="embedded" src="figs/rotate.png" alt="figure figs/rotate.png" style="width: 230px; max-width: 576px; height: 172px; max-height: 432px;"/>
+
+</div>
+<div class="caption">
+Figure 5 
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="Indented">
+In this figure, the approximation to the state at time <span class="formula"><i>n</i></span> is the dashed ellipse. The approximation to the state at <span class="formula"><i>n</i> + 1</span> is then the solid ellipse.
+</div>
+<div class="Indented">
+The key to the Kalman filter is the way it handles the noisy observation. The noisy observation at time <span class="formula"><i>n</i> + 1</span> is <span class="formula"><i>z</i><sub><i>n</i> + 1</sub> = <i>y</i><sub><i>n</i> + 1</sub> + <i>η</i></span>, where <span class="formula"><i>η</i></span> is normally distributed. The next step is to represent our estimate of the state at time <span class="formula"><i>n</i> + 1</span> along with the noise in the same picture. Following our earlier convention this representation will be an ellipsoid as in Figure <a class="Reference" href="#fig:add-noise">6↓</a>.
+</div>
+<div class="Indented">
+<div class="float">
+<a class="Label" name="fig:add-noise"> </a><div class="figure">
+<div class="center">
+<img class="embedded" src="figs/add_noise.png" alt="figure figs/add_noise.png" style="width: 230px; max-width: 576px; height: 172px; max-height: 432px;"/>
+<div class="caption">
+Figure 6 
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="Indented">
+The ellipse in the <span class="formula"><i>x</i>, <i>y</i></span>, which approximated the state at time <span class="formula"><i>n</i> + 1</span>, has turned into an ellipsoid. The <span class="formula"><i>η</i></span> dimension has been added to the <span class="formula"><i>x</i> − <i>y</i></span> plane.
+</div>
+<div class="Indented">
+The measured quantity is <span class="formula"><i>z</i><sub><i>n</i> + 1</sub> = <i>y</i><sub><i>n</i> + 1</sub> + <i>η</i></span>. The known value of <span class="formula"><i>z</i><sub><i>n</i> + 1</sub></span> corresponds to a plane in <span class="formula"><i>x</i>, <i>y</i>, <i>η</i></span> space. This plane cuts the ellipsoid as in Figure <a class="Reference" href="#fig:section">7↓</a>
+</div>
+<div class="Indented">
+<div class="float">
+<a class="Label" name="fig:section"> </a><div class="figure">
+<div class="center">
+<img class="embedded" src="figs/section.png" alt="figure figs/section.png" style="width: 230px; max-width: 576px; height: 172px; max-height: 432px;"/>
+
+</div>
+<div class="caption">
+Figure 7 
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="Indented">
+The intersection of the plane with the ellipsoid is an ellipse. The Kalman filter projects this ellipse to the <span class="formula"><i>x</i>, <i>y</i></span> plane, where it becomes another ellipse. This ellipse become our updated approximation to the state at time <span class="formula"><i>n</i> + 1</span>, which includes the effect of the observation <span class="formula"><i>z</i><sub><i>n</i> + 1</sub></span>. The same process is repeated at every step. 
+</div>
+<div class="Indented">
+If you follow this picture carefully, you will notice that taking a section of the ellipsoid and projecting to the <span class="formula"><i>x</i>, <i>y</i></span> plane can shift the center of the ellipse in the <span class="formula"><i>x</i>, <i>y</i></span> plane. The projected ellipse may need to be enlarged to match our convention for representing the normal distribution. Yet as a result of successive measurements each of which involves taking a section of the ellipsoid, the projected ellipses begin to shrink and shrink. That is why the Kalman filter can track cell phones and rockets and satellites accurately from even noisy observations.
+</div>
+<div class="Indented">
+To actually implement the Kalman filter, we must turn this picture into algebraic formulas. That is what we now turn to.
+</div>
+<h2 class="Subsection">
+<a class="toc" name="toc-Subsection-3.2">3.2</a> Current state according to Kalman
 </h2>
 <div class="Unindented">
 At step <span class="formula"><i>n</i></span>, the Kalman filter does not really know for sure where the rocket is. It thinks of the current state as a pair of random variables <span class="formula"><i>X</i><sub><i>n</i></sub>, <i>Y</i><sub><i>n</i></sub></span> with the probability density function being <div class="formula">
@@ -1020,7 +1158,7 @@ We will always assume these conditions.
 </div>
 <div class="Description">
 <span class="Description-entry">Exercise:</span> For a greater challenge with handling integrals, prove that <div class="formula">
-𝔼<span class="symbol">(</span><i>X</i><sub><i>n</i></sub> − <i>μ</i><sub><i>n</i></sub><span class="symbol">)</span><sup>2</sup> = <span class="fraction"><span class="ignored">(</span><span class="numerator"><i>a</i><sub><i>n</i></sub></span><span class="ignored">)/(</span><span class="denominator">2<span class="symbol">(</span><i>a</i><sub><i>n</i></sub><i>c</i><sub><i>n</i></sub> − <i>b</i><span class="scripts"><sup class="script">2</sup><sub class="script"><i>n</i></sub></span><span class="symbol">)</span></span><span class="ignored">)</span></span> 𝔼<span class="symbol">(</span><i>Y</i><sub><i>n</i></sub> − <i>ν</i><sub><i>n</i></sub><span class="symbol">)</span><sup>2</sup> = <span class="fraction"><span class="ignored">(</span><span class="numerator"><i>c</i><sub><i>n</i></sub></span><span class="ignored">)/(</span><span class="denominator">2<span class="symbol">(</span><i>a</i><sub><i>n</i></sub><i>c</i><sub><i>n</i></sub> − <i>b</i><span class="scripts"><sup class="script">2</sup><sub class="script"><i>n</i></sub></span><span class="symbol">)</span></span><span class="ignored">)</span></span>.
+𝔼<span class="symbol">(</span><i>X</i><sub><i>n</i></sub> − <i>μ</i><sub><i>n</i></sub><span class="symbol">)</span><sup>2</sup> = <span class="fraction"><span class="ignored">(</span><span class="numerator"><i>a</i><sub><i>n</i></sub></span><span class="ignored">)/(</span><span class="denominator">2<span class="symbol">(</span><i>a</i><sub><i>n</i></sub><i>c</i><sub><i>n</i></sub> − <i>b</i><span class="scripts"><sup class="script">2</sup><sub class="script"><i>n</i></sub></span><span class="symbol">)</span></span><span class="ignored">)</span></span> <span class="blackboard"><span class="text">and</span> E</span><span class="symbol">(</span><i>Y</i><sub><i>n</i></sub> − <i>ν</i><sub><i>n</i></sub><span class="symbol">)</span><sup>2</sup> = <span class="fraction"><span class="ignored">(</span><span class="numerator"><i>c</i><sub><i>n</i></sub></span><span class="ignored">)/(</span><span class="denominator">2<span class="symbol">(</span><i>a</i><sub><i>n</i></sub><i>c</i><sub><i>n</i></sub> − <i>b</i><span class="scripts"><sup class="script">2</sup><sub class="script"><i>n</i></sub></span><span class="symbol">)</span></span><span class="ignored">)</span></span>.
 </div>
 
 </div>
@@ -1031,7 +1169,7 @@ Thus the Kalman filter takes the expectation of the current position to be <span
 are tiny if means we have a lot of confidence that the current state is near <span class="formula"><i>μ</i><sub><i>n</i></sub>, <i>ν</i><sub><i>n</i></sub></span>. That happens for example if <span class="formula"><i>a</i><sub><i>n</i></sub>, <i>c</i><sub><i>n</i></sub></span> are very large and <span class="formula"><i>b</i><sub><i>n</i></sub></span> is much smaller in magnitude. 
 </div>
 <h2 class="Subsection">
-<a class="toc" name="toc-Subsection-3.2">3.2</a> Updating from <span class="formula"><i>X</i><sub><i>n</i></sub>, <i>Y</i><sub><i>n</i></sub></span> to <span class="formula"><i>X</i><sub><i>n</i> + 1</sub>, <i>Y</i><sub><i>n</i> + 1</sub></span>
+<a class="toc" name="toc-Subsection-3.3">3.3</a> Updating from <span class="formula"><i>X</i><sub><i>n</i></sub>, <i>Y</i><sub><i>n</i></sub></span> to <span class="formula"><i>X</i><sub><i>n</i> + 1</sub>, <i>Y</i><sub><i>n</i> + 1</sub></span>
 </h2>
 <div class="Unindented">
 The dynamical equations <a class="Reference" href="#eq:kalman-dynamics">(6↑)</a> are used to update from time <span class="formula"><i>n</i></span> to time <span class="formula"><i>n</i> + 1</span>. Therefore the expectations of <span class="formula"><i>X</i><sub><i>n</i> + 1</sub>, <i>Y</i><sub><i>n</i> + 1</sub></span> are as follows:<div class="formula">
@@ -1181,7 +1319,7 @@ The quantities <span class="formula"><i>μ</i>, <i>ν</i></span> were defined 
 So from thinking of the state at time <span class="formula"><i>n</i></span> using <a class="Reference" href="#eq:kalman-xnyn-pdf">(8↑)</a>, the Kalman filter moves to thinking of the state at time <span class="formula"><i>n</i> + 1</span> using the probability density function <a class="Reference" href="#eq:kalman-xn1yn1-pdf">(9↑)</a>. This step is actually fairly trivial.
 </div>
 <h2 class="Subsection">
-<a class="toc" name="toc-Subsection-3.3">3.3</a> Incorporating the observation <span class="formula"><i>Z</i><sub><i>n</i> + 1</sub></span>
+<a class="toc" name="toc-Subsection-3.4">3.4</a> Incorporating the observation <span class="formula"><i>Z</i><sub><i>n</i> + 1</sub></span>
 </h2>
 <div class="Unindented">
 Now comes the main idea in the Kalman filter. Once we have the probability density function <a class="Reference" href="#eq:kalman-xn1yn1-pdf">(9↑)</a>, how do we update it to reflect the measurement <span class="formula"><i>Z</i><sub><i>n</i> + 1</sub></span>? The measurement <span class="formula"><i>Z</i><sub><i>n</i> + 1</sub></span>, though noisy, is our only knowledge of what is happening inside the system. Therefore it is crucial to incorporate it correctly into our model.
@@ -1343,7 +1481,7 @@ In addition, <span class="formula"><i>μ</i><sub><i>n</i> + 1</sub></span> a
 Notice that observation <span class="formula"><i>Z</i><sub><i>n</i> + 1</sub></span> is making us adjust the expected positions. 
 </div>
 <div class="Indented">
-At this point the filter equations are complete. To go from time step <span class="formula"><i>n</i> + 1</span> to time step <span class="formula"><i>n</i> + 2</span>, we repeat the same process. To begin the filter, we have to make a random guess for <span class="formula"><i>μ</i><sub>0</sub>, <i>ν</i><sub>0</sub></span> as well as the parameters <span class="formula"><i>a</i><sub>0</sub>, <i>b</i><sub>0</sub>, <i>c</i><sub>0</sub></span>. Thereafter the Kalman filter uses the observations to update the estimated state at every step.
+At this point the filter equations are complete. To go from time step <span class="formula"><i>n</i> + 1</span> to time step <span class="formula"><i>n</i> + 2</span>, we repeat the same process. To begin the filter, we may make a guess for <span class="formula"><i>μ</i><sub>0</sub>, <i>ν</i><sub>0</sub></span> as well as the parameters <span class="formula"><i>a</i><sub>0</sub>, <i>b</i><sub>0</sub>, <i>c</i><sub>0</sub></span>. Thereafter the Kalman filter uses the measurements <span class="formula"><i>Z</i><sub><i>n</i></sub></span> to update the estimated state at every step.
 </div>
 <div class="Indented">
 In Figure <a class="Reference" href="#fig:Kalman">2↑</a> (b) and (c), the estimates for <span class="formula"><i>x</i><sub><i>n</i></sub>, <i>y</i><sub><i>n</i></sub></span> that are graphed are the means <span class="formula"><i>μ</i><sub><i>n</i></sub>, <i>ν</i><sub><i>n</i></sub></span>.
